@@ -1,3 +1,6 @@
+# league-maps
+LeagueMaps is a data visualization web application for fantasy basketball players looking to gain an unfair advantage on the competition
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
