@@ -3,9 +3,9 @@ import { getScrollBarStyles } from '../../SharedStyles/SharedStyles';
 
 export const useBarChartStyles = makeStyles({
   root: {
-    width: 'calc(100% - 20)',
-    margin: 10,
-    padding: 10,
+    width: 'calc(100% - 12)',
+    margin: 6,
+    padding: 6,
     '& h4': {
       textTransform: 'uppercase',
       textAlign: 'center'

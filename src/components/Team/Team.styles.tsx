@@ -3,7 +3,7 @@ import { getScrollBarStyles } from '../../SharedStyles/SharedStyles';
 
 export const useAccordionStyles = makeStyles({
 	root: {
-		width: '100%',
+		width: 'calc(100% - 12)',
 		height: 'fit-content',
 		'& tr:nth-child(odd)' : {
 			backgroundColor: '#FAFAFA'
@@ -11,9 +11,8 @@ export const useAccordionStyles = makeStyles({
 		'& tr:nth-child(even)' : {
 			backgroundColor: '#F0F0F0'
 		},
-	},
-	expanded: {
-		margin: '4px 0px !important',
+		margin: '6px !important',
+    padding: '6px !important',
 	}
 })
 

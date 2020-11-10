@@ -1,9 +1,10 @@
 import React from 'react';
-import { Button } from '@material-ui/core'
+import { Button, IconButton } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import { teamListContext } from '../Contexts/TeamListContext';
 import { calcTotalStats } from '../Util'
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
 
 export const AddTeamButton = () => {
 
@@ -15,9 +16,9 @@ export const AddTeamButton = () => {
 		  boxShadow: '0 3px 5px 2px rgba(33, 203, 243, .3)',
 		  borderRadius: '0px',
 		  color: 'white',
-		  height: 48,
+		  height: '100%',
 		  padding: '0 30px',
-		  width: '100%'
+		  width: '200px'
 		},
 	});
 	
@@ -49,14 +50,11 @@ export const AddTeamButton = () => {
 	}
 
 	return (
-		<Button
-			variant='contained'
-			color='primary'
-			startIcon={<AddIcon />}
+		<IconButton
 			onClick={handleClick}
-			className={classes.root}
+			style={{color: '#FFF'}}
 		>
-			Add Team
-		</Button>
+			<GroupAddIcon />
+		</IconButton>
 	)
 }

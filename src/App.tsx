@@ -21,52 +21,67 @@ function App() {
           <SettingsContextProvider>
             <Grid
               container
-              direction='row'
+              direction='column'
               classes={appGridClasses}
             >
-              {/* left quarter */}
+
+              {/* top 10% */}
               <Grid
                 item
-                md={3}
+                md={12}
               >
-                {/** side bar */}
-                <Grid
-                  container
-                  direction='column'
-                  alignItems='center'
-                  spacing={1}
-                  wrap='nowrap'
-                  className='sidebar-scrollbar sidebar'
-                >
-                  <AddTeamButton />
-                  <AllTeamsContainer />
-                </Grid>
-              </Grid>
-              
-              {/** right three quarters */}
-              <Grid
-                item
-                md={9}
-              >
-                {/** top bar */}
                 <Grid
                   container
                   direction='row'
-                  style={{
-                    color: 'white',
-                  }}
+                  style={{height: '10vh'}}
                 >
-                  <SettingsButton />
+                    <AddTeamButton />
+                    <SettingsButton />
+                    <h1 style={{color: '#FFF'}}>www.leaguemaps.com</h1>
                 </Grid>
+              </Grid>
+
+              {/* bottom 90% */}
+              <Grid
+                item
+                md={12}
+              >
                 <Grid
                   container
-                  direction='column'
-                  alignItems='center'
-                  wrap='nowrap'
-                  className='visualizations-container'
-                  style={{height: '90vh'}}
+                  direction='row'
                 >
-                  <Visualizations />
+
+                  {/* left 25% */}
+                  <Grid
+                    item
+                    md={3}
+                    style={{height: '90vh', overflowY: 'scroll'}}
+                    className='sidebar-scrollbar'
+                  >
+                    <Grid
+                      container
+                      direction='column'
+                     
+                    >
+                        <AllTeamsContainer />
+                    </Grid>
+                  </Grid>
+
+                  {/* right 75% */}
+                  <Grid
+                    item
+                    md={9}
+                    style={{height: '90vh', overflowY: 'scroll'}}
+                    className='visualizations-container'
+                  >
+                    <Grid
+                      container
+                      direction='column'
+                     
+                    >
+                      <Visualizations />
+                    </Grid>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>

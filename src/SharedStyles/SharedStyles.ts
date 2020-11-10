@@ -1,9 +1,5 @@
 export const getScrollBarStyles = (selector: string, width: number = 4) => {
   return {
-    [`& ${selector}`]: {
-      overflowX: 'hidden',
-      overflowY: 'scroll'
-    },
     [`& ${selector}::-webkit-scrollbar`]: {
       width: width
     },

@@ -28,7 +28,7 @@ export const SettingsButton = () => {
 
 
   return (
-    <div>
+    <>
       <IconButton
         onClick={handleClick}
       >
@@ -50,6 +50,6 @@ export const SettingsButton = () => {
       >
         <SettingsPanel />
       </Popover>
-    </div>
+    </>
   );
 }
