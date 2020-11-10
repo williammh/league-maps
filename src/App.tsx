@@ -92,27 +92,6 @@ function App() {
   );
 }
 
-// www.graphball.com
-// www.ballgraph.com
-// www.leaguemap.com ($2795)
-// www.leaguemaps.com *
-// www.cheatgraph.com
-// www.fantasymap.com ($2700)
-// www.chartballer.com
-// www.leaguecheat.com
-// www.cheatleague.com
-// www.graphleague.com
-// www.fantasygraphs.com
-// www.cheatingfantasy.com
-
-// LeagueMaps.com
-// like cheating at fantasy
-/*
- LeagueMaps is a data visualization web application for fantasy basketball
- players looking to gain an unfair advantage on the competiton
-
- it is built using React.js (Hooks + Context), TypeScript, D3.js and Material UI
-*/
 // Did LeagueMaps help you win money in your fantasy league?
 // A modest $9 donation pays to keep LeagueMaps online for another 6 months...just in time for your draft next season
 
