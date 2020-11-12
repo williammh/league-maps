@@ -24,7 +24,7 @@ export const useBarChartStyles = makeStyles({
       transitionDuration: '1s'
     },
     '& rect.best': {
-      fill: 'lime',
+      fill: 'lime'
     }
   }
 })
