@@ -10,7 +10,7 @@ import {
 	AccordionSummary,
 	AccordionDetails,
 	Grid,
-	IconButton
+	IconButton,
 } from '@material-ui/core'
 import { IStatCategory, ITeam, ITeamTotalStats } from '../../Types/teamTypes';
 import { PlayerSelect } from '../PlayerSelect/PlayerSelect';
@@ -112,7 +112,7 @@ export const Team = (props: ITeam) => {
 	return (
 		<Accordion
 			classes={accordionClasses}
-			square
+			// square
 			expanded={isExpanded}
 		>
 			<AccordionSummary

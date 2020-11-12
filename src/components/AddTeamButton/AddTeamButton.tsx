@@ -2,8 +2,8 @@ import React from 'react';
 import { Button, IconButton } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
-import { teamListContext } from '../Contexts/TeamListContext';
-import { calcTotalStats } from '../Util'
+import { teamListContext } from '../../Contexts/TeamListContext';
+import { calcTotalStats } from '../../Util'
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 
 export const AddTeamButton = () => {

@@ -15,7 +15,7 @@ export const useSearchResultContainerStyles = makeStyles({
     '& .LazyLoad' : {
       borderBottom: '1px solid lightgray',
       whiteSpace: 'nowrap'
-    } ,
+    },
     ...getScrollBarStyles('.resultsList')
   }
 });

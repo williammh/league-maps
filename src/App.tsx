@@ -4,7 +4,7 @@ import { TeamListContextProvider } from './Contexts/TeamListContext'
 import { AppStatsContextProvider } from './Contexts/AppStatsContext'
 import { SettingsContextProvider } from './Contexts/SettingsContext'
 import { Grid } from '@material-ui/core';
-import { AddTeamButton } from './components/AddTeamButton';
+import { AddTeamButton } from './components/AddTeamButton/AddTeamButton';
 import { AllTeamsContainer } from './components/AllTeamsContainer/AllTeamsContainer';
 import { useAppGridStyles } from './App.styles';
 import { SettingsButton } from './components/SettingsButton/SettingsButton';
@@ -34,10 +34,14 @@ function App() {
                   container
                   direction='row'
                   style={{height: '10vh'}}
+                  alignItems='center'
+                  justify='space-between'
                 >
-                    <AddTeamButton />
-                    <SettingsButton />
-                    <h1 style={{color: '#FFF'}}>www.leaguemaps.com</h1>
+                    <div>
+                      <AddTeamButton />
+                      <SettingsButton />
+                    </div>
+                    <h1 style={{color: '#FFF', margin: '0px 12px 0px 0px'}}>www.leaguemaps.com</h1>
                 </Grid>
               </Grid>
 

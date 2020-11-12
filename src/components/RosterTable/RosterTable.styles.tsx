@@ -16,7 +16,12 @@ export const useTableContainerStyles = makeStyles({
 			opacity: '.25'
 		},
 		'& .headshot-cell' : {
-			width: '30px'
+			width: 30
+		},
+		'& .headshot' : {
+			height: 30,
+			width: 30,
+			backgroundColor: 'lightgray'
 		},
 		'& .mock-player-icon': {
 			height: '30px',
@@ -24,6 +29,7 @@ export const useTableContainerStyles = makeStyles({
 			fill: 'white',
 			backgroundColor: 'black',
 			borderRadius: '15px',
+			display: 'flex'
 		},
 		'& .name-cell' : {
 			whiteSpace: 'nowrap',

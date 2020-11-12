@@ -21,27 +21,34 @@ export const BarChart = (props: IBarChartProps) => {
   const { [statCategory]: median } = appStats.median;
   const { [statCategory]: max } = appStats.max;
 
-  
   useEffect(() => {
     const dataset = teamList.map((team) => team.totalStats[statCategory]) 
     const teamLabels = teamList.map((team) => team.id);
     
-    const barHeight = (50);
-    const svgHeight = dataset.length * barHeight;
-    const svgWidth = 900;
-    const svgPadding = 100;
     const barPadding = 5;
-    const maxBarWidth = svgWidth - svgPadding;
+    const barHeight = 50;
+    const svgHeight = dataset.length * barHeight;
+    const svgWidth = 1000;
   
     const svg = d3.select(`.bar-chart-container.${statCategory} svg`)
       .attr('width', svgWidth)
       .attr('height', svgHeight);
+
+    const xScale = d3.scaleLinear()
+      .domain([0, d3.max(dataset)!])
+      .range([0, svgWidth]);
+    
+    const xAxis = d3.axisBottom(xScale);
+  
+    svg.append('g')
+      .attr('transform', `translate(0, ${svgHeight})`)
+      .call(xAxis);
         
-    const bars = svg.selectAll(`.bar-chart-container.${statCategory}`)
+    svg.selectAll(`.bar-chart-container.${statCategory}`)
       .data(dataset)
       .enter()
       .append('rect')
-        .attr('width', (d) => `${(d / max * maxBarWidth)}`)
+        .attr('width', (d) => xScale(d))
         .attr('height', barHeight - barPadding)
         .attr('transform', (d, i) => `translate(${[0, barHeight * i]})`)
         .classed('best', (d) => isBestInCategory(d, statCategory, appStats));
@@ -51,19 +58,16 @@ export const BarChart = (props: IBarChartProps) => {
       .enter()
       .append('text')
         .text((d) => d?.toFixed(1))
-        .attr('y', (d, i) => i * barHeight + (barHeight / 2))
-        .attr('x', (d) => `${(d / max * maxBarWidth) + 6}`)
+        .attr('y', (d, i) => i * barHeight + (barHeight / 2 + 2))
+        .attr('x', (d) => (xScale(d)) + 6)
 
     svg.selectAll(`.bar-chart-container.${statCategory}`)
       .data(teamLabels)
       .enter()
       .append('text')
         .text((d) => `Team ${d}`)
-        .attr('y', (d, i) => i * barHeight + (barHeight / 2))
-        .attr('x', (d, i) => {
-          const barWidth = parseFloat(bars.nodes()[i].attributes[0].value);
-          return barWidth - 60
-        })
+        .attr('y', (d, i) => i * barHeight + (barHeight / 2) + 2)
+        .attr('transform', (d, i) => `translate(${[-56, 0]})`)
 
     return () => { svg.html(null) };
   });
@@ -74,7 +78,7 @@ export const BarChart = (props: IBarChartProps) => {
       className={`bar-chart-container ${statCategory}`}
     >
       <h4>{statCategory}</h4>
-      <svg  />
+      <svg />
     </Card>
   )
 }

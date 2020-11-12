@@ -1,22 +1,30 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { getScrollBarStyles } from '../../SharedStyles/SharedStyles';
+
+const padding = 30;
+const margin = 6;
 
 export const useBarChartStyles = makeStyles({
   root: {
-    width: 'calc(100% - 12)',
-    margin: 6,
-    padding: 6,
+    width: `calc(100% - ${margin * 2}px - ${padding * 2}px)`,
+    margin,
+    padding,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
     '& h4': {
       textTransform: 'uppercase',
-      textAlign: 'center'
+      margin: 0
+    },
+    '& svg' : {
+      overflow: 'visible'
     },
     '& rect': {
       maxHeight: '40px',
-      fill: 'gray',
+      fill: 'lightgray',
       transitionDuration: '1s'
     },
     '& rect.best': {
-      fill: 'lime'
+      fill: 'lime',
     }
   }
 })

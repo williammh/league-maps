@@ -5,13 +5,13 @@ import {
 	TableBody,
 	TableRow,
 	TableCell,
-	TableContainer
+	TableContainer,
+	Avatar
 } from '@material-ui/core'
 import { IPlayer, IPlayerSearchResult } from '../../Types/playerTypes';
 import { useTableContainerStyles } from './RosterTable.styles';
 import { maxTeamSize } from '../../Util';
 import { RemainingRows } from './RemainingRows';
-import { Headshot } from '../Headshot/Headshot';
 
 import RemoveIcon from '@material-ui/icons/Remove';
 
@@ -50,7 +50,10 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 									</IconButton>
 								</TableCell>
 								<TableCell className={`headshot-cell ${player.stats.latest.min === '-1' ? 'no-stats' : undefined }`}>
-									<Headshot personId={player.personId} />
+									<Avatar
+										src={`https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${player.personId}.png`}
+										className='headshot'
+									/>
 								</TableCell>
 								<TableCell
 									className={`name-cell ${player.stats.latest.min === '-1' ? 'no-stats' : undefined }`}
