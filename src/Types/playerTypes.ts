@@ -6,9 +6,12 @@ export interface IPlayerSearchResult {
 }
 
 export interface IStatSearchResult {
-	latest: { [key: string]: string };
+	stats: {
+		latest: { [key: string]: string };
+		regularSeason: {
+			season: Array<{ total: { [key: string ]: string} }>
+		}
+	}
 }
 
-export interface IPlayer extends IPlayerSearchResult {
-	stats: IStatSearchResult;
-}
+export type Player = IPlayerSearchResult & IStatSearchResult;

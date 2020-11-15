@@ -10,23 +10,18 @@ import React, {
 } from 'react';
 import { playerListContext } from '../../Contexts/PlayerListContext'
 import { List, ListItem, ListItemText, Popover, TextField, Card } from '@material-ui/core'
-import { IPlayer, IPlayerSearchResult } from '../../Types/playerTypes';
-import {
-	useTextFieldStyles,
-	useSearchResultContainerStyles,
-	useListStyles
-} from './PlayerSelectV2.styles';
+import { Player, IPlayerSearchResult } from '../../Types/playerTypes';
 import { SignalCellularNull } from '@material-ui/icons';
 import LazyLoad from 'react-lazy-load';
 import { maxTeamSize } from '../../Util'
 
-export interface IPlayerSelectV2Props {
+export interface IPlayerSelectProps {
 	teamId?: number;
-	roster?: Array<IPlayer>;
+	roster?: Array<Player>;
 	addPlayer: (personId: string, playerList: Array<IPlayerSearchResult>) => Promise<void>;
 }
 
-export const PlayerSelect = (props: IPlayerSelectV2Props): JSX.Element => {
+export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
 	const { teamId, roster, addPlayer } = props;
 	const playerList = useContext(playerListContext);
 
@@ -62,14 +57,6 @@ export const PlayerSelect = (props: IPlayerSelectV2Props): JSX.Element => {
 		setSearchString('');
 	}
 
-	const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
-		setHasFocus(true)
-	}
-
-	const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
-		setTimeout(() => setHasFocus(false), 100);
-	}
-
 	const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>): void => {
 		const { key } = event
 		if (key === 'Enter') {
@@ -80,11 +67,7 @@ export const PlayerSelect = (props: IPlayerSelectV2Props): JSX.Element => {
 				setHasFocus(false);
 			}
 		} else if (key === 'ArrowDown') {
-			if (!isFocused) {
-				setHasFocus(true);
-			} else {
-				setSelectedIndex(selectedIndex < searchResults.length - 1 ? selectedIndex + 1 : searchResults.length - 1);
-			}
+			setSelectedIndex(selectedIndex < searchResults.length - 1 ? selectedIndex + 1 : searchResults.length - 1);
 		} else if (key === 'ArrowUp') {
 			setSelectedIndex(selectedIndex > 0 ? selectedIndex - 1 : 0);
 		}
@@ -99,10 +82,6 @@ export const PlayerSelect = (props: IPlayerSelectV2Props): JSX.Element => {
 		)
 	}
 
-	const textFieldClasses = useTextFieldStyles();
-	const searchResultContainerClasses = useSearchResultContainerStyles();
-	const listClasses = useListStyles(isFocused);
-
 	return (
 		<div>
 			<TextField
@@ -110,39 +89,33 @@ export const PlayerSelect = (props: IPlayerSelectV2Props): JSX.Element => {
 				variant="outlined"
 				label="Draft Player"
 				value={searchString}
-				classes={textFieldClasses}
 				onChange={handleChange}
-				onFocus={handleFocus}
-				onBlur={handleBlur}
 				onKeyDown={handleKeyDown}
 			/>
-			<Card classes={searchResultContainerClasses}>
-				<List
-					classes={listClasses}
-					disablePadding={true}
-					className='resultsList'
-					ref={myRef}
-				>
-					{searchResults.map((player, i) => {
-						return (
-							<LazyLoad height={40} offsetTop={40 * i}>
-								<ListItem
-									onClick={handleClick}
-									button
-									data-person-id={player.personId}
-									data-first-name={player.firstName}
-									data-last-name={player.lastName}
-									selected={selectedIndex === i && !idsInTeam?.includes(player.personId)}
-									disabled={idsInTeam?.includes(player.personId) || roster!.length >= maxTeamSize}
-									key={`select-${teamId}-${player.personId}`}
-								>
-									{player.firstName} {player.lastName}
-								</ListItem>
-							</LazyLoad>
-						)
-					})}
-				</List>
-			</Card>
+			<List
+				disablePadding={true}
+				className='resultsList'
+				ref={myRef}
+			>
+				{searchResults.map((player, i) => {
+					return (
+						<LazyLoad height={40} offsetTop={40 * i}>
+							<ListItem
+								onClick={handleClick}
+								button
+								data-person-id={player.personId}
+								data-first-name={player.firstName}
+								data-last-name={player.lastName}
+								selected={selectedIndex === i && !idsInTeam?.includes(player.personId)}
+								disabled={idsInTeam?.includes(player.personId) || roster!.length >= maxTeamSize}
+								key={`select-${teamId}-${player.personId}`}
+							>
+								{player.firstName} {player.lastName}
+							</ListItem>
+						</LazyLoad>
+					)
+				})}
+			</List>
 		</div>
 	)
 }

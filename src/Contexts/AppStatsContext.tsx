@@ -16,7 +16,7 @@ interface IAppStatsContext {
 }
 
 const AppStatsContextProvider = (props: ContextProviderProps) => {
-	const initialAppStats = { min: {}, median: {}, max: {} }
+	const initialAppStats = { min: {}, median: {}, max: {} };
 	const [appStats, setAppStats] = React.useState(initialAppStats);
 	
 	return (

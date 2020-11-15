@@ -1,9 +1,9 @@
-import { IPlayer } from './playerTypes';
+import { Player } from './playerTypes';
 
 export interface ITeam {
     id: number;
     name?: string;
-    roster: Array<IPlayer>;
+    roster: Array<Player>;
     color?: string;
     totalStats: ITeamTotalStats;
 }

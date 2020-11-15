@@ -9,7 +9,7 @@ export const useTableContainerStyles = makeStyles({
 		'& .MuiTableCell-root' : {
 			padding: '2px',
 		},
-		'& .remove-button-cell' : {
+		'& .add-remove-button-cell' : {
 			width: '27px',
 		},
 		'& .no-stats, & .mock-player' : {

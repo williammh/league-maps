@@ -8,7 +8,7 @@ import GroupAddIcon from '@material-ui/icons/GroupAdd';
 
 export const AddTeamButton = () => {
 
-	const { teamList, setTeamList } = React.useContext(teamListContext);
+	const { teamList, setTeamList, addTeam } = React.useContext(teamListContext);
 
 	const useStyles = makeStyles({
 		root: {
@@ -24,29 +24,8 @@ export const AddTeamButton = () => {
 	
 	const classes = useStyles();
 
-	const generateTeamId = (): number => {
-		const lastTeamId: number = teamList[teamList.length - 1]?.id ?? 0
-		return lastTeamId + 1;
-	}
-
-	const generateColor = (): string => {
-		const lastTeamcolor: string = teamList[teamList.length - 1]?.color ?? '#f00'
-		return '#f00'
-	}
-
 	const handleClick = () => {
-		const newTeam = {
-			id: generateTeamId(),
-			roster: [],
-			color: generateColor(),
-			totalStats: calcTotalStats([])
-		};
-
-
-		setTeamList([
-			...teamList,
-			newTeam
-		])
+		addTeam()
 	}
 
 	return (

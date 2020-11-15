@@ -1,5 +1,5 @@
 import { ITeamTotalStats, IStatCategory, IRelativeStats, IRelativeStatsV2, ITeam } from './Types/teamTypes';
-import { IPlayer, IPlayerSearchResult, IStatSearchResult } from './Types/playerTypes'
+import { IPlayerSearchResult, IStatSearchResult, Player } from './Types/playerTypes'
 import { ISettings, IVisibleStats } from './Contexts/SettingsContext';
 
 export const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
@@ -148,21 +148,30 @@ export const getAllPlayers = async (): Promise<Array<IPlayerSearchResult>> => {
 export const getPlayerStats = async (personId: string, year: number = 2019): Promise<IStatSearchResult> => {
     const playerStatsResponse = await fetch(`https://data.nba.net/prod/v1/${year}/players/${personId}_profile.json`)
     const playerStatsJson = await playerStatsResponse.json();
-    return playerStatsJson.league.standard.stats;
+    return playerStatsJson.league.standard;
 }
 
-export const calcTotalStats = (roster: Array<IPlayer>): ITeamTotalStats => {
+export const calcTotalStats = (roster: Array<Player>, season?: number): ITeamTotalStats => {
     const result: ITeamTotalStats = {};
     statCategories
         .filter(category => !excludeCategories.includes(category))
         .forEach(category => result[category] = 0);
-    roster.forEach((player: IPlayer) => {
-        const { latest: stats } = player.stats;
+    roster.forEach((player: Player) => {
+        const { total: stats } = player.stats.regularSeason.season[0];
         for(let category in result) {
             result[category] += parseFloat(stats[category]) >= 0 ? parseFloat(stats[category]) : 0;
         }
     })
     return result;
+}
+
+export const calcTotalStatsArray = (statsObject: ITeamTotalStats, settings?: ISettings): Array<IStatCategory> => {
+	const result: Array<IStatCategory> = [];
+	for (let key in statsObject) {
+		if(settings && !settings.visibleStats[key]) { continue }
+		result.push({label: key, total: statsObject[key]})
+	}
+	return result;
 }
 
 export const calcRelativeStats = (teamList: Array<ITeam>, categories: Array<string> = statCategories): IRelativeStats => {
@@ -237,15 +246,6 @@ export const calcMedian = (arr: Array<number>): number => {
 
 export const calcMean = (arr: Array<number>): number => {
   return arr.reduce((acc, cur) => acc + cur) / arr.length ;
-}
-
-export const calcTotalStatsArray = (statsObject: ITeamTotalStats, settings?: ISettings): Array<IStatCategory> => {
-	const result: Array<IStatCategory> = [];
-	for (let key in statsObject) {
-		if(settings && !settings.visibleStats[key]) { continue }
-		result.push({label: key, total: statsObject[key]})
-	}
-	return result;
 }
 
 export const isBestInCategory = (value: number, category: string, best: IRelativeStatsV2): boolean => {

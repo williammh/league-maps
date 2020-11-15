@@ -4,6 +4,7 @@ import { settingsContext } from '../../Contexts/SettingsContext';
 import { teamListContext } from '../../Contexts/TeamListContext';
 import { appStatsContext } from '../../Contexts/AppStatsContext';
 import SettingsIcon from '@material-ui/icons/Settings';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 import { SettingsPanel } from '../SettingsPanel/SettingsPanel';
 
 export const SettingsButton = () => {
@@ -32,7 +33,7 @@ export const SettingsButton = () => {
       <IconButton
         onClick={handleClick}
       >
-			  <SettingsIcon style={{color: '#FFF'}} />
+			  <VisibilityIcon style={{color: '#FFF'}} />
 		  </IconButton>
       <Popover
         id={id}

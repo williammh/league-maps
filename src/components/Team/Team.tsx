@@ -13,7 +13,7 @@ import {
 	IconButton,
 } from '@material-ui/core'
 import { IStatCategory, ITeam, ITeamTotalStats } from '../../Types/teamTypes';
-import { PlayerSelect } from '../PlayerSelect/PlayerSelect';
+import { PlayerSelect } from './PlayerSelect';
 import { teamListContext } from '../../Contexts/TeamListContext'
 import { appStatsContext } from '../../Contexts/AppStatsContext'
 import { 
@@ -24,8 +24,8 @@ import {
 	calcRelativeStatsV2,
 	calcTotalStatsArray,
 } from '../../Util';
-import { RosterTable } from '../RosterTable/RosterTable'
-import { TotalStatsTable } from '../TotalStatsTable/TotalStatsTable';
+import { RosterTable } from './RosterTable'
+import { TotalStatsTable } from './TotalStatsTable';
 import { 
 	useAccordionStyles,
 	useAccordionSummaryStyles,
@@ -38,13 +38,13 @@ import CropDinIcon from '@material-ui/icons/CropDin';
 import LaunchIcon from '@material-ui/icons/Launch';
 import CloseIcon from '@material-ui/icons/Close';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
-import { IPlayerSearchResult } from '../../Types/playerTypes';
+import { IPlayerSearchResult, Player } from '../../Types/playerTypes';
 
 export const Team = (props: ITeam) => {
 	const { id } = props;
 	const [ isExpanded, setIsExpanded ] = useState(true);
 
-	const { teamList, setTeamList } = useContext(teamListContext);
+	const { teamList, removeTeam, setTeamList } = useContext(teamListContext);
 	const { appStats, setAppStats } = useContext(appStatsContext);
 
 	const accordionClasses = useAccordionStyles();
@@ -80,16 +80,13 @@ export const Team = (props: ITeam) => {
 	}
 
 	const close = (event: MouseEvent) => {
-		event.stopPropagation();
-		setTeamList(teamList.filter((team) => {
-			return team.id !== id;
-		}))
+		removeTeam(id)
 	}
 
 	const addPlayer = async (personId: string, playerList: Array<IPlayerSearchResult>): Promise<void> => {
 		const { firstName, lastName } = playerList.find(player => player.personId === personId)!;
-		const stats = await getPlayerStats(personId);
-		const player = {
+		const { stats } = await getPlayerStats(personId);
+		const player: Player = {
 			personId,
 			firstName,
 			lastName,
@@ -110,71 +107,67 @@ export const Team = (props: ITeam) => {
 	// FilterNone (for copy)
 
 	return (
-		<Accordion
-			classes={accordionClasses}
-			// square
-			expanded={isExpanded}
-		>
-			<AccordionSummary
-				aria-label="Expand"
-				aria-controls="additional-actions1-content"
-				classes={accordionSummaryClasses}
+		<div>
+			<Accordion
+				classes={accordionClasses}
+				// square
+				expanded={isExpanded}
 			>
-				<div className='teamLabel'>
-					{/* <RadioButtonUncheckedIcon
-						style={{
-							backgroundColor: color,
-							fill: 'white',
-							borderRadius: '20px',
-						}}
-					/> */}
-					<span>Team {id} ({roster.length}{roster.length >= maxTeamSize && '*'})</span>
-				</div>
-				<IconButton
-					onClick={minimize}
-					size='small'
+				<AccordionSummary
+					aria-label="Expand"
+					aria-controls="additional-actions1-content"
+					classes={accordionSummaryClasses}
 				>
-					{ isExpanded ? <MinimizeIcon /> : <CropDinIcon /> }
-				</IconButton>
-				<IconButton
-					onClick={maximize}
-					size='small'
+					<div className='teamLabel'>
+						{/* <RadioButtonUncheckedIcon
+							style={{
+								backgroundColor: color,
+								fill: 'white',
+								borderRadius: '20px',
+							}}
+						/> */}
+						<span>Team {id} ({roster.length}{roster.length >= maxTeamSize && '*'})</span>
+					</div>
+					<IconButton
+						onClick={minimize}
+						size='small'
+					>
+						{ isExpanded ? <MinimizeIcon /> : <CropDinIcon /> }
+					</IconButton>
+					<IconButton
+						onClick={maximize}
+						size='small'
+					>
+						<LaunchIcon />
+					</IconButton>
+					<IconButton
+						onClick={close}
+						size='small'
+					>
+						<CloseIcon />
+					</IconButton>
+				</AccordionSummary>
+				<AccordionDetails
+					classes={accordionDetailClasses}
 				>
-					<LaunchIcon />
-				</IconButton>
-				<IconButton
-					onClick={close}
-					size='small'
-				>
-					<CloseIcon />
-				</IconButton>
-			</AccordionSummary>
-			<AccordionDetails
-				classes={accordionDetailClasses}
-			>
-				<PlayerSelect
-					teamId={id}
-					roster={roster}
-					addPlayer={addPlayer}
-					key={`player-select-${id}`}
-				/>
-				<Grid
-					container
-					direction='row'
-					classes={gridClasses}
-				>
-					<RosterTable
-						teamId={id} 
-						roster={roster}
-						addPlayer={addPlayer}
-						removePlayer={removePlayer}
-					/>
-					<TotalStatsTable
-						teamId={id}
-						totalStats={totalStats ?? {}}
-					/>
-				</Grid>
-			</AccordionDetails>
-		</Accordion>
+					<Grid
+						container
+						direction='row'
+						classes={gridClasses}
+					>
+						<RosterTable
+							teamId={id} 
+							roster={roster}
+							addPlayer={addPlayer}
+							removePlayer={removePlayer}
+						/>
+						<TotalStatsTable
+							teamId={id}
+							totalStats={totalStats ?? {}}
+						/>
+					</Grid>
+				</AccordionDetails>
+			</Accordion>
+		</div>
 	)
 }

@@ -19,12 +19,14 @@ export const useBarChartStyles = makeStyles({
       overflow: 'visible'
     },
     '& rect': {
-      maxHeight: '40px',
       fill: 'lightgray',
       transitionDuration: '1s'
     },
-    '& rect.best': {
+    '& rect:nth-child(odd)' : {
+      opacity: .5
+    },
+    '& .best *': {
       fill: 'lime'
-    }
+    },
   }
 })
