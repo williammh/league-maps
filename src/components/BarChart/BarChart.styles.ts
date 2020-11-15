@@ -22,11 +22,14 @@ export const useBarChartStyles = makeStyles({
       fill: 'lightgray',
       transitionDuration: '1s'
     },
-    '& rect:nth-child(odd)' : {
-      opacity: .5
+    '& [data-person-id]:nth-child(even) rect' : {
+      opacity: .6
     },
-    '& .best *': {
+    '& .best rect': {
       fill: 'lime'
+    },
+    '& [data-person-id] text' : {
+      opacity: .4
     },
   }
 })
