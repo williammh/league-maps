@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const padding = 30;
+const padding = 6
 const margin = 6;
 
 export const useBarChartStyles = makeStyles({
@@ -16,20 +16,30 @@ export const useBarChartStyles = makeStyles({
       margin: 0
     },
     '& svg' : {
-      overflow: 'visible'
+      overflow: 'visible',
+      marginBottom: 20
     },
-    '& rect': {
+    '& rect:nth-child(odd)': {
       fill: 'lightgray',
-      transitionDuration: '1s'
     },
-    '& [data-person-id]:nth-child(even) rect' : {
-      opacity: .6
+    '& rect:nth-child(even)': {
+      fill: '#bbbbbb',
     },
-    '& .best rect': {
+    '& rect:hover': {
+      opacity: 1 
+    },
+    '& .player-name-label': {
+      opacity: .25
+    },
+    '& .player-name-label:hover': {
+      opacity: 1,
+      cursor: 'default'
+    },
+    '& .best rect:nth-child(odd)': {
       fill: 'lime'
     },
-    '& [data-person-id] text' : {
-      opacity: .4
+    '& .best rect:nth-child(even)' : {
+      fill: '#00e600'
     },
   }
 })

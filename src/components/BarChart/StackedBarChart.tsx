@@ -5,9 +5,8 @@ import { appStatsContext } from '../../Contexts/AppStatsContext';
 import { teamListContext } from '../../Contexts/TeamListContext';
 import { useBarChartStyles } from './BarChart.styles';
 import { isBestInCategory } from '../../Util'
-import * as innersvg from 'innersvg-polyfill';
 
-export interface IBarChartProps {
+export interface IStackedBarChartProps {
   statCategory: string
 }
 
@@ -26,7 +25,7 @@ interface IIndividualBar {
   barWidth: number;
 }
 
-export const StackedBarChart = (props: IBarChartProps) => {
+export const StackedBarChart = (props: IStackedBarChartProps) => {
   const { statCategory } = props;
   const { appStats } = useContext(appStatsContext);
   const { teamList } = useContext(teamListContext);
@@ -69,6 +68,7 @@ export const StackedBarChart = (props: IBarChartProps) => {
       .attr('width', svgWidth)
       .attr('height', svgHeight);
 
+    // bar
     svg.selectAll(`.bar-chart-container.${statCategory}`)
       .data(dataset)
       .enter()
@@ -86,17 +86,20 @@ export const StackedBarChart = (props: IBarChartProps) => {
         .attr('height', barHeight - barPadding)
         .attr('data-person-id', (d: any) => d.personId)
     
+    // team label
     svg.selectAll('[data-team-id]')
       .append('text')
-        .text((d: any) => 'Team ' + d.teamId)
-        .attr('x', -56)
+        .text((d: any) => `Team ${d.teamId}`)
+        .attr('x', -6)
         .attr('y', barHeight / 2)
+        .attr('text-anchor', 'end')
         .attr('alignment-baseline', 'middle')
 
+    // total stat label
     svg.selectAll('[data-team-id]')
       .append('text')
         .text((d: any) => d.teamTotal.toFixed(1))
-        .attr('x', (d: any) => xScale(d.teamTotal))
+        .attr('x', (d: any) => xScale(d.teamTotal) + 6)
         .attr('y', barHeight / 2)
         .attr('alignment-baseline', 'middle')
       
@@ -107,11 +110,12 @@ export const StackedBarChart = (props: IBarChartProps) => {
       .data((d: any) => d.individualBars)
       .enter()
       .append('text')
-        .text((d: any) => d.lastName)
+        .text((d: any) => `${d.firstName[0]}. ${d.lastName}`)
         .attr('x', (d: any) => d.xPos + (d.barWidth / 2))
         .attr('y', barHeight / 2)
         .attr('text-anchor', 'middle')
         .attr('alignment-baseline', 'middle')
+        .classed('player-name-label', true)
 
     // x axis label
     svg.append('g')
