@@ -3,8 +3,10 @@ import { Card } from '@material-ui/core';
 import * as d3 from 'd3';
 import { appStatsContext } from '../../Contexts/AppStatsContext';
 import { teamListContext } from '../../Contexts/TeamListContext';
+import { settingsContext } from '../../Contexts/SettingsContext';
 import { useBarChartStyles } from './BarChart.styles';
 import { isBestInCategory } from '../../Util'
+import { stat } from 'fs';
 
 export interface IStackedBarChartProps {
   statCategory: string
@@ -29,6 +31,7 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
   const { statCategory } = props;
   const { appStats } = useContext(appStatsContext);
   const { teamList } = useContext(teamListContext);
+  const { selectedYear } = useContext(settingsContext).settings;
   const barChartClasses = useBarChartStyles();
 
   const { [statCategory]: min } = appStats.min;
@@ -46,12 +49,14 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
     const xAxis = d3.axisBottom(xScale);
         
     const dataset: Array<ITeamBar> = teamList.map((team) => {
-      const barWidths = team.roster.map((player) => {
-        return xScale(parseFloat(player.stats.regularSeason.season[0].total[statCategory]));
+      const barWidths: Array<number> = team.roster.map((player) => {
+        const selectedSeasonStats = player.stats.regularSeason.season.find(({seasonYear}) => seasonYear === selectedYear);
+        return selectedSeasonStats ? xScale(parseFloat(selectedSeasonStats.total[statCategory])) : 0;
       })
-      const individualBars = team.roster.map((player, i) => {
-        const { personId, firstName, lastName } = player;
-        const statValue = parseFloat(player.stats.regularSeason.season[0].total[statCategory]);
+
+      const individualBars = team.roster.map(({ personId, firstName, lastName, stats }, i) => {
+        const selectedSeasonStats = stats.regularSeason.season.find(({seasonYear}) => seasonYear === selectedYear);
+        const statValue = selectedSeasonStats ? parseFloat(selectedSeasonStats.total[statCategory]) : 0;
         const xPos = i === 0 ? 0 : barWidths.reduce((acc, cur, idx) => idx < i ? acc + cur : acc); 
         const barWidth = barWidths[i];
         return { personId, firstName, lastName, statValue, xPos, barWidth };
@@ -110,7 +115,7 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
       .data((d: any) => d.individualBars)
       .enter()
       .append('text')
-        .text((d: any) => `${d.firstName[0]}. ${d.lastName}`)
+        .text((d: any) => `${d.firstName[0]}. ${d.lastName} ${d.statValue.toFixed(1)}`)
         .attr('x', (d: any) => d.xPos + (d.barWidth / 2))
         .attr('y', barHeight / 2)
         .attr('text-anchor', 'middle')

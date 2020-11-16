@@ -13,11 +13,11 @@ const PlayerListContextProvider = (props: ContextProviderProps): JSX.Element => 
 
 	React.useEffect(() => {
 		(async (): Promise<void> => {
-			let playerList = await getAllPlayers();
-			const filteredplayerList = playerList.filter((player: IPlayerSearchResult) => player.isActive === true)
-			setPlayerList(filteredplayerList)
+			const playerList = await getAllPlayers();
+			const filteredplayerList = playerList.filter(({isActive}) => isActive);
+			setPlayerList(filteredplayerList);
 		})();
-	}, [])
+	}, []);
 
 	return (
 		<playerListContext.Provider value={playerList}>

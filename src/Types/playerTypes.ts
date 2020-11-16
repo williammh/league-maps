@@ -9,7 +9,10 @@ export interface IStatSearchResult {
 	stats: {
 		latest: { [key: string]: string };
 		regularSeason: {
-			season: Array<{ total: { [key: string ]: string} }>
+			season: Array<{
+				total: { [key: string ]: string};
+				seasonYear: number
+			}>
 		}
 	}
 }

@@ -14,13 +14,13 @@ import {
 } from '@material-ui/core'
 import { IStatCategory, ITeam, ITeamTotalStats } from '../../Types/teamTypes';
 import { PlayerSelect } from './PlayerSelect';
-import { teamListContext } from '../../Contexts/TeamListContext'
-import { appStatsContext } from '../../Contexts/AppStatsContext'
+import { teamListContext } from '../../Contexts/TeamListContext';
+import { appStatsContext } from '../../Contexts/AppStatsContext';
+import { settingsContext } from '../../Contexts/SettingsContext';
 import { 
 	calcTotalStats,
 	getPlayerStats,
 	maxTeamSize,
-	calcRelativeStats,
 	calcRelativeStatsV2,
 	calcTotalStatsArray,
 } from '../../Util';
@@ -45,7 +45,8 @@ export const Team = (props: ITeam) => {
 	const [ isExpanded, setIsExpanded ] = useState(true);
 
 	const { teamList, removeTeam, setTeamList } = useContext(teamListContext);
-	const { appStats, setAppStats } = useContext(appStatsContext);
+	const { setAppStats } = useContext(appStatsContext);
+	const { selectedYear } = useContext(settingsContext).settings;
 
 	const accordionClasses = useAccordionStyles();
 	const accordionSummaryClasses = useAccordionSummaryStyles();
@@ -55,19 +56,18 @@ export const Team = (props: ITeam) => {
 	const index = teamList.findIndex(team => team.id === id);
 	const roster = teamList[index].roster;
 	const color = teamList[index].color;
-	const totalStats: ITeamTotalStats = calcTotalStats(roster);
+	const totalStats: ITeamTotalStats = calcTotalStats(roster, selectedYear as number);
 	const totalStatsArray: Array<number> = calcTotalStatsArray(totalStats).map((stat: IStatCategory) => stat.total);
 
 	useEffect(() => {
-		teamList[index].totalStats = calcTotalStats(roster);
+		teamList[index].totalStats = calcTotalStats(roster, selectedYear as number);
 		setTeamList([...teamList]);
-		console.log(teamList[index].roster)
-	}, [roster.length])
+	}, [roster.length, selectedYear])
 
 	useEffect(() => {
 		const relativeStats = calcRelativeStatsV2(teamList)
 		setAppStats(relativeStats);
-	}, [...totalStatsArray, teamList.length])
+	}, [...totalStatsArray, teamList.length, selectedYear])
 
 	// const [ localRoster, setLocalRoster ] = useState({});
 

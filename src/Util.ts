@@ -126,7 +126,7 @@ export const defaultCategories = [
     'ftm'
 ];
 
-export const getCurrentNbaYear = async () => {
+export const getCurrentNbaYear = async (): Promise<number> => {
     let currentYear = (new Date()).getFullYear();
     let playerListResponse;
     while(playerListResponse === undefined || !playerListResponse.ok) {
@@ -151,13 +151,16 @@ export const getPlayerStats = async (personId: string, year: number = 2019): Pro
     return playerStatsJson.league.standard;
 }
 
-export const calcTotalStats = (roster: Array<Player>, season?: number): ITeamTotalStats => {
+export const calcTotalStats = (roster: Array<Player>, selectedYear: number = 2019): ITeamTotalStats => {
     const result: ITeamTotalStats = {};
     statCategories
         .filter(category => !excludeCategories.includes(category))
         .forEach(category => result[category] = 0);
     roster.forEach((player: Player) => {
-        const { total: stats } = player.stats.regularSeason.season[0];
+        const selectedSeasonStats = player.stats.regularSeason.season.find(({seasonYear}) => seasonYear === selectedYear);
+
+        // to do: handle if selectedSeasonStats is undefined
+        const { total: stats } = selectedSeasonStats!;
         for(let category in result) {
             result[category] += parseFloat(stats[category]) >= 0 ? parseFloat(stats[category]) : 0;
         }
@@ -254,22 +257,4 @@ export const isBestInCategory = (value: number, category: string, best: IRelativ
 	} else {
 		return value === best.max[category];
 	}
-}
-
-export const getDefaultSettings = (): ISettings => {
-	const result: ISettings = { visibleStats: {} };
-	const allCategories = [
-		...defaultCategories,
-		...statCategories,
-		...calculatedCategories,
-	];
-	allCategories
-		/** remove duplicates, seasonStageId, and seasonYear */ 
-		.filter((category, index) => (
-			allCategories.indexOf(category) === index && !excludeCategories.includes(category)
-		))
-		.forEach(category => (
-			result.visibleStats[category] = defaultCategories.includes(category)
-		))
-	return result;
 }
