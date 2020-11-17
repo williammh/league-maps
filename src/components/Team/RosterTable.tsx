@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
 	IconButton,
 	Table,
@@ -10,11 +10,11 @@ import {
 } from '@material-ui/core'
 import { IPlayerSearchResult, Player } from '../../Types/playerTypes';
 import { useTableContainerStyles } from './RosterTable.styles';
-import { maxTeamSize } from '../../Util';
+import { maxTeamSize, getSeasonStats } from '../../Util';
 import { UndraftedRow } from './UndraftedRow'
 
 import RemoveIcon from '@material-ui/icons/Remove';
-import { isTemplateMiddle } from 'typescript';
+import { settingsContext } from '../../Contexts/SettingsContext';
 
 export interface IRosterTableProps {
 	teamId: number;
@@ -25,6 +25,8 @@ export interface IRosterTableProps {
 
 export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 	const { teamId, roster, removePlayer, addPlayer } = props;
+
+	const { selectedYear } = useContext(settingsContext).settings;
 
 	const tableContainerClasses = useTableContainerStyles();
 
@@ -47,14 +49,14 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 						<RemoveIcon />
 					</IconButton>
 				</TableCell>
-				<TableCell className={`headshot-cell ${stats.latest.min === '-1' ? '' : '' }`}>
+				<TableCell className={`headshot-cell ${getSeasonStats(player, selectedYear as number).min > 0 ? '' : 'no-stats' }`}>
 					<Avatar
 						src={`https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${personId}.png`}
 						className='headshot'
 					/>
 				</TableCell>
 				<TableCell
-					className={`name-cell ${stats.latest.min === '-1' ? '' : '' }`}
+					className={`name-cell ${getSeasonStats(player, selectedYear as number).min > 0 ? '' : 'no-stats' }`}
 				>
 					{truncatePlayerName(firstName, lastName)}
 				</TableCell>

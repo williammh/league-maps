@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
+import { nbaBlue } from '../../Util';
 
 const padding = 6
 const margin = 6;
@@ -36,10 +37,13 @@ export const useBarChartStyles = makeStyles({
       cursor: 'default'
     },
     '& .best rect:nth-child(odd)': {
-      fill: 'lime'
+      fill: nbaBlue
     },
     '& .best rect:nth-child(even)' : {
-      fill: '#00e600'
+      fill: '#3560b3'
     },
+    '& .best .player-name-label' : {
+      fill: 'white'
+    }
   }
 })

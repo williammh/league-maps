@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { List, ListItem, Checkbox } from '@material-ui/core'
 import { settingsContext } from '../../Contexts/SettingsContext';
+import { useSettingsPanelStyles } from './SettingsPane.styles';
 
 export const SettingsPanel = () => {
 
@@ -19,8 +20,13 @@ export const SettingsPanel = () => {
     setSettings({...settings})
   };
 
+  const settingsClasses = useSettingsPanelStyles()
+
   return (
-    <List dense>
+    <List
+      dense
+      classes={settingsClasses}
+    >
       {settingsArray.map(category => {
         const { label, show } = category;
         return (

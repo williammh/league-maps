@@ -1,29 +1,14 @@
 import React, { useContext, useEffect } from 'react';
 import { Select, FormControl, InputLabel, MenuItem, makeStyles, createStyles, Theme } from '@material-ui/core'
 import { settingsContext } from '../../Contexts/SettingsContext';
+import { useSeasonSelectStyles } from './SeasonSelect.style'
 
 
 export const SeasonSelect = () => {
   const { settings, setSelectedYear } = useContext(settingsContext);
   const { selectedYear } = settings;
 
-  const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    formControl: {
-      margin: theme.spacing(1),
-      minWidth: 160,
-      backgroundColor: 'white',
-      borderRadius: 4,
-      overflow: 'visible'
-    },
-    selectEmpty: {
-      marginTop: theme.spacing(2),
-      
-    },
-  }),
-);
-
-  const classes = useStyles();
+  const seasonSelectClasses = useSeasonSelectStyles();
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     const { value } = event.target;
@@ -31,12 +16,17 @@ export const SeasonSelect = () => {
   };
 
   return (
-    <FormControl variant="outlined" className={classes.formControl}>
+    <FormControl
+      variant='outlined'
+      classes={seasonSelectClasses}
+    >
       <InputLabel>Season</InputLabel>
       <Select
         value={selectedYear}
         onChange={handleChange}
+        autoWidth
       >
+        <MenuItem value={2020}>2020 - 2021</MenuItem>
         <MenuItem value=''>2020 Playoffs</MenuItem>
         <MenuItem value={2019}>2019 - 2020</MenuItem>
         <MenuItem value={2018}>2018 - 2019</MenuItem>

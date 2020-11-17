@@ -7,10 +7,12 @@ export interface IPlayerSearchResult {
 
 export interface IStatSearchResult {
 	stats: {
-		latest: { [key: string]: string };
+		latest: { 
+			[key: string]: number,
+		};
 		regularSeason: {
 			season: Array<{
-				total: { [key: string ]: string};
+				total: { [key: string ]: number};
 				seasonYear: number
 			}>
 		}

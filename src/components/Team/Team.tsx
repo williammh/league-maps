@@ -62,6 +62,7 @@ export const Team = (props: ITeam) => {
 	useEffect(() => {
 		teamList[index].totalStats = calcTotalStats(roster, selectedYear as number);
 		setTeamList([...teamList]);
+		console.log(selectedYear)
 	}, [roster.length, selectedYear])
 
 	useEffect(() => {
@@ -85,7 +86,31 @@ export const Team = (props: ITeam) => {
 
 	const addPlayer = async (personId: string, playerList: Array<IPlayerSearchResult>): Promise<void> => {
 		const { firstName, lastName } = playerList.find(player => player.personId === personId)!;
-		const { stats } = await getPlayerStats(personId);
+		const { latest, regularSeason } = (await getPlayerStats(personId)).stats;
+		
+		for (const stat in latest) {
+			if (typeof latest[stat] === 'string') {
+				latest[stat] = latest[stat] !== '-1' ? parseFloat(latest[stat] as string) : 0
+			} 
+		}
+
+		const { season } = regularSeason;
+		for (const year in season) {
+			for (const category in season[year].total) {
+				const stat = season[year].total[category];
+				if (typeof stat === 'string') {
+					season[year].total[category] = stat !== '-1' ? parseFloat(stat) : 0
+				}
+			}
+		}
+
+		const stats = {
+			latest,
+			regularSeason: {
+				season
+			}
+		}
+
 		const player: Player = {
 			personId,
 			firstName,

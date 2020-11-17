@@ -4,7 +4,6 @@ import { teamListContext } from '../../Contexts/TeamListContext';
 import { appStatsContext } from '../../Contexts/AppStatsContext';
 import { Card } from '@material-ui/core';
 import { defaultCategories } from '../../Util';
-import { BarChart } from '../BarChart/BarChart';
 import { StackedBarChart } from '../BarChart/StackedBarChart';
 
 export const Visualizations = () => {

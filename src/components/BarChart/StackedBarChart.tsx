@@ -5,7 +5,7 @@ import { appStatsContext } from '../../Contexts/AppStatsContext';
 import { teamListContext } from '../../Contexts/TeamListContext';
 import { settingsContext } from '../../Contexts/SettingsContext';
 import { useBarChartStyles } from './BarChart.styles';
-import { isBestInCategory } from '../../Util'
+import { isBestInCategory, getSeasonStats } from '../../Util'
 import { stat } from 'fs';
 
 export interface IStackedBarChartProps {
@@ -50,13 +50,14 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
         
     const dataset: Array<ITeamBar> = teamList.map((team) => {
       const barWidths: Array<number> = team.roster.map((player) => {
-        const selectedSeasonStats = player.stats.regularSeason.season.find(({seasonYear}) => seasonYear === selectedYear);
-        return selectedSeasonStats ? xScale(parseFloat(selectedSeasonStats.total[statCategory])) : 0;
+        const selectedSeasonStats = getSeasonStats(player, selectedYear as number)
+        return selectedSeasonStats ? xScale(selectedSeasonStats[statCategory] as number) : 0;
       })
 
-      const individualBars = team.roster.map(({ personId, firstName, lastName, stats }, i) => {
-        const selectedSeasonStats = stats.regularSeason.season.find(({seasonYear}) => seasonYear === selectedYear);
-        const statValue = selectedSeasonStats ? parseFloat(selectedSeasonStats.total[statCategory]) : 0;
+      const individualBars = team.roster.map((player, i) => {
+        const { personId, firstName, lastName } = player
+        const selectedSeasonStats = getSeasonStats(player, selectedYear as number);
+        const statValue = selectedSeasonStats ? selectedSeasonStats[statCategory] as number : 0;
         const xPos = i === 0 ? 0 : barWidths.reduce((acc, cur, idx) => idx < i ? acc + cur : acc); 
         const barWidth = barWidths[i];
         return { personId, firstName, lastName, statValue, xPos, barWidth };

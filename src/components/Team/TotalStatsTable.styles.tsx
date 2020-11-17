@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
+import { nbaBlue } from '../../Util'
 
 export const useTableContainerStyles = makeStyles({
     root: {
@@ -21,8 +22,8 @@ export const useTableContainerStyles = makeStyles({
             textAlign: 'right'
         },
         '& td.best' : {
-            backgroundColor: 'lime',
-            fontWeight: 'bold'
+            backgroundColor: nbaBlue,
+            color: 'white'
         }
     }
 })
