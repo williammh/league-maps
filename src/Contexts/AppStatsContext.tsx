@@ -1,8 +1,5 @@
 import React, {Dispatch, SetStateAction} from 'react';
 import { ITeamTotalStats, IRelativeStats, IRelativeStatsV2 } from '../Types/teamTypes';
-import {
-	calcRelativeStats
-} from '../Util';
 
 const appStatsContext = React.createContext({} as IAppStatsContext);
 

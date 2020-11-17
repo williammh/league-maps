@@ -59,7 +59,7 @@ export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
 
 	const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>): void => {
 		const { key } = event
-		if (key === 'Enter') {
+		if (key === 'Enter' && searchResults.length) {
 			const { personId } = searchResults[selectedIndex];
 			if (!idsInTeam?.includes(personId)) {
 				addPlayer(personId, playerList);

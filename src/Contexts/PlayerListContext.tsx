@@ -13,9 +13,8 @@ const PlayerListContextProvider = (props: ContextProviderProps): JSX.Element => 
 
 	React.useEffect(() => {
 		(async (): Promise<void> => {
-			const playerList = await getAllPlayers();
-			const filteredplayerList = playerList.filter(({isActive}) => isActive);
-			setPlayerList(filteredplayerList);
+			const playerList = (await getAllPlayers()).filter(({isActive}) => isActive);
+			setPlayerList(playerList);
 		})();
 	}, []);
 

@@ -259,12 +259,28 @@ export const isBestInCategory = (value: number, category: string, best: IRelativ
 
 export const getSeasonStats = (player: Player, selectedYear: number = 2019): {[key: string]: number} => {
 	const selectedStats = player.stats.regularSeason.season
-		.find((season, i) => {
-			console.log(i)
-			console.log(season.seasonYear)
-			return season.seasonYear === selectedYear
-		})?.total
-	
-	console.log(selectedStats);
+		.find((season) => season.seasonYear === selectedYear)?.total
 	return selectedStats ?? player.stats.latest;
+}
+
+export const convertStatsToNumbers = (input: any): IStatSearchResult => {
+	const { latest, regularSeason } = input
+	const result = {}
+	for (const stat in latest) {
+		if (typeof latest[stat] === 'string') {
+			latest[stat] = latest[stat] !== '-1' ? parseFloat(latest[stat] as string) : 0
+		} 
+	}
+
+	const { season } = regularSeason;
+	for (const year in season) {
+		for (const category in season[year].total) {
+			const stat = season[year].total[category];
+			if (typeof stat === 'string') {
+				season[year].total[category] = stat !== '-1' ? parseFloat(stat) : 0
+			}
+		}
+	}
+
+	return result as any;
 }

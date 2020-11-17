@@ -23,7 +23,6 @@ export const TotalStatsTable = (props: ITotalStatsTableProps): JSX.Element => {
 	const { appStats } = useContext(appStatsContext);
 	const { settings } = useContext(settingsContext);
 
-
 	const totalStatsArray = calcTotalStatsArray(totalStats);
 
 	const tableContainerClasses = useTableContainerStyles();

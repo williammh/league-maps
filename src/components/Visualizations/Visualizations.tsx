@@ -1,18 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { settingsContext } from '../../Contexts/SettingsContext';
-import { teamListContext } from '../../Contexts/TeamListContext';
-import { appStatsContext } from '../../Contexts/AppStatsContext';
-import { Card } from '@material-ui/core';
-import { defaultCategories } from '../../Util';
 import { StackedBarChart } from '../BarChart/StackedBarChart';
 
 export const Visualizations = () => {
-  const { teamList, setTeamList } = useContext(teamListContext);
-
-  const { settings, setSettings } = useContext(settingsContext);
+  const { settings } = useContext(settingsContext);
   const { visibleStats } = settings;
 
-  let showStatsArray: Array<string> = [];
+  const showStatsArray: Array<string> = [];
   for (const key in visibleStats) {
     if(!visibleStats[key]) { continue }
     showStatsArray.push(key)
