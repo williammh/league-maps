@@ -51,13 +51,13 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
     const dataset: Array<ITeamBar> = teamList.map((team) => {
       const barWidths: Array<number> = team.roster.map((player) => {
         const selectedSeasonStats = getSeasonStats(player, selectedYear as number)
-        return selectedSeasonStats ? xScale(selectedSeasonStats[statCategory] as number) : 0;
+        return xScale(selectedSeasonStats[statCategory] ?? 0);
       })
 
       const individualBars = team.roster.map((player, i) => {
         const { personId, firstName, lastName } = player
         const selectedSeasonStats = getSeasonStats(player, selectedYear as number);
-        const statValue = selectedSeasonStats ? selectedSeasonStats[statCategory] as number : 0;
+        const statValue = selectedSeasonStats[statCategory] ?? 0;
         const xPos = i === 0 ? 0 : barWidths.reduce((acc, cur, idx) => idx < i ? acc + cur : acc); 
         const barWidth = barWidths[i];
         return { personId, firstName, lastName, statValue, xPos, barWidth };
@@ -116,7 +116,7 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
       .data((d: any) => d.individualBars)
       .enter()
       .append('text')
-        .text((d: any) => d.statValue && `${d.firstName[0]}. ${d.lastName} ${d.statValue.toFixed(1)}`)
+        .text((d: any) => d.statValue ? `${d.firstName[0]}. ${d.lastName} ${d.statValue.toFixed(1)}` : '')
         .attr('x', (d: any) => d.xPos + (d.barWidth / 2))
         .attr('y', barHeight / 2)
         .attr('text-anchor', 'middle')
