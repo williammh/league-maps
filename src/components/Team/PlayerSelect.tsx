@@ -32,7 +32,7 @@ export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
 
 	const idsInTeam: Array<string> | undefined = roster?.map(player => player.personId);
 
-	const myRef = useRef(null)
+	const resultsContainerRef = useRef<HTMLUListElement>(null);
 
 	useEffect(() => {
 		setSearchResults(playerList.filter(player => {
@@ -58,7 +58,7 @@ export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
 	}
 
 	const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>): void => {
-		const { key } = event
+		const { key } = event;
 		if (key === 'Enter' && searchResults.length) {
 			const { personId } = searchResults[selectedIndex];
 			if (!idsInTeam?.includes(personId)) {
@@ -68,8 +68,10 @@ export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
 			}
 		} else if (key === 'ArrowDown') {
 			setSelectedIndex(selectedIndex < searchResults.length - 1 ? selectedIndex + 1 : searchResults.length - 1);
+			resultsContainerRef.current!.scrollTop = selectedIndex * 40 + 40
 		} else if (key === 'ArrowUp') {
 			setSelectedIndex(selectedIndex > 0 ? selectedIndex - 1 : 0);
+			resultsContainerRef.current!.scrollTop = selectedIndex * 40 - 40
 		}
 	}
 
@@ -96,7 +98,7 @@ export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
 			<List
 				disablePadding={true}
 				className='resultsList'
-				ref={myRef}
+				ref={resultsContainerRef}
 			>
 				{searchResults.map((player, i) => {
 					return (
