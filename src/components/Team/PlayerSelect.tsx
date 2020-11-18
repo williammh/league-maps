@@ -91,6 +91,7 @@ export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
 				value={searchString}
 				onChange={handleChange}
 				onKeyDown={handleKeyDown}
+				autoFocus
 			/>
 			<List
 				disablePadding={true}

@@ -259,8 +259,8 @@ export const isBestInCategory = (value: number, category: string, best: IRelativ
 
 export const getSeasonStats = (player: Player, selectedYear: number = 2019): {[key: string]: number} => {
 	const selectedStats = player.stats.regularSeason.season
-		.find((season) => season.seasonYear === selectedYear)?.total
-	return selectedStats ?? player.stats.latest;
+		.find((season) => season.seasonYear === selectedYear)?.total;
+	return selectedStats ?? { min: 0 };
 }
 
 export const convertStatsToNumbers = (input: any): IStatSearchResult => {

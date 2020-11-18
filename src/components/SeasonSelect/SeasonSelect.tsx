@@ -27,7 +27,6 @@ export const SeasonSelect = () => {
         autoWidth
       >
         <MenuItem value={2020}>2020 - 2021</MenuItem>
-        <MenuItem value=''>2020 Playoffs</MenuItem>
         <MenuItem value={2019}>2019 - 2020</MenuItem>
         <MenuItem value={2018}>2018 - 2019</MenuItem>
         <MenuItem value={2017}>2017 - 2018</MenuItem>

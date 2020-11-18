@@ -104,7 +104,7 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
     // total stat label
     svg.selectAll('[data-team-id]')
       .append('text')
-        .text((d: any) => d.teamTotal.toFixed(1))
+        .text((d: any) => d.teamTotal ? d.teamTotal.toFixed(1) : '')
         .attr('x', (d: any) => xScale(d.teamTotal) + 6)
         .attr('y', barHeight / 2)
         .attr('alignment-baseline', 'middle')
@@ -116,7 +116,7 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
       .data((d: any) => d.individualBars)
       .enter()
       .append('text')
-        .text((d: any) => `${d.firstName[0]}. ${d.lastName} ${d.statValue.toFixed(1)}`)
+        .text((d: any) => d.statValue && `${d.firstName[0]}. ${d.lastName} ${d.statValue.toFixed(1)}`)
         .attr('x', (d: any) => d.xPos + (d.barWidth / 2))
         .attr('y', barHeight / 2)
         .attr('text-anchor', 'middle')
