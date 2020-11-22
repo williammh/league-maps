@@ -8,7 +8,7 @@ import {
 
 import AddIcon from '@material-ui/icons/Add';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import { IPlayerSearchResult, Player } from '../../Types/playerTypes';
+import { IPlayerSearchResult, Player } from '../../Types/types';
 import { PlayerSelect } from './PlayerSelect';
 import { usePopover } from './UndraftedRow.style'
 

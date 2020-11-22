@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ITeam } from '../Types/teamTypes';
+import { ITeam } from '../Types/types';
 import { calcTotalStats } from '../Util';
 
 const teamListContext = React.createContext({} as ITeamContext);

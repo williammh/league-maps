@@ -1,5 +1,3 @@
-import { IPlayerSearchResult, Player } from './playerTypes';
-
 export interface ITeam {
     id: number;
     name?: string;
@@ -37,3 +35,26 @@ export interface IRelativeStatsV2 {
         [category: string]: number
     };
 }
+
+export interface IPlayerSearchResult {
+	firstName: string;
+	lastName: string;
+	personId: string;
+	isActive?: boolean;
+}
+
+export interface IStatSearchResult {
+	stats: {
+		latest: { 
+			[key: string]: number,
+		};
+		regularSeason: {
+			season: Array<{
+				total: { [key: string ]: number};
+				seasonYear: number
+			}>
+		}
+	}
+}
+
+export type Player = IPlayerSearchResult & IStatSearchResult;

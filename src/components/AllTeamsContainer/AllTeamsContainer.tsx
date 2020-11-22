@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import { Team } from '../Team/Team';
-import { ITeam } from '../../Types/teamTypes';
+import { ITeam } from '../../Types/types';
 import { getAllPlayers } from '../../Util';
 import { teamListContext } from '../../Contexts/TeamListContext';
 import { allPlayersContext } from '../../Contexts/AllPlayersContext';

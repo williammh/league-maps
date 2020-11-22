@@ -12,7 +12,7 @@ import {
 	Grid,
 	IconButton,
 } from '@material-ui/core'
-import { IStatCategory, ITeam, ITeamStats } from '../../Types/teamTypes';
+import { IStatCategory, ITeam, ITeamStats } from '../../Types/types';
 import { PlayerSelect } from './PlayerSelect';
 import { teamListContext } from '../../Contexts/TeamListContext';
 import { appStatsContext } from '../../Contexts/AppStatsContext';
@@ -38,7 +38,7 @@ import CropDinIcon from '@material-ui/icons/CropDin';
 import LaunchIcon from '@material-ui/icons/Launch';
 import CloseIcon from '@material-ui/icons/Close';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
-import { IPlayerSearchResult, Player } from '../../Types/playerTypes';
+import { IPlayerSearchResult, Player } from '../../Types/types';
 
 export const Team = (props: ITeam) => {
 	const { id, allPlayers } = props;

@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core'
 import { useTableContainerStyles } from './TotalStatsTable.styles';
 import { calcTotalStatsArray, isBestInCategory } from '../../Util';
-import { IStatCategory, ITeamStats } from '../../Types/teamTypes';
+import { IStatCategory, ITeamStats } from '../../Types/types';
 
 export interface ITotalStatsTableProps {
 	teamId: number;

@@ -4,7 +4,7 @@ import React, {
 	Dispatch,
 	SetStateAction
 } from 'react';
-import { IPlayerSearchResult } from '../Types/playerTypes';
+import { IPlayerSearchResult } from '../Types/types';
 
 const allPlayersContext = React.createContext({} as IAllPlayersContext);
 

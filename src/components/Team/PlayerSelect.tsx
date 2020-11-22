@@ -8,7 +8,7 @@ import React, {
 	useRef
 } from 'react';
 import { List, ListItem, ListItemText, Popover, TextField, Card } from '@material-ui/core'
-import { Player, IPlayerSearchResult } from '../../Types/playerTypes';
+import { Player, IPlayerSearchResult } from '../../Types/types';
 import { SignalCellularNull } from '@material-ui/icons';
 import LazyLoad from 'react-lazy-load';
 import { maxTeamSize } from '../../Util'

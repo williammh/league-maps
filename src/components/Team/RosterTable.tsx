@@ -8,7 +8,7 @@ import {
 	TableContainer,
 	Avatar
 } from '@material-ui/core'
-import { IPlayerSearchResult, Player } from '../../Types/playerTypes';
+import { IPlayerSearchResult, Player } from '../../Types/types';
 import { useTableContainerStyles } from './RosterTable.styles';
 import { maxTeamSize, getSeasonStats } from '../../Util';
 import { UndraftedRow } from './UndraftedRow'

@@ -1,5 +1,14 @@
-import { ITeamStats, IStatCategory, IRelativeStats, IRelativeStatsV2, ITeam } from './Types/teamTypes';
-import { IPlayerSearchResult, IStatSearchResult, Player } from './Types/playerTypes'
+import {
+	ITeamStats,
+	IStatCategory,
+	IRelativeStats,
+	IRelativeStatsV2,
+	ITeam,
+	IPlayerSearchResult,
+	IStatSearchResult,
+	Player
+} from './Types/types';
+
 import { ISettings, IVisibleStats } from './Contexts/SettingsContext';
 
 export const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
