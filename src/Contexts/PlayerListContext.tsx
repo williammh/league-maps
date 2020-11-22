@@ -1,25 +1,28 @@
-import React from 'react';
+import React, {
+	useState,
+	useEffect,
+	Dispatch,
+	SetStateAction
+} from 'react';
 import { getAllPlayers } from '../Util';
 import { IPlayerSearchResult } from '../Types/playerTypes';
 
-const playerListContext = React.createContext([] as IPlayerSearchResult[]);
+const playerListContext = React.createContext({} as IPlayerListContext);
 
 interface ContextProviderProps {
   children: React.ReactNode
 }
 
-const PlayerListContextProvider = (props: ContextProviderProps): JSX.Element => {
-	const [playerList, setPlayerList] = React.useState([] as IPlayerSearchResult[]);
+interface IPlayerListContext {
+	playerList: Array<IPlayerSearchResult>;
+	setPlayerList: Dispatch<SetStateAction<Array<IPlayerSearchResult>>>
+}
 
-	React.useEffect(() => {
-		(async (): Promise<void> => {
-			const playerList = (await getAllPlayers()).filter(({isActive}) => isActive);
-			setPlayerList(playerList);
-		})();
-	}, []);
+const PlayerListContextProvider = (props: ContextProviderProps): JSX.Element => {
+	const [playerList, setPlayerList] = useState([] as Array<IPlayerSearchResult>);
 
 	return (
-		<playerListContext.Provider value={playerList}>
+		<playerListContext.Provider value={{playerList, setPlayerList}}>
 			{props.children}
 		</playerListContext.Provider>
 	)

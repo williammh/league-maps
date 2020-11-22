@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { useEffect, useContext } from 'react';
 import {
 	IconButton,
 	TableRow,
@@ -12,14 +12,17 @@ import { IPlayerSearchResult, Player } from '../../Types/playerTypes';
 import { PlayerSelect } from './PlayerSelect';
 import { usePopover } from './UndraftedRow.style'
 
-export interface IRemainingRowsProps {
+
+export interface IUndraftedRowProps {
 	teamId: number;
 	addPlayer: (personId: string, playerList: Array<IPlayerSearchResult>) => Promise<void>;
 	roster: Array<Player>;
+	selectedYear: number;
+	playerList: Array<IPlayerSearchResult>;
 }
 	
-export const UndraftedRow = (props: IRemainingRowsProps): JSX.Element => {
-	const { addPlayer, teamId, roster } = props;
+export const UndraftedRow = (props: IUndraftedRowProps): JSX.Element => {
+	const { addPlayer, teamId, roster, selectedYear, playerList } = props;
 
 	const popoverClasses = usePopover();
 	
@@ -35,6 +38,11 @@ export const UndraftedRow = (props: IRemainingRowsProps): JSX.Element => {
 
   const open = Boolean(anchorEl);
 	const id = open ? 'simple-popover' : undefined;
+
+	const handleBackdropClick = ({ clientX, clientY }: React.MouseEvent) => {
+		const elementsAtCoordinates = document.elementsFromPoint(clientX, clientY) as Array<HTMLElement>;
+		elementsAtCoordinates.find((element) => element instanceof HTMLButtonElement)?.click();
+	}
 	
 	return (
 		<TableRow>
@@ -59,12 +67,15 @@ export const UndraftedRow = (props: IRemainingRowsProps): JSX.Element => {
 						horizontal: 'center',
 					}}
 					classes={popoverClasses}
+					onBackdropClick={handleBackdropClick}
 				>
         	<PlayerSelect 
 						teamId={teamId}
 						roster={roster}
 						addPlayer={addPlayer}
 						key={`player-select-${id}`}
+						selectedYear={selectedYear}
+						playerList={playerList}
 					/>
       	</Popover>
 			</TableCell>

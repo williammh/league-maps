@@ -6,7 +6,6 @@ import { teamListContext } from '../../Contexts/TeamListContext';
 import { settingsContext } from '../../Contexts/SettingsContext';
 import { useBarChartStyles } from './BarChart.styles';
 import { isBestInCategory, getSeasonStats } from '../../Util'
-import { stat } from 'fs';
 
 export interface IStackedBarChartProps {
   statCategory: string
@@ -31,7 +30,7 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
   const { statCategory } = props;
   const { appStats } = useContext(appStatsContext);
   const { teamList } = useContext(teamListContext);
-  const { selectedYear } = useContext(settingsContext).settings;
+  const { selectedYear } = useContext(settingsContext);
   const barChartClasses = useBarChartStyles();
 
   const { [statCategory]: min } = appStats.min;
@@ -54,14 +53,16 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
         return xScale(selectedSeasonStats[statCategory] ?? 0);
       })
 
-      const individualBars = team.roster.map((player, i) => {
-        const { personId, firstName, lastName } = player
-        const selectedSeasonStats = getSeasonStats(player, selectedYear as number);
-        const statValue = selectedSeasonStats[statCategory] ?? 0;
-        const xPos = i === 0 ? 0 : barWidths.reduce((acc, cur, idx) => idx < i ? acc + cur : acc); 
-        const barWidth = barWidths[i];
-        return { personId, firstName, lastName, statValue, xPos, barWidth };
-      });
+      const individualBars = team.roster
+        .map((player, i) => {
+          const { personId, firstName, lastName } = player
+          const selectedSeasonStats = getSeasonStats(player, selectedYear as number);
+          const statValue = selectedSeasonStats[statCategory] ?? 0;
+          const xPos = i === 0 ? 0 : barWidths.reduce((acc, cur, idx) => idx < i ? acc + cur : acc); 
+          const barWidth = barWidths[i];
+          return { personId, firstName, lastName, statValue, xPos, barWidth };
+        })
+        .filter(({barWidth}) => barWidth > 0);
 
       return {
         teamId: team.id,
@@ -84,14 +85,13 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
         .classed('best', (d) => isBestInCategory(d.teamTotal, statCategory, appStats))
       .append('g')
       .selectAll('g')
-      .data((d: any) => d.individualBars)
+      .data((d) => d.individualBars)
       .enter()
       .append('rect')
-        .attr('x', (d: any) => d.xPos)
-        .attr('width', (d: any) => d.barWidth)
+        .attr('x', (d) => d.xPos)
+        .attr('width', (d) => d.barWidth)
         .attr('height', barHeight - barPadding)
-        .attr('data-person-id', (d: any) => d.personId)
-    
+        
     // team label
     svg.selectAll('[data-team-id]')
       .append('text')

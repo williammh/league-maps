@@ -1,9 +1,9 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import App from './App';
+// import React from 'react';
+// import { render } from '@testing-library/react';
+// import App from './App';
 import {
-  calcRelativeStats,
-  calcRelativeStatsV2,
+  // calcRelativeStats,
+  // calcRelativeStatsV2,
   calcMax,
   calcMin,
   calcMedian

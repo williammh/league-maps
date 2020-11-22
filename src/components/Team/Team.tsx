@@ -41,12 +41,12 @@ import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import { IPlayerSearchResult, Player } from '../../Types/playerTypes';
 
 export const Team = (props: ITeam) => {
-	const { id } = props;
+	const { id, playerList } = props;
 	const [ isExpanded, setIsExpanded ] = useState(true);
 
 	const { teamList, removeTeam, setTeamList } = useContext(teamListContext);
 	const { setAppStats } = useContext(appStatsContext);
-	const { selectedYear } = useContext(settingsContext).settings;
+	const { selectedYear } = useContext(settingsContext);
 
 	const accordionClasses = useAccordionStyles();
 	const accordionSummaryClasses = useAccordionSummaryStyles();
@@ -185,6 +185,8 @@ export const Team = (props: ITeam) => {
 							roster={roster}
 							addPlayer={addPlayer}
 							removePlayer={removePlayer}
+							selectedYear={selectedYear as number}
+							playerList={playerList}
 						/>
 						<TotalStatsTable
 							teamId={id}

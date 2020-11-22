@@ -1,4 +1,4 @@
-import { Player } from './playerTypes';
+import { IPlayerSearchResult, Player } from './playerTypes';
 
 export interface ITeam {
     id: number;
@@ -6,6 +6,7 @@ export interface ITeam {
     roster: Array<Player>;
     color?: string;
     totalStats: ITeamTotalStats;
+    playerList: Array<IPlayerSearchResult>
 }
 
 export interface ITeamTotalStats {

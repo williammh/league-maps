@@ -3,8 +3,8 @@ import { settingsContext } from '../../Contexts/SettingsContext';
 import { StackedBarChart } from '../BarChart/StackedBarChart';
 
 export const Visualizations = () => {
-  const { settings } = useContext(settingsContext);
-  const { visibleStats } = settings;
+  const { visibleStats} = useContext(settingsContext);
+
 
   const showStatsArray: Array<string> = [];
   for (const key in visibleStats) {
@@ -16,7 +16,10 @@ export const Visualizations = () => {
     <div style={{width: '100%'}}>
       {showStatsArray.map(category => {
         return (
-          <StackedBarChart statCategory={category}/>
+          <StackedBarChart
+            key={`bar-chart-${category}`}
+            statCategory={category}
+          />
         )
       })}
     </div>

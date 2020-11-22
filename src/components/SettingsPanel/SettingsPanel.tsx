@@ -5,8 +5,7 @@ import { useSettingsPanelStyles } from './SettingsPane.styles';
 
 export const SettingsPanel = () => {
 
-  const { settings, setSettings } = useContext(settingsContext);
-  const { visibleStats } = settings;
+  const { visibleStats, setVisibleStats } = useContext(settingsContext);
   const settingsArray: Array<{label: string, show: boolean}> = [];
   for (const key in visibleStats) {
     settingsArray.push({label: key, show: visibleStats[key]})
@@ -16,8 +15,7 @@ export const SettingsPanel = () => {
     event.stopPropagation();
     const { value } = event.currentTarget.dataset
     visibleStats[value!] = !visibleStats[value!]
-    settings.visibleStats = visibleStats;
-    setSettings({...settings})
+    setVisibleStats(visibleStats)
   };
 
   const settingsClasses = useSettingsPanelStyles()
@@ -27,13 +25,13 @@ export const SettingsPanel = () => {
       dense
       classes={settingsClasses}
     >
-      {settingsArray.map(category => {
-        const { label, show } = category;
+      {settingsArray.map(({ label, show }) => {
         return (
           <ListItem
             button
             data-value={label}
             onClick={handleClick}
+            key={`setting-${label}`}
           >
             <Checkbox
               checked={show}

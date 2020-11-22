@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
 	IconButton,
 	Table,
@@ -14,19 +14,19 @@ import { maxTeamSize, getSeasonStats } from '../../Util';
 import { UndraftedRow } from './UndraftedRow'
 
 import RemoveIcon from '@material-ui/icons/Remove';
-import { settingsContext } from '../../Contexts/SettingsContext';
+import { playerListContext } from '../../Contexts/PlayerListContext';
 
 export interface IRosterTableProps {
 	teamId: number;
 	roster: Array<Player>;
 	addPlayer: (personId: string, playerList: Array<IPlayerSearchResult>) => Promise<void>;
 	removePlayer: (personId: string) => void;
+	selectedYear: number;
+	playerList: Array<IPlayerSearchResult>;
 }
 
 export const RosterTable = (props: IRosterTableProps): JSX.Element => {
-	const { teamId, roster, removePlayer, addPlayer } = props;
-
-	const { selectedYear } = useContext(settingsContext).settings;
+	const { teamId, roster, removePlayer, addPlayer, selectedYear, playerList } = props;
 
 	const tableContainerClasses = useTableContainerStyles();
 
@@ -37,8 +37,8 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 		return `${firstName} ${lastName}`.length >= maxLength ? `${firstName[0]}. ${lastName}` : `${firstName} ${lastName}`;
 	}
 
-	const playerRows = roster.map((player: Player) => {
-		const { personId, firstName, lastName, stats } = player;
+	const playerRows = roster.map((player: Player, i) => {
+		const { personId, firstName, lastName } = player;
 		return (
 			<TableRow key={`roster-table-row-${teamId}-${personId}`}>
 				<TableCell className='add-remove-button-cell'>
@@ -49,14 +49,14 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 						<RemoveIcon />
 					</IconButton>
 				</TableCell>
-				<TableCell className={`headshot-cell ${getSeasonStats(player, selectedYear as number).min > 0 ? '' : 'no-stats' }`}>
+				<TableCell className={`headshot-cell ${getSeasonStats(player, selectedYear).min > 0 ? '' : 'no-stats' }`}>
 					<Avatar
 						src={`https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${personId}.png`}
 						className='headshot'
 					/>
 				</TableCell>
 				<TableCell
-					className={`name-cell ${getSeasonStats(player, selectedYear as number).min > 0 ? '' : 'no-stats' }`}
+					className={`name-cell ${getSeasonStats(player, selectedYear).min > 0 ? '' : 'no-stats' }`}
 				>
 					{truncatePlayerName(firstName, lastName)}
 				</TableCell>
@@ -64,14 +64,17 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 		)
 	})
 
-	const undraftedRows: Array<JSX.Element> = []
+	const undraftedRows: Array<JSX.Element> = [];
 
 	while (roster.length + undraftedRows.length < maxTeamSize) {
 		undraftedRows.push(
 			<UndraftedRow
+				key={`undrafted-table-row-${undraftedRows.length}`}
 				teamId={teamId}
 				roster={roster}
 				addPlayer={addPlayer}
+				selectedYear={selectedYear}
+				playerList={playerList}
 			/>
 		)
 	}

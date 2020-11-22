@@ -1,14 +1,12 @@
 import React, {
 	FocusEvent,
 	useState,
-	useContext,
 	ChangeEvent,
 	MouseEvent,
 	KeyboardEvent,
 	useEffect,
 	useRef
 } from 'react';
-import { playerListContext } from '../../Contexts/PlayerListContext'
 import { List, ListItem, ListItemText, Popover, TextField, Card } from '@material-ui/core'
 import { Player, IPlayerSearchResult } from '../../Types/playerTypes';
 import { SignalCellularNull } from '@material-ui/icons';
@@ -19,25 +17,24 @@ export interface IPlayerSelectProps {
 	teamId?: number;
 	roster?: Array<Player>;
 	addPlayer: (personId: string, playerList: Array<IPlayerSearchResult>) => Promise<void>;
+	selectedYear: number;
+	playerList: Array<IPlayerSearchResult>
 }
 
 export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
-	const { teamId, roster, addPlayer } = props;
-	const playerList = useContext(playerListContext);
-
+	const { teamId, roster, addPlayer, playerList } = props;
+	
 	const [ searchString, setSearchString ] = useState('');
 	const [ isFocused, setHasFocus ] = useState(false);
 	const [ searchResults, setSearchResults ] = useState(playerList)
 	const [ selectedIndex, setSelectedIndex ] = useState(0);
 
-	const idsInTeam: Array<string> | undefined = roster?.map(player => player.personId);
+	const rosterIds: Array<string> | undefined = roster?.map(player => player.personId);
 
 	const resultsContainerRef = useRef<HTMLUListElement>(null);
 
 	useEffect(() => {
-		setSearchResults(playerList.filter(player => {
-			return isMatchingSearchString(player.firstName, player.lastName)
-		}));
+		setSearchResults(playerList.filter(({firstName, lastName}) => isMatchingSearchString(firstName, lastName)));
 		setSelectedIndex(0);
 	}, [searchString])
 
@@ -45,23 +42,22 @@ export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
 		setSelectedIndex(0);
 	}, [isFocused])
 
-	const handleChange = (event: ChangeEvent<{value: string}>) => {
-		const { value } = event.target;
+	const handleChange = ({target}: ChangeEvent<{value: string}>) => {
+		const { value } = target;
 		value.length > 0 && setHasFocus(true);
 		setSearchString(value);
 	}
 
-	const handleClick = (event: MouseEvent<HTMLElement>): void => {
-		const { personId } = event.currentTarget.dataset
+	const handleClick = ({currentTarget}: MouseEvent<HTMLElement>): void => {
+		const { personId } = currentTarget.dataset;
 		addPlayer(personId!, playerList);
 		setSearchString('');
 	}
 
-	const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>): void => {
-		const { key } = event;
+	const handleKeyDown = ({key}: KeyboardEvent<HTMLDivElement>): void => {
 		if (key === 'Enter' && searchResults.length) {
 			const { personId } = searchResults[selectedIndex];
-			if (!idsInTeam?.includes(personId)) {
+			if (!rosterIds?.includes(personId)) {
 				addPlayer(personId, playerList);
 				setSearchString('');
 				setHasFocus(false);
@@ -94,26 +90,27 @@ export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
 				onChange={handleChange}
 				onKeyDown={handleKeyDown}
 				autoFocus
+				focused
 			/>
 			<List
 				disablePadding={true}
 				className='resultsList'
 				ref={resultsContainerRef}
 			>
-				{searchResults.map((player, i) => {
+				{searchResults.map(({ personId, firstName, lastName }, i) => {
 					return (
 						<LazyLoad height={40} offsetTop={40 * i}>
 							<ListItem
 								onClick={handleClick}
 								button
-								data-person-id={player.personId}
-								data-first-name={player.firstName}
-								data-last-name={player.lastName}
-								selected={selectedIndex === i && !idsInTeam?.includes(player.personId)}
-								disabled={idsInTeam?.includes(player.personId) || roster!.length >= maxTeamSize}
-								key={`select-${teamId}-${player.personId}`}
+								data-person-id={personId}
+								data-first-name={firstName}
+								data-last-name={lastName}
+								selected={selectedIndex === i && !rosterIds?.includes(personId)}
+								disabled={rosterIds?.includes(personId) || roster!.length >= maxTeamSize}
+								key={`select-${teamId}-${personId}`}
 							>
-								{player.firstName} {player.lastName}
+								{firstName} {lastName}
 							</ListItem>
 						</LazyLoad>
 					)

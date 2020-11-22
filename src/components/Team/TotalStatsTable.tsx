@@ -21,7 +21,6 @@ export const TotalStatsTable = (props: ITotalStatsTableProps): JSX.Element => {
 	const { teamId, totalStats } = props;
 
 	const { appStats } = useContext(appStatsContext);
-	const { settings } = useContext(settingsContext);
 
 	const totalStatsArray = calcTotalStatsArray(totalStats);
 
@@ -31,11 +30,9 @@ export const TotalStatsTable = (props: ITotalStatsTableProps): JSX.Element => {
 		<TableContainer classes={tableContainerClasses}>
 			<Table>
 				<TableBody>
-					{totalStatsArray.map((stat: IStatCategory) => {
-						const { label, total } = stat;
-
+					{totalStatsArray.map(({ label, total }: IStatCategory) => {
 						return (
-							<TableRow key={`total-stats-row-${teamId}-${stat.label}`}>
+							<TableRow key={`total-stats-row-${teamId}-${label}`}>
 								<TableCell className='stat-label'>
 									{label}
 								</TableCell>

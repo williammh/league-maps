@@ -1,12 +1,12 @@
 import React, { useContext, useEffect } from 'react';
 import { Select, FormControl, InputLabel, MenuItem, makeStyles, createStyles, Theme } from '@material-ui/core'
 import { settingsContext } from '../../Contexts/SettingsContext';
+import { playerListContext } from '../../Contexts/PlayerListContext';
 import { useSeasonSelectStyles } from './SeasonSelect.style'
 
 
 export const SeasonSelect = () => {
-  const { settings, setSelectedYear } = useContext(settingsContext);
-  const { selectedYear } = settings;
+  const { selectedYear, setSelectedYear } = useContext(settingsContext);
 
   const seasonSelectClasses = useSeasonSelectStyles();
 
@@ -35,8 +35,6 @@ export const SeasonSelect = () => {
         <MenuItem value={2014}>2014 - 2015</MenuItem>
         <MenuItem value={2013}>2013 - 2014</MenuItem>
         <MenuItem value={2012}>2012 - 2013</MenuItem>
-        <MenuItem value={2011}>2011 - 2012</MenuItem>
-        <MenuItem value={2010}>2010 - 2011</MenuItem>
       </Select>
     </FormControl>
   );

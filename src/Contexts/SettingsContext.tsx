@@ -4,8 +4,7 @@ import {
 	statCategories,
 	calculatedCategories,
 	excludeCategories,
-	defaultCategories,
-	getCurrentNbaYear
+	defaultCategories
  } from '../Util'
 
 const settingsContext = React.createContext({} as ISettingsContext);
@@ -24,51 +23,53 @@ export interface IVisibleStats {
 }
 
 interface ISettingsContext {
-	settings: ISettings;
-	setSettings: Dispatch<SetStateAction<ISettings>>;
-	setSelectedYear: (year: number) => void;
+
+
+	visibleStats: IVisibleStats;
+	setVisibleStats:  Dispatch<SetStateAction<IVisibleStats>>;
+	selectedYear?: number | Promise<number>;
+
+	setSelectedYear: Dispatch<SetStateAction<number>>;
 }
 
 const SettingsContextProvider = (props: ContextProviderProps) => {
-	const getDefaultSettings = (): ISettings => {
-		const result: ISettings = {
-			visibleStats: {},
-			/** selectedYear will update upon app load with useEffect below  */
-			selectedYear: 0
-		};
-		const allCategories = [
-			...defaultCategories,
-			...statCategories,
-			...calculatedCategories,
-		];
-		allCategories
-			/** remove duplicates, seasonStageId, and seasonYear */ 
-			.filter((category, index) => (
-				allCategories.indexOf(category) === index && !excludeCategories.includes(category)
-			))
-			.forEach(category => (
-				result.visibleStats[category] = defaultCategories.includes(category)
-			))
-		return result;
-	}
 
-	const [ settings, setSettings ] = React.useState(getDefaultSettings());
+	const defaultVisibleStats: any = {};
 
-	const setSelectedYear = (year: number): void => {
-		setSettings({
-			visibleStats: settings.visibleStats,
-			selectedYear: year
-		})
-	}
-	
+	const allCategories = [
+		...defaultCategories,
+		...statCategories,
+		...calculatedCategories,
+	];
+	allCategories
+		/** remove duplicates, seasonStageId, and seasonYear */ 
+		.filter((category, index) => (
+			allCategories.indexOf(category) === index && !excludeCategories.includes(category)
+		))
+		.forEach(category => (
+			defaultVisibleStats[category] = defaultCategories.includes(category)
+		))
+
+	const [ visibleStats, setVisibleStats ] = React.useState(defaultVisibleStats);
+
+	const [ selectedYear, setSelectedYear ] = React.useState((new Date()).getFullYear());
+
 	useEffect(() => {
 		(async (): Promise<void> => {
-			setSelectedYear(await getCurrentNbaYear());
+			let currentYear = (new Date()).getFullYear();
+			let playerListResponse;
+			while (!playerListResponse || !playerListResponse.ok) {
+				playerListResponse = await fetch(`https://data.nba.net/prod/v1/${currentYear}/players.json`);
+				if (!playerListResponse.ok) {
+					currentYear--;
+				}
+			}
+			setSelectedYear(currentYear);
 		})();
 	}, []);
 
 	return (
-		<settingsContext.Provider value={{settings, setSelectedYear, setSettings}}>
+		<settingsContext.Provider value={{visibleStats, selectedYear, setSelectedYear, setVisibleStats}}>
 			{props.children}
 		</settingsContext.Provider>
 	)

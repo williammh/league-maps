@@ -129,29 +129,35 @@ export const defaultCategories = [
 export const nbaRed = '#c8102e';
 export const nbaBlue = '#1d428a';
 
-export const getCurrentNbaYear = async (): Promise<number> => {
-	let currentYear = (new Date()).getFullYear();
-	let playerListResponse;
-	while(playerListResponse === undefined || !playerListResponse.ok) {
-		playerListResponse = await fetch(`https://data.nba.net/prod/v1/${currentYear}/players.json`);
-		if(!playerListResponse.ok) {
-			currentYear--;
-		}
-	}
-	return currentYear;
-}
-
-export const getAllPlayers = async (): Promise<Array<IPlayerSearchResult>> => {
-	let year = await getCurrentNbaYear();
+export const getAllPlayers = async (year: number = (new Date()).getFullYear()): Promise<Array<IPlayerSearchResult>> => {
 	let playerListResponse = await fetch(`https://data.nba.net/prod/v1/${year}/players.json`);
 	let playerList = await playerListResponse.json();
+	console.log(playerList.league.standard);
 	return playerList.league.standard;
 }
 
-export const getPlayerStats = async (personId: string, year: number = 2019): Promise<IStatSearchResult | any> => {
-	const playerStatsResponse = await fetch(`https://data.nba.net/prod/v1/${year}/players/${personId}_profile.json`)
+export const getPlayerStats = async (personId: string): Promise<IStatSearchResult | any> => {
+	let currentYear = (new Date()).getFullYear();
+	let playerStatsResponse;
+
+	while (!playerStatsResponse || !playerStatsResponse.ok) {
+		playerStatsResponse = await fetch(`https://data.nba.net/prod/v1/${currentYear}/players/${personId}_profile.json`)
+		if (!playerStatsResponse.ok) {
+			currentYear--;
+		}
+	}
+	
 	const playerStatsJson = await playerStatsResponse.json();
-	return playerStatsJson.league.standard;
+	return playerStatsJson.league?.standard ??
+	{
+		stats: {
+			regularSeason: {
+				season: [{
+					total: { min: 0 }
+				}]
+			}
+		}
+	};
 }
 
 export const calcTotalStats = (roster: Array<Player>, selectedYear: number = 2019): ITeamTotalStats => {
@@ -168,10 +174,10 @@ export const calcTotalStats = (roster: Array<Player>, selectedYear: number = 201
 	return result;
 }
 
-export const calcTotalStatsArray = (statsObject: ITeamTotalStats, settings?: ISettings): Array<IStatCategory> => {
+export const calcTotalStatsArray = (statsObject: ITeamTotalStats, visibleStats?: any): Array<IStatCategory> => {
 	const result: Array<IStatCategory> = [];
 	for (let key in statsObject) {
-		if(settings && !settings.visibleStats[key]) { continue }
+		if(visibleStats && !visibleStats[key]) { continue }
 		result.push({label: key, total: statsObject[key]})
 	}
 	return result;
