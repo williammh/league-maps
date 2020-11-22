@@ -4,14 +4,17 @@ import { getScrollBarStyles } from '../../SharedStyles/SharedStyles';
 export const useAccordionStyles = makeStyles({
 	root: {
 		width: 'calc(100% - 12)',
-		height: 'fit-content',
+		height: '20vh',
 		'& tr:nth-child(odd)' : {
 			backgroundColor: '#FAFAFA'
 		},
 		'& tr:nth-child(even)' : {
 			backgroundColor: '#F0F0F0'
 		},
-		margin: '6px !important',
+		marginTop: '0px !important',
+		marginRight: '6px !important',
+		marginBottom: '6px !important',
+		marginLeft: '6px !important',
     padding: '6px !important',
 	}
 })
@@ -53,7 +56,7 @@ export const useAccordionDetailStyles = makeStyles({
 export const useGridStyles = makeStyles({
 	root: {
 		flexWrap: 'nowrap',
-		height: '200px',
+		alignItems: 'stretch',
 		...getScrollBarStyles('.MuiTableContainer-root')
 	}
 })

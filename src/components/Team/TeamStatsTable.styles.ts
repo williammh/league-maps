@@ -3,7 +3,7 @@ import { nbaBlue } from '../../Util'
 
 export const useTableContainerStyles = makeStyles({
     root: {
-        height: '100%',
+        height: 'calc(20vh - 30px) !important',
         width: '40%',
         marginLeft: 3,
         overflowY: 'scroll',

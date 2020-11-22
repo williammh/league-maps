@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export const useTableContainerStyles = makeStyles({
 	root: {
-		height: '100%',
+		height: 'calc(20vh - 30px) !important',
 		width: '60%',
 		marginRight: 3,
 		overflowY: 'scroll',

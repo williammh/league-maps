@@ -7,7 +7,10 @@ const margin = 6;
 export const useBarChartStyles = makeStyles({
   root: {
     width: `calc(100% - ${margin * 2}px - ${padding * 2}px)`,
-    margin,
+    marginTop: 0,
+    marginRight: margin,
+    marginBottom: margin,
+    marginLeft: margin,
     padding,
     display: 'flex',
     flexDirection: 'column',
@@ -22,16 +25,17 @@ export const useBarChartStyles = makeStyles({
       backgroundColor: '#dddddd'
     },
     '& rect:nth-child(odd)': {
-      fill: '#aaaaaa',
+      fill: '#444444',
     },
     '& rect:nth-child(even)': {
-      fill: '#bbbbbb',
+      fill: '#666666',
     },
     '& rect:hover': {
       opacity: 1 
     },
     '& .player-name-label': {
-      opacity: .25
+      opacity: .25,
+      fill: '#fff'
     },
     '& .player-name-label:hover': {
       opacity: 1,
@@ -42,9 +46,6 @@ export const useBarChartStyles = makeStyles({
     },
     '& .best rect:nth-child(even)' : {
       fill: '#3560b3'
-    },
-    '& .best .player-name-label' : {
-      fill: 'white'
     }
   }
 })
