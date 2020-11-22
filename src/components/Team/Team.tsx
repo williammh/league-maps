@@ -12,7 +12,7 @@ import {
 	Grid,
 	IconButton,
 } from '@material-ui/core'
-import { IStatCategory, ITeam, ITeamTotalStats } from '../../Types/teamTypes';
+import { IStatCategory, ITeam, ITeamStats } from '../../Types/teamTypes';
 import { PlayerSelect } from './PlayerSelect';
 import { teamListContext } from '../../Contexts/TeamListContext';
 import { appStatsContext } from '../../Contexts/AppStatsContext';
@@ -41,7 +41,7 @@ import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import { IPlayerSearchResult, Player } from '../../Types/playerTypes';
 
 export const Team = (props: ITeam) => {
-	const { id, playerList } = props;
+	const { id, allPlayers: playerList } = props;
 	const [ isExpanded, setIsExpanded ] = useState(true);
 
 	const { teamList, removeTeam, setTeamList } = useContext(teamListContext);
@@ -56,11 +56,11 @@ export const Team = (props: ITeam) => {
 	const index = teamList.findIndex(team => team.id === id);
 	const roster = teamList[index].roster;
 	const color = teamList[index].color;
-	const totalStats: ITeamTotalStats = calcTotalStats(roster, selectedYear as number);
-	const totalStatsArray: Array<number> = calcTotalStatsArray(totalStats).map((stat: IStatCategory) => stat.total);
+	const teamStats: ITeamStats = calcTotalStats(roster, selectedYear as number);
+	const totalStatsArray: Array<number> = calcTotalStatsArray(teamStats).map((stat: IStatCategory) => stat.total);
 
 	useEffect(() => {
-		teamList[index].totalStats = calcTotalStats(roster, selectedYear as number);
+		teamList[index].teamStats = calcTotalStats(roster, selectedYear as number);
 		setTeamList([...teamList]);
 		console.log(selectedYear)
 	}, [roster.length, selectedYear])
@@ -190,7 +190,7 @@ export const Team = (props: ITeam) => {
 						/>
 						<TotalStatsTable
 							teamId={id}
-							totalStats={totalStats ?? {}}
+							totalStats={teamStats ?? {}}
 						/>
 					</Grid>
 				</AccordionDetails>

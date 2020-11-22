@@ -12,9 +12,8 @@ import { IPlayerSearchResult, Player } from '../../Types/playerTypes';
 import { useTableContainerStyles } from './RosterTable.styles';
 import { maxTeamSize, getSeasonStats } from '../../Util';
 import { UndraftedRow } from './UndraftedRow'
-
 import RemoveIcon from '@material-ui/icons/Remove';
-import { playerListContext } from '../../Contexts/PlayerListContext';
+
 
 export interface IRosterTableProps {
 	teamId: number;

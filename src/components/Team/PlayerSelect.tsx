@@ -34,7 +34,9 @@ export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
 	const resultsContainerRef = useRef<HTMLUListElement>(null);
 
 	useEffect(() => {
-		setSearchResults(playerList.filter(({firstName, lastName}) => isMatchingSearchString(firstName, lastName)));
+		setSearchResults(playerList.filter(({firstName, lastName, isActive}) => {
+			return isMatchingSearchString(firstName, lastName) && isActive !== false
+		}));
 		setSelectedIndex(0);
 	}, [searchString])
 

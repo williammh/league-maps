@@ -24,7 +24,7 @@ export const AllTeamsContainer = (): JSX.Element => {
 				return (
 					<Team
 						{...teamProps}
-						playerList={playerList}
+						allPlayers={playerList}
 						key={teamProps.id}
 					/>
 				)

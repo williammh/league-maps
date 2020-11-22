@@ -1,4 +1,4 @@
-import { ITeamTotalStats, IStatCategory, IRelativeStats, IRelativeStatsV2, ITeam } from './Types/teamTypes';
+import { ITeamStats, IStatCategory, IRelativeStats, IRelativeStatsV2, ITeam } from './Types/teamTypes';
 import { IPlayerSearchResult, IStatSearchResult, Player } from './Types/playerTypes'
 import { ISettings, IVisibleStats } from './Contexts/SettingsContext';
 
@@ -160,8 +160,8 @@ export const getPlayerStats = async (personId: string): Promise<IStatSearchResul
 	};
 }
 
-export const calcTotalStats = (roster: Array<Player>, selectedYear: number = 2019): ITeamTotalStats => {
-	const result: ITeamTotalStats = {};
+export const calcTotalStats = (roster: Array<Player>, selectedYear: number = 2019): ITeamStats => {
+	const result: ITeamStats = {};
 	statCategories
 		.filter(category => !excludeCategories.includes(category))
 		.forEach(category => result[category] = 0);
@@ -174,7 +174,7 @@ export const calcTotalStats = (roster: Array<Player>, selectedYear: number = 201
 	return result;
 }
 
-export const calcTotalStatsArray = (statsObject: ITeamTotalStats, visibleStats?: any): Array<IStatCategory> => {
+export const calcTotalStatsArray = (statsObject: ITeamStats, visibleStats?: any): Array<IStatCategory> => {
 	const result: Array<IStatCategory> = [];
 	for (let key in statsObject) {
 		if(visibleStats && !visibleStats[key]) { continue }
@@ -228,7 +228,7 @@ export const calcAllTotalStats = (teamList: Array<ITeam>, categories: Array<stri
 	});
 
 	for(let category in result) {
-		teamList.forEach(team => result[category].push(team.totalStats[category]))
+		teamList.forEach(team => result[category].push(team.teamStats[category]))
 	}
 
 	return result;

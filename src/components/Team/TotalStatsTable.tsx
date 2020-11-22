@@ -10,11 +10,11 @@ import {
 } from '@material-ui/core'
 import { useTableContainerStyles } from './TotalStatsTable.styles';
 import { calcTotalStatsArray, isBestInCategory } from '../../Util';
-import { IStatCategory, ITeamTotalStats } from '../../Types/teamTypes';
+import { IStatCategory, ITeamStats } from '../../Types/teamTypes';
 
 export interface ITotalStatsTableProps {
 	teamId: number;
-	totalStats: ITeamTotalStats;
+	totalStats: ITeamStats;
 }
 
 export const TotalStatsTable = (props: ITotalStatsTableProps): JSX.Element => {

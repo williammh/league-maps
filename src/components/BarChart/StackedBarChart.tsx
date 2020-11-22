@@ -66,7 +66,7 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
 
       return {
         teamId: team.id,
-        teamTotal: team.totalStats[statCategory],
+        teamTotal: team.teamStats[statCategory],
         individualBars
       };
     });

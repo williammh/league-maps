@@ -5,11 +5,11 @@ export interface ITeam {
     name?: string;
     roster: Array<Player>;
     color?: string;
-    totalStats: ITeamTotalStats;
-    playerList: Array<IPlayerSearchResult>
+    teamStats: ITeamStats;
+    allPlayers: Array<IPlayerSearchResult>
 }
 
-export interface ITeamTotalStats {
+export interface ITeamStats {
     [key: string]: number;
 }
 
