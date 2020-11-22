@@ -18,10 +18,11 @@ export const useBarChartStyles = makeStyles({
     },
     '& svg' : {
       overflow: 'visible',
-      marginBottom: 20
+      marginBottom: 20,
+      backgroundColor: '#dddddd'
     },
     '& rect:nth-child(odd)': {
-      fill: 'lightgray',
+      fill: '#aaaaaa',
     },
     '& rect:nth-child(even)': {
       fill: '#bbbbbb',

@@ -30,7 +30,7 @@ export const SettingsButton = () => {
       <IconButton
         onClick={handleClick}
       >
-			  <VisibilityIcon style={{color: '#FFF'}} />
+			  <VisibilityIcon style={{color: '#666666'}} />
 		  </IconButton>
       <Popover
         id={id}

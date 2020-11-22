@@ -13,7 +13,7 @@ export const AddTeamButton = () => {
 	return (
 		<IconButton
 			onClick={handleClick}
-			style={{color: '#FFF'}}
+			style={{color: '#666666'}}
 		>
 			<GroupAddIcon />
 		</IconButton>
