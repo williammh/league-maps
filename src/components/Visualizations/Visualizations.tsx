@@ -3,12 +3,11 @@ import { settingsContext } from '../../Contexts/SettingsContext';
 import { StackedBarChart } from '../BarChart/StackedBarChart';
 
 export const Visualizations = () => {
-  const { visibleStats} = useContext(settingsContext);
-
+  const { selectedStats } = useContext(settingsContext);
 
   const showStatsArray: Array<string> = [];
-  for (const key in visibleStats) {
-    if(!visibleStats[key]) { continue }
+  for (const key in selectedStats) {
+    if(!selectedStats[key]) { continue }
     showStatsArray.push(key)
   }
 

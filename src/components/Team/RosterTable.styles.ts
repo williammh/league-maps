@@ -4,6 +4,7 @@ export const useTableContainerStyles = makeStyles({
 	root: {
 		height: '100%',
 		width: '60%',
+		marginRight: 3,
 		overflowY: 'scroll',
 		overflowX: 'hidden',
 		'& .MuiTableCell-root' : {

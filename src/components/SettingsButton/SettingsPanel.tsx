@@ -4,18 +4,18 @@ import { settingsContext } from '../../Contexts/SettingsContext';
 import { useSettingsPanelStyles } from './SettingsPane.styles';
 
 export const SettingsPanel = () => {
-
-  const { visibleStats, setVisibleStats } = useContext(settingsContext);
+  const { selectedStats, setSelectedStats } = useContext(settingsContext);
   const settingsArray: Array<{label: string, show: boolean}> = [];
-  for (const key in visibleStats) {
-    settingsArray.push({label: key, show: visibleStats[key]})
+  
+  for (const key in selectedStats) {
+    settingsArray.push({label: key, show: selectedStats[key]})
   }
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
     const { value } = event.currentTarget.dataset
-    visibleStats[value!] = !visibleStats[value!]
-    setVisibleStats(visibleStats)
+    selectedStats[value!] = !selectedStats[value!]
+    setSelectedStats({...selectedStats})
   };
 
   const settingsClasses = useSettingsPanelStyles()
@@ -23,7 +23,6 @@ export const SettingsPanel = () => {
   return (
     <List
       dense
-      classes={settingsClasses}
     >
       {settingsArray.map(({ label, show }) => {
         return (
@@ -33,9 +32,7 @@ export const SettingsPanel = () => {
             onClick={handleClick}
             key={`setting-${label}`}
           >
-            <Checkbox
-              checked={show}
-            />
+            <Checkbox checked={show} />
             <span style={{textTransform: 'uppercase'}}>{label}</span>
           </ListItem>
         )

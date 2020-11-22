@@ -5,14 +5,12 @@ import { teamListContext } from '../../Contexts/TeamListContext';
 import { appStatsContext } from '../../Contexts/AppStatsContext';
 import SettingsIcon from '@material-ui/icons/Settings';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import { SettingsPanel } from '../SettingsPanel/SettingsPanel';
+import { SettingsPanel } from './SettingsPanel';
+import { useSettingsPanelStyles } from './SettingsPane.styles';
 
 export const SettingsButton = () => {
-
-
-  const teamList = useContext(teamListContext); 
-  const appStats = useContext(appStatsContext); 
-
+  const settingsClasses = useSettingsPanelStyles();
+  
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -27,9 +25,8 @@ export const SettingsButton = () => {
   const id = open ? 'simple-popover' : undefined;
 
 
-
   return (
-    <>
+    <div>
       <IconButton
         onClick={handleClick}
       >
@@ -48,9 +45,13 @@ export const SettingsButton = () => {
           vertical: 'top',
           horizontal: 'center',
         }}
+        classes={settingsClasses}
+        PaperProps={{
+          className: 'stat-select-container'
+        }}
       >
         <SettingsPanel />
       </Popover>
-    </>
+    </div>
   );
 }

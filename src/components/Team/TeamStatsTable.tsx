@@ -8,16 +8,16 @@ import {
 	TableCell,
 	TableContainer
 } from '@material-ui/core'
-import { useTableContainerStyles } from './TotalStatsTable.styles';
+import { useTableContainerStyles } from './TeamStatsTable.styles';
 import { calcTotalStatsArray, isBestInCategory } from '../../Util';
 import { IStatCategory, ITeamStats } from '../../Types/types';
 
-export interface ITotalStatsTableProps {
+export interface ITeamStatsTableProps {
 	teamId: number;
 	totalStats: ITeamStats;
 }
 
-export const TotalStatsTable = (props: ITotalStatsTableProps): JSX.Element => {
+export const TeamStatsTable = (props: ITeamStatsTableProps): JSX.Element => {
 	const { teamId, totalStats } = props;
 
 	const { appStats } = useContext(appStatsContext);

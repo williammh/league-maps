@@ -9,8 +9,6 @@ import {
 	Player
 } from './Types/types';
 
-import { ISettings, IVisibleStats } from './Contexts/SettingsContext';
-
 export const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
 export const maxTeamSize = 15;
@@ -183,10 +181,10 @@ export const calcTotalStats = (roster: Array<Player>, selectedYear: number = 201
 	return result;
 }
 
-export const calcTotalStatsArray = (statsObject: ITeamStats, visibleStats?: any): Array<IStatCategory> => {
+export const calcTotalStatsArray = (statsObject: ITeamStats, selectedStats?: any): Array<IStatCategory> => {
 	const result: Array<IStatCategory> = [];
 	for (let key in statsObject) {
-		if(visibleStats && !visibleStats[key]) { continue }
+		if(selectedStats && !selectedStats[key]) { continue }
 		result.push({label: key, total: statsObject[key]})
 	}
 	return result;
@@ -265,7 +263,10 @@ export const calcMean = (arr: Array<number>): number => {
 }
 
 export const isBestInCategory = (value: number, category: string, best: IRelativeStatsV2): boolean => {
-	if (invertedCategories.includes(category)) {
+	if (value === 0 && !invertedCategories.includes(category)) {
+		return false
+	}
+	else if (invertedCategories.includes(category)) {
 		return value === best.min[category];
 	} else {
 		return value === best.max[category];
@@ -296,6 +297,5 @@ export const convertStatsToNumbers = (input: any): IStatSearchResult => {
 			}
 		}
 	}
-
 	return result as any;
 }

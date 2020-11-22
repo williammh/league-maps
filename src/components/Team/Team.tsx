@@ -25,7 +25,7 @@ import {
 	calcTotalStatsArray,
 } from '../../Util';
 import { RosterTable } from './RosterTable'
-import { TotalStatsTable } from './TotalStatsTable';
+import { TeamStatsTable } from './TeamStatsTable';
 import { 
 	useAccordionStyles,
 	useAccordionSummaryStyles,
@@ -188,7 +188,7 @@ export const Team = (props: ITeam) => {
 							selectedYear={selectedYear as number}
 							allPlayers={allPlayers}
 						/>
-						<TotalStatsTable
+						<TeamStatsTable
 							teamId={id}
 							totalStats={teamStats ?? {}}
 						/>

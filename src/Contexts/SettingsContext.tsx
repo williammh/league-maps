@@ -13,28 +13,17 @@ interface ContextProviderProps {
   children: React.ReactNode;
 }
 
-export interface ISettings {
-	visibleStats: IVisibleStats;
-	selectedYear?: number | Promise<number>;
-}
-
-export interface IVisibleStats {
-	[key: string]: boolean;
-}
 
 interface ISettingsContext {
-
-
-	visibleStats: IVisibleStats;
-	setVisibleStats:  Dispatch<SetStateAction<IVisibleStats>>;
+	selectedStats: { [key: string]: boolean };
+	setSelectedStats:  Dispatch<SetStateAction<{ [key: string]: boolean }>>;
 	selectedYear?: number | Promise<number>;
-
 	setSelectedYear: Dispatch<SetStateAction<number>>;
 }
 
 const SettingsContextProvider = (props: ContextProviderProps) => {
 
-	const defaultVisibleStats: any = {};
+	const defaultSelectedStats: any = {};
 
 	const allCategories = [
 		...defaultCategories,
@@ -47,10 +36,10 @@ const SettingsContextProvider = (props: ContextProviderProps) => {
 			allCategories.indexOf(category) === index && !excludeCategories.includes(category)
 		))
 		.forEach(category => (
-			defaultVisibleStats[category] = defaultCategories.includes(category)
+			defaultSelectedStats[category] = defaultCategories.includes(category)
 		))
 
-	const [ visibleStats, setVisibleStats ] = React.useState(defaultVisibleStats);
+	const [ selectedStats, setSelectedStats ] = React.useState(defaultSelectedStats);
 
 	const [ selectedYear, setSelectedYear ] = React.useState((new Date()).getFullYear());
 
@@ -69,7 +58,7 @@ const SettingsContextProvider = (props: ContextProviderProps) => {
 	}, []);
 
 	return (
-		<settingsContext.Provider value={{visibleStats, selectedYear, setSelectedYear, setVisibleStats}}>
+		<settingsContext.Provider value={{selectedStats, selectedYear, setSelectedYear, setSelectedStats}}>
 			{props.children}
 		</settingsContext.Provider>
 	)

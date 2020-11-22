@@ -5,6 +5,7 @@ export const useTableContainerStyles = makeStyles({
     root: {
         height: '100%',
         width: '40%',
+        marginLeft: 3,
         overflowY: 'scroll',
         overflowX: 'hidden',
         '& td': {
@@ -18,7 +19,7 @@ export const useTableContainerStyles = makeStyles({
             textAlign: 'left'
         },
         '& td.stat-value' : {
-            minWidth: '50%',
+            // minWidth: '50%',
             textAlign: 'right'
         },
         '& td.best' : {
