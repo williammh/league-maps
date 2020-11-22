@@ -15,14 +15,14 @@ import { usePopover } from './UndraftedRow.style'
 
 export interface IUndraftedRowProps {
 	teamId: number;
-	addPlayer: (personId: string, playerList: Array<IPlayerSearchResult>) => Promise<void>;
+	addPlayer: (personId: string, allPlayers: Array<IPlayerSearchResult>) => Promise<void>;
 	roster: Array<Player>;
 	selectedYear: number;
-	playerList: Array<IPlayerSearchResult>;
+	allPlayers: Array<IPlayerSearchResult>;
 }
 	
 export const UndraftedRow = (props: IUndraftedRowProps): JSX.Element => {
-	const { addPlayer, teamId, roster, selectedYear, playerList } = props;
+	const { addPlayer, teamId, roster, selectedYear, allPlayers } = props;
 
 	const popoverClasses = usePopover();
 	
@@ -75,7 +75,7 @@ export const UndraftedRow = (props: IUndraftedRowProps): JSX.Element => {
 						addPlayer={addPlayer}
 						key={`player-select-${id}`}
 						selectedYear={selectedYear}
-						playerList={playerList}
+						allPlayers={allPlayers}
 					/>
       	</Popover>
 			</TableCell>

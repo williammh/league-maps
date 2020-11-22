@@ -16,17 +16,17 @@ import { maxTeamSize } from '../../Util'
 export interface IPlayerSelectProps {
 	teamId?: number;
 	roster?: Array<Player>;
-	addPlayer: (personId: string, playerList: Array<IPlayerSearchResult>) => Promise<void>;
+	addPlayer: (personId: string, allPlayers: Array<IPlayerSearchResult>) => Promise<void>;
 	selectedYear: number;
-	playerList: Array<IPlayerSearchResult>
+	allPlayers: Array<IPlayerSearchResult>
 }
 
 export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
-	const { teamId, roster, addPlayer, playerList } = props;
+	const { teamId, roster, addPlayer, allPlayers } = props;
 	
 	const [ searchString, setSearchString ] = useState('');
 	const [ isFocused, setHasFocus ] = useState(false);
-	const [ searchResults, setSearchResults ] = useState(playerList)
+	const [ searchResults, setSearchResults ] = useState(allPlayers)
 	const [ selectedIndex, setSelectedIndex ] = useState(0);
 
 	const rosterIds: Array<string> | undefined = roster?.map(player => player.personId);
@@ -34,7 +34,7 @@ export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
 	const resultsContainerRef = useRef<HTMLUListElement>(null);
 
 	useEffect(() => {
-		setSearchResults(playerList.filter(({firstName, lastName, isActive}) => {
+		setSearchResults(allPlayers.filter(({firstName, lastName, isActive}) => {
 			return isMatchingSearchString(firstName, lastName) && isActive !== false
 		}));
 		setSelectedIndex(0);
@@ -52,7 +52,7 @@ export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
 
 	const handleClick = ({currentTarget}: MouseEvent<HTMLElement>): void => {
 		const { personId } = currentTarget.dataset;
-		addPlayer(personId!, playerList);
+		addPlayer(personId!, allPlayers);
 		setSearchString('');
 	}
 
@@ -60,7 +60,7 @@ export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
 		if (key === 'Enter' && searchResults.length) {
 			const { personId } = searchResults[selectedIndex];
 			if (!rosterIds?.includes(personId)) {
-				addPlayer(personId, playerList);
+				addPlayer(personId, allPlayers);
 				setSearchString('');
 				setHasFocus(false);
 			}

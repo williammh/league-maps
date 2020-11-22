@@ -57,10 +57,10 @@ const SettingsContextProvider = (props: ContextProviderProps) => {
 	useEffect(() => {
 		(async (): Promise<void> => {
 			let currentYear = (new Date()).getFullYear();
-			let playerListResponse;
-			while (!playerListResponse || !playerListResponse.ok) {
-				playerListResponse = await fetch(`https://data.nba.net/prod/v1/${currentYear}/players.json`);
-				if (!playerListResponse.ok) {
+			let response;
+			while (!response || !response.ok) {
+				response = await fetch(`https://data.nba.net/prod/v1/${currentYear}/players.json`);
+				if (!response.ok) {
 					currentYear--;
 				}
 			}

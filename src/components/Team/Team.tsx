@@ -41,7 +41,7 @@ import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import { IPlayerSearchResult, Player } from '../../Types/playerTypes';
 
 export const Team = (props: ITeam) => {
-	const { id, allPlayers: playerList } = props;
+	const { id, allPlayers } = props;
 	const [ isExpanded, setIsExpanded ] = useState(true);
 
 	const { teamList, removeTeam, setTeamList } = useContext(teamListContext);
@@ -84,8 +84,8 @@ export const Team = (props: ITeam) => {
 		removeTeam(id)
 	}
 
-	const addPlayer = async (personId: string, playerList: Array<IPlayerSearchResult>): Promise<void> => {
-		const { firstName, lastName } = playerList.find(player => player.personId === personId)!;
+	const addPlayer = async (personId: string, allPlayers: Array<IPlayerSearchResult>): Promise<void> => {
+		const { firstName, lastName } = allPlayers.find(player => player.personId === personId)!;
 		const { latest, regularSeason } = (await getPlayerStats(personId)).stats;
 		
 		for (const stat in latest) {
@@ -186,7 +186,7 @@ export const Team = (props: ITeam) => {
 							addPlayer={addPlayer}
 							removePlayer={removePlayer}
 							selectedYear={selectedYear as number}
-							playerList={playerList}
+							allPlayers={allPlayers}
 						/>
 						<TotalStatsTable
 							teamId={id}

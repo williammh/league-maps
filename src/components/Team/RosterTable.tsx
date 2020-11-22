@@ -18,14 +18,14 @@ import RemoveIcon from '@material-ui/icons/Remove';
 export interface IRosterTableProps {
 	teamId: number;
 	roster: Array<Player>;
-	addPlayer: (personId: string, playerList: Array<IPlayerSearchResult>) => Promise<void>;
+	addPlayer: (personId: string, allPlayers: Array<IPlayerSearchResult>) => Promise<void>;
 	removePlayer: (personId: string) => void;
 	selectedYear: number;
-	playerList: Array<IPlayerSearchResult>;
+	allPlayers: Array<IPlayerSearchResult>;
 }
 
 export const RosterTable = (props: IRosterTableProps): JSX.Element => {
-	const { teamId, roster, removePlayer, addPlayer, selectedYear, playerList } = props;
+	const { teamId, roster, removePlayer, addPlayer, selectedYear, allPlayers } = props;
 
 	const tableContainerClasses = useTableContainerStyles();
 
@@ -73,7 +73,7 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 				roster={roster}
 				addPlayer={addPlayer}
 				selectedYear={selectedYear}
-				playerList={playerList}
+				allPlayers={allPlayers}
 			/>
 		)
 	}

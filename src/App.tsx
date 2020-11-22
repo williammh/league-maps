@@ -1,5 +1,5 @@
 import React from 'react';
-import { PlayerListContextProvider } from './Contexts/PlayerListContext'
+import { AllPlayersContextProvider } from './Contexts/AllPlayersContext'
 import { TeamListContextProvider } from './Contexts/TeamListContext'
 import { AppStatsContextProvider } from './Contexts/AppStatsContext'
 import { SettingsContextProvider } from './Contexts/SettingsContext'
@@ -17,7 +17,7 @@ function App() {
 
   return (
     <AppStatsContextProvider>
-      <PlayerListContextProvider>
+      <AllPlayersContextProvider>
         <TeamListContextProvider>
           <SettingsContextProvider>
             <Grid
@@ -93,7 +93,7 @@ function App() {
             </Grid>
           </SettingsContextProvider>
         </TeamListContextProvider>
-      </PlayerListContextProvider>
+      </AllPlayersContextProvider>
     </AppStatsContextProvider>
   );
 }

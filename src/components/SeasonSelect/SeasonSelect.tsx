@@ -1,7 +1,6 @@
-import React, { useContext, useEffect } from 'react';
-import { Select, FormControl, InputLabel, MenuItem, makeStyles, createStyles, Theme } from '@material-ui/core'
+import React, { useContext } from 'react';
+import { Select, FormControl, InputLabel, MenuItem } from '@material-ui/core'
 import { settingsContext } from '../../Contexts/SettingsContext';
-import { playerListContext } from '../../Contexts/PlayerListContext';
 import { useSeasonSelectStyles } from './SeasonSelect.style'
 
 
@@ -10,8 +9,8 @@ export const SeasonSelect = () => {
 
   const seasonSelectClasses = useSeasonSelectStyles();
 
-  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    const { value } = event.target;
+  const handleChange = ({ target }: React.ChangeEvent<{ value: unknown }>) => {
+    const { value } = target;
     setSelectedYear(value as number);
   };
 

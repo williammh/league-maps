@@ -3,18 +3,17 @@ import { Team } from '../Team/Team';
 import { ITeam } from '../../Types/teamTypes';
 import { getAllPlayers } from '../../Util';
 import { teamListContext } from '../../Contexts/TeamListContext';
-import { playerListContext } from '../../Contexts/PlayerListContext';
+import { allPlayersContext } from '../../Contexts/AllPlayersContext';
 import { settingsContext } from '../../Contexts/SettingsContext';
 
 export const AllTeamsContainer = (): JSX.Element => {
 	const { teamList } = useContext(teamListContext)
-	const { playerList, setPlayerList } = useContext(playerListContext);
+	const { allPlayers, setAllPlayers } = useContext(allPlayersContext);
 	const { selectedYear } = useContext(settingsContext)
 
 	useEffect(() => {
 		(async (): Promise<void> => {
-			const playerList = (await getAllPlayers(selectedYear as number));
-			setPlayerList(playerList);
+			setAllPlayers(await getAllPlayers(selectedYear as number));
 		})();
 	}, [selectedYear])
 
@@ -24,7 +23,7 @@ export const AllTeamsContainer = (): JSX.Element => {
 				return (
 					<Team
 						{...teamProps}
-						allPlayers={playerList}
+						allPlayers={allPlayers}
 						key={teamProps.id}
 					/>
 				)
