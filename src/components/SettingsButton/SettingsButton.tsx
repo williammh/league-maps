@@ -46,9 +46,7 @@ export const SettingsButton = () => {
           horizontal: 'center',
         }}
         classes={settingsClasses}
-        PaperProps={{
-          className: 'stat-select-container'
-        }}
+        PaperProps={{ className: 'stat-select-container' }}
       >
         <SettingsPanel />
       </Popover>

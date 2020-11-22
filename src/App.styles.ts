@@ -4,7 +4,7 @@ import { nbaBlue } from './Util';
 
 export const useAppGridStyles = makeStyles({
 	root: {
-		backgroundColor: nbaBlue,
+		backgroundColor: 'lightgray',
 		...getScrollBarStyles('.sidebar-scrollbar', 8),
 		...getScrollBarStyles('.visualizations-container', 8),
 	}
