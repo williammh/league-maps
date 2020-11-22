@@ -7,6 +7,6 @@ export const useSettingsPanelStyles = makeStyles({
     '& .MuiCheckbox-root.Mui-checked': {
       color: nbaRed
     },
-    ...getScrollBarStyles('.stat-select-container')
+    ...getScrollBarStyles('.stat-select-container', 8)
   }
 })

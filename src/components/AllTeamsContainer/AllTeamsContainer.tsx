@@ -15,7 +15,6 @@ export const AllTeamsContainer = (): JSX.Element => {
 		(async (): Promise<void> => {
 			setAllPlayers(await getAllPlayers(selectedYear as number));
 		})();
-		console.log("zz")
 	}, [selectedYear])
 
 	return (

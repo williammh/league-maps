@@ -63,7 +63,7 @@ function App() {
                     item
                     md={3}
                     style={{height: '90vh', overflowY: 'scroll'}}
-                    className='sidebar-scrollbar'
+                    className='sidebar-scrollbar scrollbar-padding-top'
                   >
                     <Grid
                       container
@@ -79,7 +79,7 @@ function App() {
                     item
                     md={9}
                     style={{height: '90vh', overflowY: 'scroll'}}
-                    className='visualizations-container'
+                    className='visualizations-container scrollbar-padding-top'
                   >
                     <Grid
                       container

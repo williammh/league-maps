@@ -155,7 +155,7 @@ export const getPlayerStats = async (personId: string): Promise<IStatSearchResul
 	}
 	
 	const playerStatsJson = await playerStatsResponse.json();
-	return playerStatsJson.league?.standard ??
+	return playerStatsJson.league.standard ??
 	{
 		stats: {
 			regularSeason: {
