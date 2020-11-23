@@ -28,7 +28,7 @@ export const TeamStatsTable = (props: ITeamStatsTableProps): JSX.Element => {
 
 	return (
 		<TableContainer classes={tableContainerClasses}>
-			<Table>
+			<Table padding='none' size='small'>
 				<TableBody>
 					{totalStatsArray.map(({ label, total }: IStatCategory) => {
 						return (

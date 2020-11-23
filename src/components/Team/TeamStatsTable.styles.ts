@@ -1,25 +1,29 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { nbaBlue } from '../../Util'
 
+
+
 export const useTableContainerStyles = makeStyles({
     root: {
-        height: 'calc(20vh - 30px) !important',
+        height: 'calc(20vh - 16px) !important',
         width: '40%',
         marginLeft: 3,
         overflowY: 'scroll',
         overflowX: 'hidden',
         '& td': {
             textTransform: 'uppercase',
-            padding: '0px 6px'
+            height: 30,
         },
         '& td.stat-label' : {
-            maxWidth: '50px',
+            width: 'calc(100% - 62px)',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
-            textAlign: 'left'
+            textAlign: 'left',
+            paddingLeft: 6,
         },
         '& td.stat-value' : {
-            // minWidth: '50%',
+            width: 50,
+            paddingRight: 6,
             textAlign: 'right'
         },
         '& td.best' : {

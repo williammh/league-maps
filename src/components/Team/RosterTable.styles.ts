@@ -2,16 +2,13 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export const useTableContainerStyles = makeStyles({
 	root: {
-		height: 'calc(20vh - 30px) !important',
+		height: 'calc(20vh - 16px) !important',
 		width: '60%',
 		marginRight: 3,
 		overflowY: 'scroll',
 		overflowX: 'hidden',
-		'& .MuiTableCell-root' : {
-			padding: '2px',
-		},
 		'& .add-remove-button-cell' : {
-			width: '27px',
+			width: 30,
 		},
 		'& .no-stats, & .mock-player' : {
 			opacity: '.25'
@@ -34,7 +31,9 @@ export const useTableContainerStyles = makeStyles({
 		},
 		'& .name-cell' : {
 			whiteSpace: 'nowrap',
-			textOverflow: 'ellipsis'
+			textOverflow: 'ellipsis',
+			overflow: 'hidden',
+			maxWidth: 'calc(100% - 60px)',
 		}
 	}
 })

@@ -42,7 +42,7 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 			<TableRow key={`roster-table-row-${teamId}-${personId}`}>
 				<TableCell className='add-remove-button-cell'>
 					<IconButton
-						onClick={() => removePlayer(player.personId)}
+						onClick={() => removePlayer(personId)}
 						size='small'
 					>
 						<RemoveIcon />
@@ -56,8 +56,10 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 				</TableCell>
 				<TableCell
 					className={`name-cell ${getSeasonStats(player, selectedYear).min > 0 ? '' : 'no-stats' }`}
+					// component='div'
 				>
-					{truncatePlayerName(firstName, lastName)}
+					{firstName} {lastName}
+					{/* {truncatePlayerName(firstName, lastName)} */}
 				</TableCell>
 			</TableRow>
 		)

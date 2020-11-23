@@ -3,8 +3,11 @@ import { getScrollBarStyles } from '../../SharedStyles/SharedStyles';
 
 export const useAccordionStyles = makeStyles({
 	root: {
-		width: 'calc(100% - 12)',
-		height: '20vh',
+		width: 'calc(100% - 24px)',
+		height: 'calc(22.5vh - 12px)',
+		'& tr': {
+			overflow: 'hidden'
+		},
 		'& tr:nth-child(odd)' : {
 			backgroundColor: '#FAFAFA'
 		},
@@ -15,7 +18,10 @@ export const useAccordionStyles = makeStyles({
 		marginRight: '6px !important',
 		marginBottom: '6px !important',
 		marginLeft: '6px !important',
-    padding: '6px !important',
+		paddingTop: 0,
+		paddingRight: 6,
+		paddingBottom:6,
+		paddingLeft: 6,
 	}
 })
 
@@ -40,8 +46,10 @@ export const useAccordionSummaryStyles = makeStyles({
 		'& .teamLabel': {
 			flexGrow: 2,
 			display: 'flex',
-			paddingTop: '3px',
 			paddingLeft: '6px'
+		},
+		'& button' : {
+			padding: 0
 		}
 	},
 });
@@ -49,7 +57,7 @@ export const useAccordionSummaryStyles = makeStyles({
 export const useAccordionDetailStyles = makeStyles({
 	root: {
 		flexDirection: 'column',
-		padding: '2px'
+		padding: '0px'
 	}
 })
 
@@ -57,6 +65,10 @@ export const useGridStyles = makeStyles({
 	root: {
 		flexWrap: 'nowrap',
 		alignItems: 'stretch',
+		'& td': {
+			display: 'inline-block',
+			border: 'none'
+		},
 		...getScrollBarStyles('.MuiTableContainer-root')
 	}
 })

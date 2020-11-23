@@ -82,7 +82,7 @@ export const UndraftedRow = (props: IUndraftedRowProps): JSX.Element => {
 			<TableCell className='headshot-cell mock-player'>
 					<AccountCircleIcon className='mock-player-icon' />
 			</TableCell>
-			<TableCell className='mock-player'>
+			<TableCell className='name-cell mock-player'>
 				Undrafted
 			</TableCell>
 		</TableRow>
