@@ -13,6 +13,7 @@ export const useTableContainerStyles = makeStyles({
         '& td': {
             textTransform: 'uppercase',
             height: 30,
+            lineHeight: '30px'
         },
         '& td.stat-label' : {
             width: 'calc(100% - 62px)',
