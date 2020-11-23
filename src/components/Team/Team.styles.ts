@@ -4,7 +4,7 @@ import { getScrollBarStyles } from '../../SharedStyles/SharedStyles';
 export const useAccordionStyles = makeStyles({
 	root: {
 		width: 'calc(100% - 24px)',
-		height: 'calc(22.5vh - 12px)',
+		height: isExpanded => isExpanded ? 'calc(22.5vh - 12px)' : 'auto',
 		'& tr': {
 			overflow: 'hidden'
 		},
@@ -35,10 +35,7 @@ export const useAccordionSummaryStyles = makeStyles({
 		},
 	},
 	expanded: {
-		minHeight: '0px !important',
-		'& .Mui-expanded': {
-				margin: '12px 0px',
-		}
+		minHeight: 'fit-content !important',
 	},
 	content: {
 		justifyContent: 'flex-end',

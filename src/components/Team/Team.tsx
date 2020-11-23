@@ -48,7 +48,7 @@ export const Team = (props: ITeam) => {
 	const { setAppStats } = useContext(appStatsContext);
 	const { selectedYear } = useContext(settingsContext);
 
-	const accordionClasses = useAccordionStyles();
+	const accordionClasses = useAccordionStyles(isExpanded);
 	const accordionSummaryClasses = useAccordionSummaryStyles();
 	const accordionDetailClasses = useAccordionDetailStyles();
 	const gridClasses = useGridStyles();
