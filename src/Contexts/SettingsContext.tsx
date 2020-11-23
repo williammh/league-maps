@@ -22,9 +22,7 @@ interface ISettingsContext {
 }
 
 const SettingsContextProvider = (props: ContextProviderProps) => {
-
 	const defaultSelectedStats: any = {};
-
 	const allCategories = [
 		...defaultCategories,
 		...statCategories,
@@ -37,7 +35,7 @@ const SettingsContextProvider = (props: ContextProviderProps) => {
 		))
 		.forEach(category => (
 			defaultSelectedStats[category] = defaultCategories.includes(category)
-		))
+		));
 
 	const [ selectedStats, setSelectedStats ] = React.useState(defaultSelectedStats);
 
@@ -53,7 +51,7 @@ const SettingsContextProvider = (props: ContextProviderProps) => {
 					currentYear--;
 				}
 			}
-			setSelectedYear(currentYear);
+			setSelectedYear(2019);
 		})();
 	}, []);
 

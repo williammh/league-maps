@@ -11,18 +11,21 @@ import {
 import { useTableContainerStyles } from './TeamStatsTable.styles';
 import { calcTotalStatsArray, isBestInCategory } from '../../Util';
 import { IStatCategory, ITeamStats } from '../../Types/types';
+import { select } from 'd3';
 
 export interface ITeamStatsTableProps {
 	teamId: number;
-	totalStats: ITeamStats;
+	teamStats: ITeamStats;
 }
 
 export const TeamStatsTable = (props: ITeamStatsTableProps): JSX.Element => {
-	const { teamId, totalStats } = props;
+	const { teamId, teamStats } = props;
 
 	const { appStats } = useContext(appStatsContext);
+	const { selectedStats } = useContext(settingsContext);
 
-	const totalStatsArray = calcTotalStatsArray(totalStats);
+	const teamStatsArray: Array<IStatCategory> = calcTotalStatsArray(teamStats)
+    .filter(({label}: IStatCategory) => selectedStats[label]);
 
 	const tableContainerClasses = useTableContainerStyles();
 
@@ -30,7 +33,7 @@ export const TeamStatsTable = (props: ITeamStatsTableProps): JSX.Element => {
 		<TableContainer classes={tableContainerClasses}>
 			<Table padding='none' size='small'>
 				<TableBody>
-					{totalStatsArray.map(({ label, total }: IStatCategory) => {
+					{teamStatsArray.map(({ label, total }: IStatCategory) => {
 						return (
 							<TableRow key={`total-stats-row-${teamId}-${label}`}>
 								<TableCell className='stat-label'>

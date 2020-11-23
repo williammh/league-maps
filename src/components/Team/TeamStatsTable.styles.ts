@@ -10,20 +10,24 @@ export const useTableContainerStyles = makeStyles({
         marginLeft: 3,
         overflowY: 'scroll',
         overflowX: 'hidden',
+        'table': {
+            width: '100%',
+            minWidth: '100%'
+        },
         '& td': {
             textTransform: 'uppercase',
             height: 30,
             lineHeight: '30px'
         },
         '& td.stat-label' : {
-            width: 'calc(100% - 62px)',
+            
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             textAlign: 'left',
             paddingLeft: 6,
         },
         '& td.stat-value' : {
-            width: 50,
+            minWidth: 50,
             paddingRight: 6,
             textAlign: 'right'
         },

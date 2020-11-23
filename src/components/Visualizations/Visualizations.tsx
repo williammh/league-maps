@@ -5,11 +5,8 @@ import { StackedBarChart } from '../BarChart/StackedBarChart';
 export const Visualizations = () => {
   const { selectedStats } = useContext(settingsContext);
 
-  const showStatsArray: Array<string> = [];
-  for (const key in selectedStats) {
-    if(!selectedStats[key]) { continue }
-    showStatsArray.push(key)
-  }
+  const showStatsArray: Array<string> = Object.keys(selectedStats)
+    .filter(category => selectedStats[category]);
 
   return (
     <div style={{width: '100%'}}>

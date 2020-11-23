@@ -189,7 +189,7 @@ export const Team = (props: ITeam) => {
 						/>
 						<TeamStatsTable
 							teamId={id}
-							totalStats={teamStats ?? {}}
+							teamStats={teamStats ?? {}}
 						/>
 					</Grid>
 				</AccordionDetails>

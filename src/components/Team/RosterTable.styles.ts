@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
+import { Block } from '@material-ui/icons';
 
 export const useTableContainerStyles = makeStyles({
 	root: {
@@ -7,11 +8,30 @@ export const useTableContainerStyles = makeStyles({
 		marginRight: 3,
 		overflowY: 'scroll',
 		overflowX: 'hidden',
-		'& .add-remove-button-cell' : {
+		'& .table': {
+			display: 'inline-block'
+		},
+		'& .tbody': {
+			// maxWidth: '100%',
+			width: '100%',
+			display: 'inline-block'
+		},
+		'& .trow': {
+			display: 'flex',
+			flexWrap: 'nowrap',
+			maxWidth: '100%',
+			width: '100%'
+		},
+		'& .cell': {
+			display: 'inline-block',
+			width: 30,
+			height: 30,
+		},
+		'& .button-cell' : {
 			width: 30,
 		},
-		'& .no-stats, & .mock-player' : {
-			opacity: '.25'
+		'& .no-stats ': {
+			opacity: .25
 		},
 		'& .headshot-cell' : {
 			width: 30
@@ -30,10 +50,15 @@ export const useTableContainerStyles = makeStyles({
 			display: 'flex'
 		},
 		'& .name-cell' : {
-			whiteSpace: 'nowrap',
-			textOverflow: 'ellipsis',
+			paddingLeft: 6,
+			lineHeight: '30px',
+			// width: 'calc(100% - 60px)',
+			// maxWidth: 'calc(100% - 60px)',
+
+			flex:' 1 0 auto',
 			overflow: 'hidden',
-			maxWidth: 'calc(100% - 60px)',
+			textOverflow: 'ellipsis',
+			whiteSpace: 'nowrap',
 		}
 	}
 })

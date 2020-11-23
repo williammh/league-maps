@@ -5,15 +5,6 @@ export const useAccordionStyles = makeStyles({
 	root: {
 		width: 'calc(100% - 24px)',
 		height: isExpanded => isExpanded ? 'calc(22.5vh - 12px)' : 'auto',
-		'& tr': {
-			overflow: 'hidden'
-		},
-		'& tr:nth-child(odd)' : {
-			backgroundColor: '#FAFAFA'
-		},
-		'& tr:nth-child(even)' : {
-			backgroundColor: '#F0F0F0'
-		},
 		marginTop: '0px !important',
 		marginRight: '6px !important',
 		marginBottom: '6px !important',
@@ -62,9 +53,11 @@ export const useGridStyles = makeStyles({
 	root: {
 		flexWrap: 'nowrap',
 		alignItems: 'stretch',
-		'& td': {
-			display: 'inline-block',
-			border: 'none'
+		'& tr:nth-child(odd)' : {
+			backgroundColor: '#FAFAFA'
+		},
+		'& tr:nth-child(even)' : {
+			backgroundColor: '#F0F0F0'
 		},
 		...getScrollBarStyles('.MuiTableContainer-root')
 	}

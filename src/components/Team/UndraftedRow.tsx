@@ -45,8 +45,8 @@ export const UndraftedRow = (props: IUndraftedRowProps): JSX.Element => {
 	}
 	
 	return (
-		<TableRow>
-			<TableCell className='add-remove-button-cell'>
+		<TableRow className='trow'>
+			<TableCell className='cell button-cell'>
 				<IconButton
 					size='small'
 					onClick={handleClick}
@@ -79,10 +79,10 @@ export const UndraftedRow = (props: IUndraftedRowProps): JSX.Element => {
 					/>
       	</Popover>
 			</TableCell>
-			<TableCell className='headshot-cell mock-player'>
+			<TableCell className='cell headshot-cell no-stats'>
 					<AccountCircleIcon className='mock-player-icon' />
 			</TableCell>
-			<TableCell className='name-cell mock-player'>
+			<TableCell className='cell name-cell no-stats'>
 				Undrafted
 			</TableCell>
 		</TableRow>

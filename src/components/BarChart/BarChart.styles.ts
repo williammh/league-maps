@@ -1,17 +1,17 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { nbaBlue } from '../../Util';
 
-const padding = 6
-const margin = 6;
+export const chartCardPadding = 6
+export const chartCardMargin = 6;
 
 export const useBarChartStyles = makeStyles({
   root: {
-    width: `calc(100% - ${margin * 2}px - ${padding * 2}px)`,
+    width: `calc(100% - ${chartCardMargin * 2}px - ${chartCardPadding * 2}px)`,
     marginTop: 0,
-    marginRight: margin,
-    marginBottom: margin,
-    marginLeft: margin,
-    padding,
+    marginRight: chartCardMargin,
+    marginBottom: chartCardMargin,
+    marginLeft: chartCardMargin,
+    padding: chartCardPadding,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',

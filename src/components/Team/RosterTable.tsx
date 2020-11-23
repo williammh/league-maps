@@ -39,8 +39,10 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 	const playerRows = roster.map((player: Player, i) => {
 		const { personId, firstName, lastName } = player;
 		return (
-			<TableRow key={`roster-table-row-${teamId}-${personId}`}>
-				<TableCell className='add-remove-button-cell'>
+			<TableRow component='div' className='trow' key={`roster-table-row-${teamId}-${personId}`}>
+				<TableCell
+					className='cell button-cell'
+				>
 					<IconButton
 						onClick={() => removePlayer(personId)}
 						size='small'
@@ -48,15 +50,16 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 						<RemoveIcon />
 					</IconButton>
 				</TableCell>
-				<TableCell className={`headshot-cell ${getSeasonStats(player, selectedYear).min > 0 ? '' : 'no-stats' }`}>
+				<TableCell
+					className={`cell headshot-cell ${getSeasonStats(player, selectedYear).min > 0 ? '' : 'no-stats' }`}
+				>
 					<Avatar
 						src={`https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${personId}.png`}
 						className='headshot'
 					/>
 				</TableCell>
 				<TableCell
-					className={`name-cell ${getSeasonStats(player, selectedYear).min > 0 ? '' : 'no-stats' }`}
-					// component='div'
+					className={`cell name-cell ${getSeasonStats(player, selectedYear).min > 0 ? '' : 'no-stats' }`}
 				>
 					{firstName} {lastName}
 					{/* {truncatePlayerName(firstName, lastName)} */}
@@ -82,8 +85,8 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 
 	return (
 		<TableContainer classes={tableContainerClasses}>	
-			<Table padding='none' size='small'>
-				<TableBody>
+			<Table padding='none' size='small' className='table'>
+				<TableBody className='tbody'>
 					{playerRows}
 					{undraftedRows}
 				</TableBody>	
