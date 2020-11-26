@@ -6,7 +6,7 @@ import React, {
 	useEffect,
 	useRef
 } from 'react';
-import { List, ListItem, ListItemText, Popover, TextField} from '@material-ui/core'
+import { List, ListItem, TextField} from '@material-ui/core'
 import { Player, IPlayerSearchResult } from '../../Types/types';
 import { SignalCellularNull } from '@material-ui/icons';
 import LazyLoad from 'react-lazy-load';
@@ -23,7 +23,7 @@ export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
 	const { teamId, roster, addPlayer, allPlayers } = props;
 	
 	const [ searchString, setSearchString ] = useState('');
-	const [ searchResults, setSearchResults ] = useState(allPlayers)
+	const [ searchResults, setSearchResults ] = useState(allPlayers);
 	const [ selectedIndex, setSelectedIndex ] = useState(0);
 
 	const rosterIds: Array<string> | undefined = roster?.map(player => player.personId);
@@ -33,19 +33,9 @@ export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
 	const lazyLoadHeight = 40;
 
 	useEffect(() => {
-		console.log('search string use effect !!!!!!!!!!!!!!!!!!!!!!')
-		setSearchResults(allPlayers.filter(({firstName, lastName, isActive}) => {
-			return isMatchingSearchString(firstName, lastName) && isActive !== false;
-		}));
+		setSearchResults(allPlayers.filter(({firstName, lastName, isActive}) => isMatch(firstName, lastName) && isActive));
 		setSelectedIndex(0);
 	}, [searchString])
-
-	useEffect(() => {
-		return () => {
-			console.log("UNMOUNTING")
-			console.log(searchResults)
-		};
-	})
 
 	const handleChange = ({target}: ChangeEvent<{value: string}>) => {
 		const { value } = target;
@@ -58,7 +48,9 @@ export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
 		setSearchString('');
 	}
 
-	const handleKeyDown = ({key}: KeyboardEvent<HTMLDivElement>): void => {
+	const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>): void => {
+		event.stopPropagation();
+		const { key } = event;
 		if (key === 'Enter' && searchResults.length) {
 			const { personId } = searchResults[selectedIndex];
 			if (!rosterIds?.includes(personId)) {
@@ -74,14 +66,16 @@ export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
 		}
 	}
 
-	const isMatchingSearchString = (firstName: string, lastName: string): boolean => {
+	const isMatch = (firstName: string, lastName: string): boolean => {
 		const searchStringLower = searchString.toLowerCase();
+		const firstNameLower = firstName.toLowerCase();
+		const lastNameLower = lastName.toLowerCase();
 		return (
-			firstName.toLowerCase().startsWith(searchStringLower) ||
-			lastName.toLowerCase().startsWith(searchStringLower) ||
-			`${firstName.toLowerCase()} ${lastName.toLowerCase()}`.startsWith(searchStringLower)
-		)
-	}
+			firstNameLower.startsWith(searchStringLower) ||
+			lastNameLower.startsWith(searchStringLower) ||
+			`${firstNameLower} ${lastNameLower}`.startsWith(searchStringLower)
+		);
+	};
 
 	return (
 		<div>
@@ -97,17 +91,17 @@ export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
 			/>
 			<List
 				disablePadding={true}
-				className='resultsList'
 				ref={resultsContainerRef}
 			>
-				{console.log('aa')}
-				{console.log(searchResults)}
 				{searchResults
-					// .filter((x, i) => i < 40 )
 					.map(({ personId, firstName, lastName }, i) => {
-						// console.log(firstName, lastName)
 						return (
-							<LazyLoad height={lazyLoadHeight} offsetTop={lazyLoadHeight * i}>
+							<LazyLoad
+								height={lazyLoadHeight}
+								offsetTop={lazyLoadHeight * i}
+								/* way more performant than CSS nth-child selector */
+								className={i % 2 ? 'odd' : 'even'}
+							>
 								<ListItem
 									button
 									onClick={handleClick}

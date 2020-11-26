@@ -133,7 +133,7 @@ export const Team = (props: ITeam) => {
 	// console.log('rendering team', id, selectedYear)
 
 	return (
-		<div>
+		<div style={{marginBottom: 6}}>
 			<Accordion
 				classes={accordionClasses}
 				// square

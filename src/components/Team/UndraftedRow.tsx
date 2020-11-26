@@ -3,7 +3,6 @@ import {
 	IconButton,
 	TableRow,
 	TableCell,
-	Popover,
 	Tooltip,
 	ClickAwayListener,
 } from '@material-ui/core'
@@ -26,7 +25,7 @@ export interface IUndraftedRowProps {
 export const UndraftedRow = (props: IUndraftedRowProps): JSX.Element => {
 	const { addPlayer, teamId, roster, selectedYear, allPlayers } = props;
 	
-	const [openTooltip, setOpenTooltip] = React.useState(false);
+	const [ openTooltip, setOpenTooltip ] = useState(false);
 	
 	const popoverClasses = usePopoverStyles();
 
@@ -54,7 +53,6 @@ export const UndraftedRow = (props: IUndraftedRowProps): JSX.Element => {
 				<TableCell className='button-cell'>
 					<Tooltip
 						title={playerSelect}
-						// title={<MockComponent />}
 						disableFocusListener
 						disableHoverListener
 						disableTouchListener
@@ -72,23 +70,11 @@ export const UndraftedRow = (props: IUndraftedRowProps): JSX.Element => {
 				</TableCell>
 			</ClickAwayListener>
 			<TableCell className='headshot-cell no-stats'>
-					<AccountCircleIcon className='mock-player-icon' />
+				<AccountCircleIcon className='mock-player-icon' />
 			</TableCell>
 			<TableCell className='name-cell no-stats'>
 				Undrafted
 			</TableCell>
 		</TableRow>
 	)
-}
-
-const MockComponent = () => {
-	console.log("mounting mock component")
-	const [ state, setState ] = useState('foo');
-	const [ state2, setState2 ] = useState('bar');
-	useEffect(() => {
-		console.log("set state to gegg")
-		setState2('geggg')
-	}, [state])
-
-	return <span>foo</span>
 }

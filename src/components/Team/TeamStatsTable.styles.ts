@@ -4,7 +4,7 @@ import { getScrollBarStyles } from '../../SharedStyles/SharedStyles';
 
 export const useTableContainerStyles = makeStyles({
     root: {
-        height: 'calc(20vh - 16px) !important',
+        height: '124px !important',
         width: '40%',
         marginLeft: 3,
         overflowY: 'scroll',
@@ -17,12 +17,14 @@ export const useTableContainerStyles = makeStyles({
         },
         '& tr': {
             width: '100%',
+            
         },
         '& td': {
             height: 30,
-            lineHeight: '30px',
+            lineHeight: '32px',
             display: 'inline-block',
-            border: 'none'
+            border: 'none',
+            paddingBottom: 1
         },
         '& .stat-label' : {
             textTransform: 'uppercase',

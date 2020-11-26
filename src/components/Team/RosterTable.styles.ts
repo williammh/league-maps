@@ -2,31 +2,30 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Block } from '@material-ui/icons';
 import { pointer } from 'd3';
 import { getScrollBarStyles } from '../../SharedStyles/SharedStyles';
+import { nbaRed, nbaBlue } from '../../Util'
 
 export const useTableContainerStyles = makeStyles({
 	root: {
-		height: 'calc(20vh - 16px) !important',
+		height: '124px !important',
 		width: '60%',
 		marginRight: 3,
 		overflowY: 'scroll',
 		overflowX: 'hidden',
 		'& table': {
-			display: 'inline-block'
+			width: '100%'
 		},
 		'& tbody': {
 			width: '100%',
-			display: 'inline-block'
 		},
 		'& tr': {
-			display: 'flex',
-			flexWrap: 'nowrap',
 			width: '100%',
+			
 		},
 		'& td': {
 			display: 'inline-block',
-			width: 30,
 			height: 30,
-			border: 'none'
+			border: 'none',
+			paddingBottom: 1
 		},
 		'& .button-cell' : {
 			width: 30,
@@ -50,16 +49,20 @@ export const useTableContainerStyles = makeStyles({
 			borderRadius: '15px',
 		},
 		'& .name-cell' : {
-			paddingLeft: 6,
-			lineHeight: '30px',
-			flex:' 1 0 auto',
+			width: 'calc(100% - 30px - 30px - 6px)',
+			lineHeight: '32px',
+			cursor: 'default',
 			overflow: 'hidden',
 			textOverflow: 'ellipsis',
-			whiteSpace: 'nowrap',
-			cursor: 'default'
+			paddingLeft: 6
 		},
-		'& :not(.undrafted-row) > .name-cell' : {
-			cursor: 'pointer'
+		'& .name-cell div' : {
+			width: '100%',
+			height: '100%',
+			overflow: 'inherit',
+			textOverflow: 'inherit',
+			whiteSpace: 'nowrap',
+			cursor: 'pointer',
 		}
 	}
 })
@@ -70,17 +73,26 @@ export const usePopoverStyles = makeStyles({
 			backgroundColor: '#fff',
 			padding: 0,
 		},
-		// ...getScrollBarStyles('.MuiList-root', 8, 200),
-		...getScrollBarStyles('.resultsList', 8, 200),
-		'& .LazyLoad:nth-child(odd)' : {
-			backgroundColor: '#FAFAFA'
-		},
-		'& .LazyLoad:nth-child(even)' : {
+		'& .MuiFormLabel-root.Mui-focused': {
+      color: nbaBlue,
+    },
+    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline' : {
+      borderColor: nbaBlue
+    },
+		...getScrollBarStyles('.MuiList-root', 8, 200),
+		'& .LazyLoad.odd': {
 			backgroundColor: '#F0F0F0'
 		},
+		'& .LazyLoad.even': {
+			backgroundColor: '#FAFAFA'
+		},
 		'& .MuiListItem-root' : {
-			height: 40,
-			color: '#000'
+			color: '#000',
+			height: 40
+		},
+		'& .MuiListItem-root:hover, & .Mui-selected' : {
+			backgroundColor: nbaBlue,
+			color: '#fff'
 		},
 	}
 })
