@@ -91,8 +91,6 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 			</>
 		)
 
-		console.log(openTooltip)
-
 		return (
 			<TableRow key={`roster-table-row-${teamId}-${personId}`}>
 				<TableCell

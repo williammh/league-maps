@@ -1,5 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { Block } from '@material-ui/icons';
+import { pointer } from 'd3';
+import { getScrollBarStyles } from '../../SharedStyles/SharedStyles';
 
 export const useTableContainerStyles = makeStyles({
 	root: {
@@ -47,14 +49,45 @@ export const useTableContainerStyles = makeStyles({
 			backgroundColor: 'black',
 			borderRadius: '15px',
 		},
-		'& :not(.undrafted-row) .name-cell' : {
+		'& .name-cell' : {
 			paddingLeft: 6,
 			lineHeight: '30px',
 			flex:' 1 0 auto',
 			overflow: 'hidden',
 			textOverflow: 'ellipsis',
 			whiteSpace: 'nowrap',
+			cursor: 'default'
+		},
+		'& :not(.undrafted-row) > .name-cell' : {
 			cursor: 'pointer'
 		}
+	}
+})
+
+export const usePopoverStyles = makeStyles({
+	popper: {
+		'& .MuiTooltip-tooltip': {
+			backgroundColor: '#fff',
+			padding: 0,
+		},
+		// ...getScrollBarStyles('.MuiList-root', 8, 200),
+		...getScrollBarStyles('.resultsList', 8, 200),
+		// '& .LazyLoad':  {
+		// 	height: 30,
+		// 	backgroundColor: 'pink'
+		// },
+		'& .LazyLoad:nth-child(odd)' : {
+			backgroundColor: '#FAFAFA'
+		},
+		'& .LazyLoad:nth-child(even)' : {
+			backgroundColor: '#F0F0F0'
+		},
+		'& .MuiListItem-root' : {
+			border: 'none',
+			margin: 0,
+			padding: 0,
+			height: 40,
+			color: '#000'
+		},
 	}
 })

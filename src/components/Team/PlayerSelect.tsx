@@ -1,5 +1,4 @@
 import React, {
-	FocusEvent,
 	useState,
 	ChangeEvent,
 	MouseEvent,
@@ -7,11 +6,10 @@ import React, {
 	useEffect,
 	useRef
 } from 'react';
-import { List, ListItem, ListItemText, Popover, TextField, Card } from '@material-ui/core'
+import { List, ListItem, ListItemText, Popover, TextField} from '@material-ui/core'
 import { Player, IPlayerSearchResult } from '../../Types/types';
 import { SignalCellularNull } from '@material-ui/icons';
 import LazyLoad from 'react-lazy-load';
-import { maxTeamSize } from '../../Util'
 
 export interface IPlayerSelectProps {
 	teamId?: number;
@@ -25,7 +23,6 @@ export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
 	const { teamId, roster, addPlayer, allPlayers } = props;
 	
 	const [ searchString, setSearchString ] = useState('');
-	const [ isFocused, setHasFocus ] = useState(false);
 	const [ searchResults, setSearchResults ] = useState(allPlayers)
 	const [ selectedIndex, setSelectedIndex ] = useState(0);
 
@@ -33,20 +30,25 @@ export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
 
 	const resultsContainerRef = useRef<HTMLUListElement>(null);
 
+	const lazyLoadHeight = 40;
+
 	useEffect(() => {
+		console.log('search string use effect !!!!!!!!!!!!!!!!!!!!!!')
 		setSearchResults(allPlayers.filter(({firstName, lastName, isActive}) => {
-			return isMatchingSearchString(firstName, lastName) && isActive !== false
+			return isMatchingSearchString(firstName, lastName) && isActive !== false;
 		}));
 		setSelectedIndex(0);
 	}, [searchString])
 
 	useEffect(() => {
-		setSelectedIndex(0);
-	}, [isFocused])
+		return () => {
+			console.log("UNMOUNTING")
+			console.log(searchResults)
+		};
+	})
 
 	const handleChange = ({target}: ChangeEvent<{value: string}>) => {
 		const { value } = target;
-		value.length > 0 && setHasFocus(true);
 		setSearchString(value);
 	}
 
@@ -62,19 +64,18 @@ export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
 			if (!rosterIds?.includes(personId)) {
 				addPlayer(personId, allPlayers);
 				setSearchString('');
-				setHasFocus(false);
 			}
 		} else if (key === 'ArrowDown') {
 			setSelectedIndex(selectedIndex < searchResults.length - 1 ? selectedIndex + 1 : searchResults.length - 1);
-			resultsContainerRef.current!.scrollTop = selectedIndex * 40 + 40
+			resultsContainerRef.current!.scrollTop = selectedIndex * lazyLoadHeight + lazyLoadHeight
 		} else if (key === 'ArrowUp') {
 			setSelectedIndex(selectedIndex > 0 ? selectedIndex - 1 : 0);
-			resultsContainerRef.current!.scrollTop = selectedIndex * 40 - 40
+			resultsContainerRef.current!.scrollTop = selectedIndex * lazyLoadHeight - lazyLoadHeight
 		}
 	}
 
 	const isMatchingSearchString = (firstName: string, lastName: string): boolean => {
-		const searchStringLower = searchString.toLowerCase()
+		const searchStringLower = searchString.toLowerCase();
 		return (
 			firstName.toLowerCase().startsWith(searchStringLower) ||
 			lastName.toLowerCase().startsWith(searchStringLower) ||
@@ -99,23 +100,26 @@ export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
 				className='resultsList'
 				ref={resultsContainerRef}
 			>
-				{searchResults.map(({ personId, firstName, lastName }, i) => {
-					return (
-						<LazyLoad height={40} offsetTop={40 * i}>
-							<ListItem
-								onClick={handleClick}
-								button
-								data-person-id={personId}
-								data-first-name={firstName}
-								data-last-name={lastName}
-								selected={selectedIndex === i && !rosterIds?.includes(personId)}
-								disabled={rosterIds?.includes(personId) || roster!.length >= maxTeamSize}
-								key={`select-${teamId}-${personId}`}
-							>
-								{firstName} {lastName}
-							</ListItem>
-						</LazyLoad>
-					)
+				{console.log('aa')}
+				{console.log(searchResults)}
+				{searchResults
+					// .filter((x, i) => i < 40 )
+					.map(({ personId, firstName, lastName }, i) => {
+						// console.log(firstName, lastName)
+						return (
+							<LazyLoad height={lazyLoadHeight} offsetTop={lazyLoadHeight * i}>
+								<ListItem
+									button
+									onClick={handleClick}
+									data-person-id={personId}
+									selected={selectedIndex === i && !rosterIds?.includes(personId)}
+									disabled={rosterIds?.includes(personId)}
+									key={`select-${teamId}-${personId}`}
+								>
+									{firstName} {lastName}
+								</ListItem>
+							</LazyLoad>
+						)
 				})}
 			</List>
 		</div>

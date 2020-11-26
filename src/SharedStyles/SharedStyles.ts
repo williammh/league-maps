@@ -1,4 +1,4 @@
-export const getScrollBarStyles = (selector: string, scrollBarWidth?: number, height?: number) => {
+export const getScrollBarStyles = (selector: string, scrollBarWidth?: number, height?: number | string) => {
   return {
     [`& ${selector}`]: {
       overflowY: 'scroll',

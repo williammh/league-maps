@@ -1,18 +1,19 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import {
 	IconButton,
 	TableRow,
 	TableCell,
 	Popover,
 	Tooltip,
+	ClickAwayListener,
 } from '@material-ui/core'
 
 import AddIcon from '@material-ui/icons/Add';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { IPlayerSearchResult, Player } from '../../Types/types';
 import { PlayerSelect } from './PlayerSelect';
-import { usePopover } from './UndraftedRow.style'
-
+import { usePopoverStyles } from './RosterTable.styles';
+import { mockComponent } from 'react-dom/test-utils';
 
 export interface IUndraftedRowProps {
 	teamId: number;
@@ -24,62 +25,52 @@ export interface IUndraftedRowProps {
 	
 export const UndraftedRow = (props: IUndraftedRowProps): JSX.Element => {
 	const { addPlayer, teamId, roster, selectedYear, allPlayers } = props;
-
-	const popoverClasses = usePopover();
 	
-	const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-	const id = open ? 'simple-popover' : undefined;
-
-	const handleBackdropClick = ({ clientX, clientY }: React.MouseEvent) => {
-		const elementsAtCoordinates = document.elementsFromPoint(clientX, clientY) as Array<HTMLElement>;
-		elementsAtCoordinates.find((element) => element instanceof HTMLButtonElement)?.click();
-	}
+	const [openTooltip, setOpenTooltip] = React.useState(false);
 	
+	const popoverClasses = usePopoverStyles();
+
+	const handleTooltipClose = (event: React.MouseEvent<Document, MouseEvent>) => {
+		setOpenTooltip(false)
+	};
+	
+	const handleTooltipOpen = (event: React.MouseEvent<HTMLElement>) => {
+		event?.stopPropagation();
+		setOpenTooltip(true);
+	};
+
+	const playerSelect = <PlayerSelect 
+		teamId={teamId}
+		roster={roster}
+		addPlayer={addPlayer}
+		key={`player-select-${teamId}`}
+		selectedYear={selectedYear}
+		allPlayers={allPlayers}
+	/>
+
 	return (
 		<TableRow className='undrafted-row'>
-			<TableCell className='button-cell'>
-				<IconButton
-					size='small'
-					onClick={handleClick}
-				>
-					<AddIcon />
-				</IconButton>
-				<Popover
-					id={id}
-					open={open}
-					anchorEl={anchorEl}
-					onClose={handleClose}
-					anchorOrigin={{
-						vertical: 'bottom',
-						horizontal: 'center',
-					}}
-					transformOrigin={{
-						vertical: 'top',
-						horizontal: 'center',
-					}}
-					classes={popoverClasses}
-					onBackdropClick={handleBackdropClick}
-				>
-        	<PlayerSelect 
-						teamId={teamId}
-						roster={roster}
-						addPlayer={addPlayer}
-						key={`player-select-${id}`}
-						selectedYear={selectedYear}
-						allPlayers={allPlayers}
-					/>
-      	</Popover>
-			</TableCell>
+			<ClickAwayListener onClickAway={handleTooltipClose}>
+				<TableCell className='button-cell'>
+					<Tooltip
+						title={playerSelect}
+						// title={<MockComponent />}
+						disableFocusListener
+						disableHoverListener
+						disableTouchListener
+						open={openTooltip}
+						interactive
+						classes={popoverClasses}
+					>
+						<IconButton
+							size='small'
+							onClick={handleTooltipOpen}
+						>
+							<AddIcon />
+						</IconButton>
+					</Tooltip>
+				</TableCell>
+			</ClickAwayListener>
 			<TableCell className='headshot-cell no-stats'>
 					<AccountCircleIcon className='mock-player-icon' />
 			</TableCell>
@@ -88,4 +79,16 @@ export const UndraftedRow = (props: IUndraftedRowProps): JSX.Element => {
 			</TableCell>
 		</TableRow>
 	)
+}
+
+const MockComponent = () => {
+	console.log("mounting mock component")
+	const [ state, setState ] = useState('foo');
+	const [ state2, setState2 ] = useState('bar');
+	useEffect(() => {
+		console.log("set state to gegg")
+		setState2('geggg')
+	}, [state])
+
+	return <span>foo</span>
 }

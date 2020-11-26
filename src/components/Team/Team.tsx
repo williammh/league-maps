@@ -119,7 +119,7 @@ export const Team = (props: ITeam) => {
 		roster.push(player);
 		teamList[index].roster = roster;
 		setTeamList([...teamList]);
-		console.log(player)
+		// console.log(player)
 	}
 
 	const removePlayer = (personId: string): void => {
@@ -130,7 +130,7 @@ export const Team = (props: ITeam) => {
 	// PersonAdd icon
 	// FilterNone (for copy)
 
-	console.log('rendering team', id, selectedYear)
+	// console.log('rendering team', id, selectedYear)
 
 	return (
 		<div>
