@@ -10,28 +10,35 @@ export const useTableContainerStyles = makeStyles({
         marginLeft: 3,
         overflowY: 'scroll',
         overflowX: 'hidden',
-        'table': {
+        '& table': {
+            width: '100%'
+        },
+        '& tbody' : {
             width: '100%',
-            minWidth: '100%'
+        },
+        '& tr': {
+            width: '100%',
         },
         '& td': {
-            textTransform: 'uppercase',
             height: 30,
-            lineHeight: '30px'
+            lineHeight: '30px',
+            display: 'inline-block',
+            border: 'none'
         },
-        '& td.stat-label' : {
-            
+        '& .stat-label' : {
+            textTransform: 'uppercase',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             textAlign: 'left',
             paddingLeft: 6,
+            width: 'calc(100% - 50px - 12px)',
         },
-        '& td.stat-value' : {
-            minWidth: 50,
+        '& .stat-value' : {
+            width: 50,
             paddingRight: 6,
-            textAlign: 'right'
+            textAlign: 'right',
         },
-        '& td.best' : {
+        '& .best' : {
             backgroundColor: nbaBlue,
             color: 'white'
         }

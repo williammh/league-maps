@@ -41,7 +41,7 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
     const barPadding = 2;
     const barHeight = 30;
     const svgHeight = teamList.length * barHeight;
-    const svgWidth = (document.querySelector('.bar-chart-container')!.clientWidth) - 160
+    const svgWidth = document.querySelector('.bar-chart-container')!.clientWidth - 160;
     const xScale = d3.scaleLinear()
       .domain([0, max || 100])
       .range([0, svgWidth]);

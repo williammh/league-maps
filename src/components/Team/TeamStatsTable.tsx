@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { appStatsContext } from '../../Contexts/AppStatsContext';
 import { settingsContext } from '../../Contexts/SettingsContext';
 import {

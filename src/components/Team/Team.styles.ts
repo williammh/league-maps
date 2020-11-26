@@ -3,7 +3,7 @@ import { getScrollBarStyles } from '../../SharedStyles/SharedStyles';
 
 export const useAccordionStyles = makeStyles({
 	root: {
-		width: 'calc(100% - 24px)',
+		maxWidth: 'calc(100% - 24px)',
 		height: isExpanded => isExpanded ? 'calc(22.5vh - 12px)' : 'auto',
 		marginTop: '0px !important',
 		marginRight: '6px !important',
@@ -13,6 +13,7 @@ export const useAccordionStyles = makeStyles({
 		paddingRight: 6,
 		paddingBottom:6,
 		paddingLeft: 6,
+		minWidth: 'fit-content;'
 	}
 })
 

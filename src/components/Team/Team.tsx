@@ -130,6 +130,8 @@ export const Team = (props: ITeam) => {
 	// PersonAdd icon
 	// FilterNone (for copy)
 
+	console.log('rendering team', id, selectedYear)
+
 	return (
 		<div>
 			<Accordion

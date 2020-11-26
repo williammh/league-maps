@@ -8,24 +8,23 @@ export const useTableContainerStyles = makeStyles({
 		marginRight: 3,
 		overflowY: 'scroll',
 		overflowX: 'hidden',
-		'& .table': {
+		'& table': {
 			display: 'inline-block'
 		},
-		'& .tbody': {
-			// maxWidth: '100%',
+		'& tbody': {
 			width: '100%',
 			display: 'inline-block'
 		},
-		'& .trow': {
+		'& tr': {
 			display: 'flex',
 			flexWrap: 'nowrap',
-			maxWidth: '100%',
-			width: '100%'
+			width: '100%',
 		},
-		'& .cell': {
+		'& td': {
 			display: 'inline-block',
 			width: 30,
 			height: 30,
+			border: 'none'
 		},
 		'& .button-cell' : {
 			width: 30,
@@ -47,14 +46,10 @@ export const useTableContainerStyles = makeStyles({
 			fill: 'white',
 			backgroundColor: 'black',
 			borderRadius: '15px',
-			display: 'flex'
 		},
 		'& .name-cell' : {
 			paddingLeft: 6,
 			lineHeight: '30px',
-			// width: 'calc(100% - 60px)',
-			// maxWidth: 'calc(100% - 60px)',
-
 			flex:' 1 0 auto',
 			overflow: 'hidden',
 			textOverflow: 'ellipsis',

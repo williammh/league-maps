@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
 	IconButton,
 	Table,
@@ -29,19 +29,26 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 
 	const tableContainerClasses = useTableContainerStyles();
 
-	const truncatePlayerName = (firstName: string, lastName: string): string => {
-		// to do
-		// http://www.java2s.com/Tutorials/Javascript/Javascript_Style_How_to/Text/Detect_text_overflow.htm
-		const maxLength = "Giannis Antetokounmpo".length
-		return `${firstName} ${lastName}`.length >= maxLength ? `${firstName[0]}. ${lastName}` : `${firstName} ${lastName}`;
-	}
+	const nameCellRef = useRef<HTMLTableDataCellElement>(null);
+
+	useEffect(() => {
+		const nameCells = document.querySelectorAll(`.roster-table-${teamId} .name-cell`);
+		nameCells.forEach(nameCell => {
+			console.log(nameCell.innerHTML)
+			if (nameCell.scrollWidth > nameCell.clientWidth) {
+				const fullName = nameCell.innerHTML.split(' ');
+				fullName[0] = `${fullName[0][0]}. `;
+				nameCell.innerHTML = fullName.join('').toString();
+			}
+		})
+	})
 
 	const playerRows = roster.map((player: Player, i) => {
 		const { personId, firstName, lastName } = player;
 		return (
-			<TableRow component='div' className='trow' key={`roster-table-row-${teamId}-${personId}`}>
+			<TableRow key={`roster-table-row-${teamId}-${personId}`}>
 				<TableCell
-					className='cell button-cell'
+					className='button-cell'
 				>
 					<IconButton
 						onClick={() => removePlayer(personId)}
@@ -51,7 +58,7 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 					</IconButton>
 				</TableCell>
 				<TableCell
-					className={`cell headshot-cell ${getSeasonStats(player, selectedYear).min > 0 ? '' : 'no-stats' }`}
+					className={`headshot-cell ${getSeasonStats(player, selectedYear).min > 0 ? '' : 'no-stats' }`}
 				>
 					<Avatar
 						src={`https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${personId}.png`}
@@ -59,10 +66,10 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 					/>
 				</TableCell>
 				<TableCell
-					className={`cell name-cell ${getSeasonStats(player, selectedYear).min > 0 ? '' : 'no-stats' }`}
+					ref={nameCellRef}
+					className={`name-cell ${getSeasonStats(player, selectedYear).min > 0 ? '' : 'no-stats' }`}
 				>
 					{firstName} {lastName}
-					{/* {truncatePlayerName(firstName, lastName)} */}
 				</TableCell>
 			</TableRow>
 		)
@@ -85,8 +92,8 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 
 	return (
 		<TableContainer classes={tableContainerClasses}>	
-			<Table padding='none' size='small' className='table'>
-				<TableBody className='tbody'>
+			<Table padding='none' size='small' className={`roster-table-${teamId}`}>
+				<TableBody>
 					{playerRows}
 					{undraftedRows}
 				</TableBody>	
