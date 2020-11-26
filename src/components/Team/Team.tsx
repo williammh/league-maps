@@ -22,7 +22,7 @@ import {
 	getPlayerStats,
 	maxTeamSize,
 	calcRelativeStatsV2,
-	calcTotalStatsArray,
+	calcStatsArray,
 } from '../../Util';
 import { RosterTable } from './RosterTable'
 import { TeamStatsTable } from './TeamStatsTable';
@@ -57,7 +57,7 @@ export const Team = (props: ITeam) => {
 	const roster = teamList[index].roster;
 	const color = teamList[index].color;
 	const teamStats: ITeamStats = calcTotalStats(roster, selectedYear as number);
-	const totalStatsArray: Array<number> = calcTotalStatsArray(teamStats).map(({ total }: IStatCategory) => total);
+	const totalStatsArray: Array<number> = calcStatsArray(teamStats).map(({ total }: IStatCategory) => total);
 
 	useEffect(() => {
 		teamList[index].teamStats = calcTotalStats(roster, selectedYear as number);

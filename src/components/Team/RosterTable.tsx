@@ -6,13 +6,17 @@ import {
 	TableRow,
 	TableCell,
 	TableContainer,
-	Avatar
+	Avatar,
+	Tooltip,
+	ClickAwayListener,
+	Card
 } from '@material-ui/core'
-import { IPlayerSearchResult, Player } from '../../Types/types';
+import { IPlayerSearchResult, IStatCategory, Player } from '../../Types/types';
 import { useTableContainerStyles } from './RosterTable.styles';
-import { maxTeamSize, getSeasonStats } from '../../Util';
+import { maxTeamSize, getSeasonStats, calcStatsArray } from '../../Util';
 import { UndraftedRow } from './UndraftedRow'
 import RemoveIcon from '@material-ui/icons/Remove';
+import { useTooltipStyles } from './TeamStatsTable.styles';
 
 
 export interface IRosterTableProps {
@@ -27,24 +31,68 @@ export interface IRosterTableProps {
 export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 	const { teamId, roster, removePlayer, addPlayer, selectedYear, allPlayers } = props;
 
+	const [openTooltip, setOpenTooltip] = React.useState<number | null>(null);
+
+	const handleTooltipClose = (event: React.MouseEvent<Document, MouseEvent>) => {
+		event?.stopPropagation();
+		setOpenTooltip(null)
+	};
+	
+	const handleTooltipOpen = (event: React.MouseEvent<HTMLElement>) => {
+		event?.stopPropagation();
+		const { index } = event.currentTarget.dataset;
+		setOpenTooltip(parseInt(index!))
+  };
+
 	const tableContainerClasses = useTableContainerStyles();
+	const tooltipClasses = useTooltipStyles();
 
-	const nameCellRef = useRef<HTMLTableDataCellElement>(null);
-
+	// only display player's first initial if displaying full name causes text overflow
 	useEffect(() => {
-		const nameCells = document.querySelectorAll(`.roster-table-${teamId} .name-cell`);
+		const nameCells = document.querySelectorAll(`.roster-table-${teamId} .name-cell div`);
 		nameCells.forEach(nameCell => {
-			console.log(nameCell.innerHTML)
 			if (nameCell.scrollWidth > nameCell.clientWidth) {
 				const fullName = nameCell.innerHTML.split(' ');
 				fullName[0] = `${fullName[0][0]}. `;
 				nameCell.innerHTML = fullName.join('').toString();
 			}
 		})
-	})
+	}, [roster.length])
 
 	const playerRows = roster.map((player: Player, i) => {
 		const { personId, firstName, lastName } = player;
+
+		const playerSeasonStats = getSeasonStats(player, selectedYear);
+		const playerStatsArray = calcStatsArray(playerSeasonStats);
+		
+		const playerTooltip = (
+			<>
+				<div className='player-label'>
+					<p>{firstName} {lastName}</p>
+					<p>{selectedYear}-{selectedYear + 1}</p>
+					<p>Regular Season</p>
+				</div>
+				<Table padding='none' size='small'>
+				<TableBody>
+					{playerStatsArray.map(({ label, total }: IStatCategory) => {
+						return (
+							<TableRow key={`total-stats-row-${teamId}-${label}`}>
+								<TableCell>
+									{label}
+								</TableCell>
+								<TableCell className='stat-value'>
+									{total.toFixed(1)}
+								</TableCell>
+							</TableRow>
+						)
+					})}
+				</TableBody>
+			</Table>
+			</>
+		)
+
+		console.log(openTooltip)
+
 		return (
 			<TableRow key={`roster-table-row-${teamId}-${personId}`}>
 				<TableCell
@@ -58,7 +106,7 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 					</IconButton>
 				</TableCell>
 				<TableCell
-					className={`headshot-cell ${getSeasonStats(player, selectedYear).min > 0 ? '' : 'no-stats' }`}
+					className={`headshot-cell ${playerSeasonStats.min > 0 ? '' : 'no-stats' }`}
 				>
 					<Avatar
 						src={`https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${personId}.png`}
@@ -66,10 +114,24 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 					/>
 				</TableCell>
 				<TableCell
-					ref={nameCellRef}
-					className={`name-cell ${getSeasonStats(player, selectedYear).min > 0 ? '' : 'no-stats' }`}
+					className={`name-cell ${playerSeasonStats.min > 0 ? '' : 'no-stats' }`}
 				>
-					{firstName} {lastName}
+					<ClickAwayListener onClickAway={handleTooltipClose}>
+						<Tooltip
+							title={playerTooltip}
+							arrow
+							disableFocusListener
+							disableHoverListener
+							disableTouchListener
+							open={openTooltip === i}
+							interactive
+							classes={tooltipClasses}
+						>
+							<div onClick={handleTooltipOpen} data-index={i}>
+								{firstName} {lastName}
+							</div>
+						</Tooltip>
+					</ClickAwayListener>
 				</TableCell>
 			</TableRow>
 		)

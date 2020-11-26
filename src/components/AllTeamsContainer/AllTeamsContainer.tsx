@@ -11,8 +11,6 @@ export const AllTeamsContainer: FunctionComponent = () => {
 	const { allPlayers, setAllPlayers } = useContext(allPlayersContext);
 	const { selectedYear } = useContext(settingsContext)
 
-	console.log('rednering teams container', selectedYear)
-
 	useEffect(() => {
 		(async (): Promise<void> => {
 			setAllPlayers(await getAllPlayers(selectedYear as number));

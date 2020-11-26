@@ -181,10 +181,9 @@ export const calcTotalStats = (roster: Array<Player>, selectedYear: number = 201
 	return result;
 }
 
-export const calcTotalStatsArray = (statsObject: ITeamStats, selectedStats?: any): Array<IStatCategory> => {
+export const calcStatsArray = (statsObject: ITeamStats): Array<IStatCategory> => {
 	const result: Array<IStatCategory> = [];
 	for (let key in statsObject) {
-		if(selectedStats && !selectedStats[key]) { continue }
 		result.push({label: key, total: statsObject[key]})
 	}
 	return result;

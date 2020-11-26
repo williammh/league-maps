@@ -47,13 +47,14 @@ export const useTableContainerStyles = makeStyles({
 			backgroundColor: 'black',
 			borderRadius: '15px',
 		},
-		'& .name-cell' : {
+		'& :not(.undrafted-row) .name-cell' : {
 			paddingLeft: 6,
 			lineHeight: '30px',
 			flex:' 1 0 auto',
 			overflow: 'hidden',
 			textOverflow: 'ellipsis',
 			whiteSpace: 'nowrap',
+			cursor: 'pointer'
 		}
 	}
 })

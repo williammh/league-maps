@@ -3,7 +3,8 @@ import {
 	IconButton,
 	TableRow,
 	TableCell,
-	Popover
+	Popover,
+	Tooltip,
 } from '@material-ui/core'
 
 import AddIcon from '@material-ui/icons/Add';
@@ -45,7 +46,7 @@ export const UndraftedRow = (props: IUndraftedRowProps): JSX.Element => {
 	}
 	
 	return (
-		<TableRow>
+		<TableRow className='undrafted-row'>
 			<TableCell className='button-cell'>
 				<IconButton
 					size='small'

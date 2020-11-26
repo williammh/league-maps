@@ -9,7 +9,7 @@ import {
 	TableContainer
 } from '@material-ui/core'
 import { useTableContainerStyles } from './TeamStatsTable.styles';
-import { calcTotalStatsArray, isBestInCategory } from '../../Util';
+import { calcStatsArray, isBestInCategory } from '../../Util';
 import { IStatCategory, ITeamStats } from '../../Types/types';
 import { select } from 'd3';
 
@@ -24,7 +24,7 @@ export const TeamStatsTable = (props: ITeamStatsTableProps): JSX.Element => {
 	const { appStats } = useContext(appStatsContext);
 	const { selectedStats } = useContext(settingsContext);
 
-	const teamStatsArray: Array<IStatCategory> = calcTotalStatsArray(teamStats)
+	const teamStatsArray: Array<IStatCategory> = calcStatsArray(teamStats)
     .filter(({label}: IStatCategory) => selectedStats[label]);
 
 	const tableContainerClasses = useTableContainerStyles();

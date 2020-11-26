@@ -1,7 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { nbaBlue } from '../../Util'
-
-
+import { nbaBlue } from '../../Util';
+import { getScrollBarStyles } from '../../SharedStyles/SharedStyles';
 
 export const useTableContainerStyles = makeStyles({
     root: {
@@ -41,6 +40,42 @@ export const useTableContainerStyles = makeStyles({
         '& .best' : {
             backgroundColor: nbaBlue,
             color: 'white'
+        }
+    }
+})
+
+export const useTooltipStyles = makeStyles({
+    popper: {
+        ...getScrollBarStyles('.MuiTooltip-tooltip'),
+    },
+    tooltip: {
+        paddingTop: 0,
+        overflowY: 'scroll',
+        color: '#000',
+        maxHeight: '50vh',
+        backgroundColor: 'white',
+        '& .player-label': {
+            position: 'sticky',
+            top: 0,
+            backgroundColor: 'white',
+            padding: '2px 0px'
+        },
+        '& p' : {
+            margin: '6px 0px',
+            fontSize: 14
+        },
+        '& tr:nth-child(odd)' : {
+			backgroundColor: '#FAFAFA'
+		},
+		'& tr:nth-child(even)' : {
+			backgroundColor: '#F0F0F0'
+		},
+        '& td' : {
+            border: 'none',
+            textTransform: 'uppercase'
+        },
+        '& .stat-value' : {
+            textAlign: 'right'
         }
     }
 })
