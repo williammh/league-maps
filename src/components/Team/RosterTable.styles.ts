@@ -72,10 +72,6 @@ export const usePopoverStyles = makeStyles({
 		},
 		// ...getScrollBarStyles('.MuiList-root', 8, 200),
 		...getScrollBarStyles('.resultsList', 8, 200),
-		// '& .LazyLoad':  {
-		// 	height: 30,
-		// 	backgroundColor: 'pink'
-		// },
 		'& .LazyLoad:nth-child(odd)' : {
 			backgroundColor: '#FAFAFA'
 		},
@@ -83,9 +79,6 @@ export const usePopoverStyles = makeStyles({
 			backgroundColor: '#F0F0F0'
 		},
 		'& .MuiListItem-root' : {
-			border: 'none',
-			margin: 0,
-			padding: 0,
 			height: 40,
 			color: '#000'
 		},
