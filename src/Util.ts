@@ -1,7 +1,6 @@
 import {
-	ITeamStats,
-	IStatCategory,
-	IRelativeStats,
+	IStatDictionary,
+	IStat,
 	IRelativeStatsV2,
 	ITeam,
 	IPlayerSearchResult,
@@ -128,9 +127,9 @@ export const defaultCategories = [
 	'topg',
 	'bpg',
 	'spg',
-	'fgm',
-	'tpm',
-	'ftm'
+	'fgmpg',
+	'tpmpg',
+	'ftmpg'
 ];
 
 export const nbaRed = '#c8102e';
@@ -167,9 +166,18 @@ export const getPlayerStats = async (personId: string): Promise<IStatSearchResul
 	};
 }
 
-export const calcTotalStats = (roster: Array<Player>, selectedYear: number = 2019): ITeamStats => {
-	const result: ITeamStats = {};
-	statCategories
+export const getSeasonStats = (player: Player, selectedYear: number = 2019): IStatDictionary => {
+	const selectedStats = player.stats.regularSeason.season
+		.find((season) => season.seasonYear === selectedYear)?.total;
+	return selectedStats ?? { min: 0 };
+}
+
+export const calcTeamStats = (roster: Array<Player>, selectedYear: number = 2019): IStatDictionary => {
+	const result: IStatDictionary = {};
+
+	const allStatCategories = [...statCategories, ...calculatedCategories];
+
+	allStatCategories
 		.filter(category => !excludeCategories.includes(category))
 		.forEach(category => result[category] = 0);
 	roster.forEach((player): void => {
@@ -181,41 +189,21 @@ export const calcTotalStats = (roster: Array<Player>, selectedYear: number = 201
 	return result;
 }
 
-export const calcStatsArray = (statsObject: ITeamStats): Array<IStatCategory> => {
-	const result: Array<IStatCategory> = [];
-	for (let key in statsObject) {
-		result.push({label: key, total: statsObject[key]})
+export const calcStatsArray = (statsObject: IStatDictionary): Array<IStat> => {
+	const result: Array<IStat> = [];
+	for (let category in statsObject) {
+		result.push({category, value: statsObject[category]})
 	}
 	return result;
 }
 
-export const calcRelativeStats = (teamList: Array<ITeam>, categories: Array<string> = statCategories): IRelativeStats => {
-	const result: IRelativeStats = {};
-	const allTotalStats = calcAllTotalStats(teamList, categories);
-	
-	categories.forEach(category => {
-		result[category] = {
-			min: 0,
-			median: 0,
-			max: 0
-		}
-	});
-	
-	for(let category in allTotalStats) {
-		result[category].min = calcMin(allTotalStats[category])
-		result[category].max = calcMax(allTotalStats[category])
-		result[category].median = calcMedian(allTotalStats[category])
-	}
-	return result;
-}
-
-export const calcRelativeStatsV2 = (teamList: Array<ITeam>, categories: Array<string> = statCategories): IRelativeStatsV2 => {
+export const calcRelativeStatsV2 = (teamList: Array<ITeam>): IRelativeStatsV2 => {
 	const result: IRelativeStatsV2 = {
 		min: {},
 		median: {},
 		max: {}
 	};
-	const allTotalStats: {[key: string]: Array<number>} = calcAllTotalStats(teamList, categories);
+	const allTotalStats: {[key: string]: Array<number>} = calcAllTotalStats(teamList);
 
 	for(let category in allTotalStats) {
 		result.min[category] = calcMin(allTotalStats[category])
@@ -226,8 +214,12 @@ export const calcRelativeStatsV2 = (teamList: Array<ITeam>, categories: Array<st
 	return result;
 };
 
-export const calcAllTotalStats = (teamList: Array<ITeam>, categories: Array<string>): {[key: string]: Array<number>} => {
+export const calcAllTotalStats = (teamList: Array<ITeam>): {[key: string]: Array<number>} => {
 	const result: {[key: string]: Array<number>} = {};
+
+	const categories = Object.keys(teamList[0].teamStats)
+
+	console.log(categories)
 
 	categories.forEach(category => {
 		result[category] = [];
@@ -272,22 +264,22 @@ export const isBestInCategory = (value: number, category: string, best: IRelativ
 	}
 }
 
-export const getSeasonStats = (player: Player, selectedYear: number = 2019): {[key: string]: number} => {
-	const selectedStats = player.stats.regularSeason.season
-		.find((season) => season.seasonYear === selectedYear)?.total;
-	return selectedStats ?? { min: 0 };
-}
+/**
+ * For whatever reason, data.nba.net provides statistics as strings instead of numbers.
+ * This function takes a player's stat object, and returns a new object with all
+ * strings converted into numbers. 
+ */ 
+export const convertStatStringsToNumbers = ({ latest, regularSeason }: any): any => {
+	const latestCopy = { ...latest };
+	const regularSeasonCopy = { ...regularSeason };
+	const { season } = regularSeasonCopy;
 
-export const convertStatsToNumbers = (input: any): IStatSearchResult => {
-	const { latest, regularSeason } = input
-	const result = {}
-	for (const stat in latest) {
-		if (typeof latest[stat] === 'string') {
-			latest[stat] = latest[stat] !== '-1' ? parseFloat(latest[stat] as string) : 0
+	for (const stat in latestCopy) {
+		if (typeof latestCopy[stat] === 'string') {
+			latestCopy[stat] = latestCopy[stat] !== '-1' ? parseFloat(latestCopy[stat] as string) : 0
 		} 
 	}
-
-	const { season } = regularSeason;
+	
 	for (const year in season) {
 		for (const category in season[year].total) {
 			const stat = season[year].total[category];
@@ -296,5 +288,33 @@ export const convertStatsToNumbers = (input: any): IStatSearchResult => {
 			}
 		}
 	}
-	return result as any;
+
+	const result = { latest: latestCopy, regularSeason: regularSeasonCopy };
+	return result;
+}
+
+export const addCalculatedStats = ({latest, regularSeason}: any): any => {
+
+	latest.fgmpg = latest.fgm / latest.gamesPlayed;
+	latest.fgapg = latest.fga / latest.gamesPlayed;
+	latest.tpmpg = latest.tpm / latest.gamesPlayed;
+	latest.tpapg = latest.tpa / latest.gamesPlayed;
+	latest.ftmpg = latest.ftm / latest.gamesPlayed;
+	latest.ftapg = latest.fta / latest.gamesPlayed;
+	latest.pfpg = latest.pFouls / latest.gamesPlayed;
+
+	const { season } = regularSeason;
+
+	for (const year in season) {
+		season[year].total.fgmpg = season[year].total.fgm / season[year].total.gamesPlayed;
+		season[year].total.fgapg = season[year].total.fga / season[year].total.gamesPlayed;
+		season[year].total.tpmpg = season[year].total.tpm / season[year].total.gamesPlayed;
+		season[year].total.tpapg = season[year].total.tpa / season[year].total.gamesPlayed;
+		season[year].total.ftmpg = season[year].total.ftm / season[year].total.gamesPlayed;
+		season[year].total.ftapg = season[year].total.fta / season[year].total.gamesPlayed;
+		season[year].total.pfpg = season[year].total.pFouls / season[year].total.gamesPlayed;
+	}
+
+	const result = { latest, regularSeason };
+	return result;
 }

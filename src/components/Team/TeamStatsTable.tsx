@@ -10,12 +10,12 @@ import {
 } from '@material-ui/core'
 import { useTableContainerStyles } from './TeamStatsTable.styles';
 import { calcStatsArray, isBestInCategory } from '../../Util';
-import { IStatCategory, ITeamStats } from '../../Types/types';
+import { IStat, IStatDictionary } from '../../Types/types';
 import { select } from 'd3';
 
 export interface ITeamStatsTableProps {
 	teamId: number;
-	teamStats: ITeamStats;
+	teamStats: IStatDictionary;
 }
 
 export const TeamStatsTable = (props: ITeamStatsTableProps): JSX.Element => {
@@ -24,8 +24,8 @@ export const TeamStatsTable = (props: ITeamStatsTableProps): JSX.Element => {
 	const { appStats } = useContext(appStatsContext);
 	const { selectedStats } = useContext(settingsContext);
 
-	const teamStatsArray: Array<IStatCategory> = calcStatsArray(teamStats)
-    .filter(({label}: IStatCategory) => selectedStats[label]);
+	const teamStatsArray: Array<IStat> = calcStatsArray(teamStats)
+    .filter(({category}: IStat) => selectedStats[category]);
 
 	const tableContainerClasses = useTableContainerStyles();
 
@@ -33,16 +33,16 @@ export const TeamStatsTable = (props: ITeamStatsTableProps): JSX.Element => {
 		<TableContainer classes={tableContainerClasses}>
 			<Table padding='none' size='small'>
 				<TableBody>
-					{teamStatsArray.map(({ label, total }: IStatCategory) => {
+					{teamStatsArray.map(({ category, value }: IStat) => {
 						return (
-							<TableRow key={`total-stats-row-${teamId}-${label}`}>
+							<TableRow key={`total-stats-row-${teamId}-${category}`}>
 								<TableCell className='stat-label'>
-									{label}
+									{category}
 								</TableCell>
 								<TableCell
-									className={`stat-value ${isBestInCategory(total, label, appStats) ? 'best' : ''}`}
+									className={`stat-value ${isBestInCategory(value, category, appStats) ? 'best' : ''}`}
 								>
-									{total.toFixed(1)}
+									{value.toFixed(1)}
 								</TableCell>
 							</TableRow>
 						)

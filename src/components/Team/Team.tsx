@@ -12,17 +12,19 @@ import {
 	Grid,
 	IconButton,
 } from '@material-ui/core'
-import { IStatCategory, ITeam, ITeamStats } from '../../Types/types';
+import { IStat, ITeam, IStatDictionary } from '../../Types/types';
 import { PlayerSelect } from './PlayerSelect';
 import { teamListContext } from '../../Contexts/TeamListContext';
 import { appStatsContext } from '../../Contexts/AppStatsContext';
 import { settingsContext } from '../../Contexts/SettingsContext';
 import { 
-	calcTotalStats,
+	calcTeamStats,
 	getPlayerStats,
 	maxTeamSize,
 	calcRelativeStatsV2,
 	calcStatsArray,
+	convertStatStringsToNumbers,
+	addCalculatedStats
 } from '../../Util';
 import { RosterTable } from './RosterTable'
 import { TeamStatsTable } from './TeamStatsTable';
@@ -48,7 +50,7 @@ export const Team = (props: ITeam) => {
 	const { setAppStats } = useContext(appStatsContext);
 	const { selectedYear } = useContext(settingsContext);
 
-	const accordionClasses = useAccordionStyles(isExpanded);
+	const accordionClasses = useAccordionStyles();
 	const accordionSummaryClasses = useAccordionSummaryStyles();
 	const accordionDetailClasses = useAccordionDetailStyles();
 	const gridClasses = useGridStyles();
@@ -56,11 +58,11 @@ export const Team = (props: ITeam) => {
 	const index = teamList.findIndex(team => team.id === id);
 	const roster = teamList[index].roster;
 	const color = teamList[index].color;
-	const teamStats: ITeamStats = calcTotalStats(roster, selectedYear as number);
-	const totalStatsArray: Array<number> = calcStatsArray(teamStats).map(({ total }: IStatCategory) => total);
+	const teamStats: IStatDictionary = calcTeamStats(roster, selectedYear as number);
+	const totalStatsArray: Array<number> = calcStatsArray(teamStats).map(({ value }: IStat) => value);
 
 	useEffect(() => {
-		teamList[index].teamStats = calcTotalStats(roster, selectedYear as number);
+		teamList[index].teamStats = calcTeamStats(roster, selectedYear as number);
 		setTeamList([...teamList]);
 	}, [roster.length, selectedYear])
 
@@ -85,36 +87,17 @@ export const Team = (props: ITeam) => {
 
 	const addPlayer = async (personId: string, allPlayers: Array<IPlayerSearchResult>): Promise<void> => {
 		const { firstName, lastName } = allPlayers.find(player => player.personId === personId)!;
-		const { latest, regularSeason } = (await getPlayerStats(personId)).stats;
-		
-		for (const stat in latest) {
-			if (typeof latest[stat] === 'string') {
-				latest[stat] = latest[stat] !== '-1' ? parseFloat(latest[stat] as string) : 0
-			} 
-		}
+		const statStringObj = (await getPlayerStats(personId)).stats;
+		const stats = convertStatStringsToNumbers(statStringObj)
+		const calculatedStats = addCalculatedStats(stats)
 
-		const { season } = regularSeason;
-		for (const year in season) {
-			for (const category in season[year].total) {
-				const stat = season[year].total[category];
-				if (typeof stat === 'string') {
-					season[year].total[category] = stat !== '-1' ? parseFloat(stat) : 0
-				}
-			}
-		}
-
-		const stats = {
-			latest,
-			regularSeason: {
-				season
-			}
-		}
+		console.log(calculatedStats);
 
 		const player: Player = {
 			personId,
 			firstName,
 			lastName,
-			stats
+			stats: calculatedStats
 		};
 		roster.push(player);
 		teamList[index].roster = roster;

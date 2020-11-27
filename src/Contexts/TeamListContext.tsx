@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ITeam } from '../Types/types';
-import { calcTotalStats } from '../Util';
+import { calcTeamStats } from '../Util';
 
 const teamListContext = React.createContext({} as ITeamContext);
 
@@ -20,13 +20,13 @@ const TeamListContextProvider = (props: ContextProviderProps) => {
 		{
 			id: 1,
 			roster: [],
-			teamStats: calcTotalStats([]),
+			teamStats: calcTeamStats([]),
 			allPlayers: []
 		},
 		{
 			id: 2,
 			roster: [],
-			teamStats: calcTotalStats([]),
+			teamStats: calcTeamStats([]),
 			allPlayers: []
 		}
 	]
@@ -39,7 +39,7 @@ const TeamListContextProvider = (props: ContextProviderProps) => {
 			{
 				id: (teamList[teamList.length - 1]?.id ?? 0) + 1,
 				roster: [],
-				teamStats: calcTotalStats([]),
+				teamStats: calcTeamStats([]),
 				allPlayers: []
 			}
 		])
