@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core'
 import { IPlayerSearchResult, IStat, Player } from '../../Types/types';
 import { useTableContainerStyles } from './RosterTable.styles';
-import { maxTeamSize, getSeasonStats, calcStatsArray } from '../../Util';
+import { maxTeamSize, getSeasonStats, calcStatsArray } from '../../Util/Util';
 import { UndraftedRow } from './UndraftedRow'
 import RemoveIcon from '@material-ui/icons/Remove';
 import { useTooltipStyles } from './TeamStatsTable.styles';
@@ -34,12 +34,10 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 	const [openTooltip, setOpenTooltip] = React.useState<number | null>(null);
 
 	const handleTooltipClose = (event: React.MouseEvent<Document, MouseEvent>) => {
-		event?.stopPropagation();
 		setOpenTooltip(null)
 	};
 	
 	const handleTooltipOpen = (event: React.MouseEvent<HTMLElement>) => {
-		event?.stopPropagation();
 		const { index } = event.currentTarget.dataset;
 		setOpenTooltip(parseInt(index!))
   };
@@ -73,21 +71,21 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 					<p>Regular Season</p>
 				</div>
 				<Table padding='none' size='small'>
-				<TableBody>
-					{playerStatsArray.map(({ category, value }: IStat) => {
-						return (
-							<TableRow key={`total-stats-row-${teamId}-${category}`}>
-								<TableCell>
-									{category}
-								</TableCell>
-								<TableCell className='stat-value'>
-									{value.toFixed(1)}
-								</TableCell>
-							</TableRow>
-						)
-					})}
-				</TableBody>
-			</Table>
+					<TableBody>
+						{playerStatsArray.map(({ category, value }: IStat) => {
+							return (
+								<TableRow key={`total-stats-row-${teamId}-${category}`}>
+									<TableCell>
+										{category}
+									</TableCell>
+									<TableCell className='stat-value'>
+										{value.toFixed(1)}
+									</TableCell>
+								</TableRow>
+							)
+						})}
+					</TableBody>
+				</Table>
 			</>
 		)
 

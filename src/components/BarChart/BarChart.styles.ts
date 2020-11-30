@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { nbaBlue } from '../../Util';
+import { nbaBlue } from '../../Util/Util';
 
 export const chartCardPadding = 6
 export const chartCardMargin = 6;

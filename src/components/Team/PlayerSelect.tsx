@@ -97,6 +97,7 @@ export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
 					.map(({ personId, firstName, lastName }, i) => {
 						return (
 							<LazyLoad
+								key={`lazyload-${teamId}-${personId}`}
 								height={lazyLoadHeight}
 								offsetTop={lazyLoadHeight * i}
 								/* way more performant than CSS nth-child selector */
@@ -108,7 +109,6 @@ export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
 									data-person-id={personId}
 									selected={selectedIndex === i && !rosterIds?.includes(personId)}
 									disabled={rosterIds?.includes(personId)}
-									key={`select-${teamId}-${personId}`}
 								>
 									{firstName} {lastName}
 								</ListItem>

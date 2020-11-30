@@ -25,7 +25,7 @@ import {
 	calcStatsArray,
 	convertStatStringsToNumbers,
 	addCalculatedStats
-} from '../../Util';
+} from '../../Util/Util';
 import { RosterTable } from './RosterTable'
 import { TeamStatsTable } from './TeamStatsTable';
 import { 
@@ -88,21 +88,24 @@ export const Team = (props: ITeam) => {
 	const addPlayer = async (personId: string, allPlayers: Array<IPlayerSearchResult>): Promise<void> => {
 		const { firstName, lastName } = allPlayers.find(player => player.personId === personId)!;
 		const statStringObj = (await getPlayerStats(personId)).stats;
-		const stats = convertStatStringsToNumbers(statStringObj)
-		const calculatedStats = addCalculatedStats(stats)
-
-		console.log(calculatedStats);
+		const stats = convertStatStringsToNumbers(statStringObj);
+		stats.latest = addCalculatedStats(stats.latest);
+		stats.regularSeason.season = stats.regularSeason.season.map((season: {total: IStatDictionary}) => {
+			season.total = addCalculatedStats(season.total);
+			return season;
+		});
 
 		const player: Player = {
 			personId,
 			firstName,
 			lastName,
-			stats: calculatedStats
+			stats
 		};
+
 		roster.push(player);
 		teamList[index].roster = roster;
 		setTeamList([...teamList]);
-		// console.log(player)
+		console.log(player)
 	}
 
 	const removePlayer = (personId: string): void => {

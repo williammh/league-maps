@@ -10,7 +10,7 @@ import { useAppGridStyles } from './App.styles';
 import { SettingsButton } from './components/SettingsButton/SettingsButton';
 import { Visualizations } from './components/Visualizations/Visualizations';
 import { SeasonSelect } from './components/SeasonSelect/SeasonSelect';
-import { nbaBlue } from './Util'
+import { nbaBlue } from './Util/Util'
 
 function App() {
 
@@ -35,7 +35,7 @@ function App() {
                 <Grid
                   container
                   direction='row'
-                  style={{height: '10vh',}}
+                  className='top-bar'
                   alignItems='center'
                   justify='space-between'
                 >
@@ -44,7 +44,7 @@ function App() {
                       <SettingsButton />
                       <SeasonSelect />
                     </div>
-                    <h1 style={{color: nbaBlue, margin: '0px 12px 0px 0px'}}>www.leaguemaps.com</h1>
+                    <h1>www.leaguemaps.com</h1>
                 </Grid>
               </Grid>
 

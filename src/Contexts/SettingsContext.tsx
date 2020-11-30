@@ -1,18 +1,21 @@
 import React, {
-	Dispatch, SetStateAction, useEffect } from 'react';
+	Dispatch,
+	SetStateAction,
+	useEffect,
+	useState
+} from 'react';
 import {
-	statCategories,
+	providedCategories,
 	calculatedCategories,
-	excludeCategories,
+	excludedCategories,
 	defaultCategories
- } from '../Util'
+ } from '../Util/StatCategories'
 
 const settingsContext = React.createContext({} as ISettingsContext);
 
 interface ContextProviderProps {
   children: React.ReactNode;
 }
-
 
 interface ISettingsContext {
 	selectedStats: { [key: string]: boolean };
@@ -25,21 +28,21 @@ const SettingsContextProvider = (props: ContextProviderProps) => {
 	const defaultSelectedStats: any = {};
 	const allCategories = [
 		...defaultCategories,
-		...statCategories,
+		...providedCategories,
 		...calculatedCategories,
 	];
 	allCategories
 		/** remove duplicates, seasonStageId, and seasonYear */ 
 		.filter((category, index) => (
-			allCategories.indexOf(category) === index && !excludeCategories.includes(category)
+			allCategories.indexOf(category) === index && !excludedCategories.includes(category)
 		))
 		.forEach(category => (
 			defaultSelectedStats[category] = defaultCategories.includes(category)
 		));
 
-	const [ selectedStats, setSelectedStats ] = React.useState(defaultSelectedStats);
+	const [ selectedStats, setSelectedStats ] = useState(defaultSelectedStats);
 
-	const [ selectedYear, setSelectedYear ] = React.useState((new Date()).getFullYear());
+	const [ selectedYear, setSelectedYear ] = useState((new Date()).getFullYear());
 
 	useEffect(() => {
 		(async (): Promise<void> => {

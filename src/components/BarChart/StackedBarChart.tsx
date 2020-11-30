@@ -5,7 +5,7 @@ import { appStatsContext } from '../../Contexts/AppStatsContext';
 import { teamListContext } from '../../Contexts/TeamListContext';
 import { settingsContext } from '../../Contexts/SettingsContext';
 import { useBarChartStyles } from './BarChart.styles';
-import { isBestInCategory, getSeasonStats } from '../../Util'
+import { isBestInCategory, getSeasonStats } from '../../Util/Util'
 
 export interface IStackedBarChartProps {
   statCategory: string

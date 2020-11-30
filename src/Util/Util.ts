@@ -1,4 +1,11 @@
 import {
+	providedCategories,
+	calculatedCategories,
+	excludedCategories,
+	invertedCategories
+} from './StatCategories';
+
+import {
 	IStatDictionary,
 	IStat,
 	IRelativeStatsV2,
@@ -6,131 +13,11 @@ import {
 	IPlayerSearchResult,
 	IStatSearchResult,
 	Player
-} from './Types/types';
+} from '../Types/types';
 
 export const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
 export const maxTeamSize = 15;
-
-export const statCategories: Array<string> = [
-	/** points per game */
-	'ppg',
-	/** rebounds per game */
-	'rpg',
-	/** assists per game */
-	'apg', 
-	/** minutes per game */
-	'mpg', 
-	/** turnovers per game */
-	'topg', 
-	/** steals per game */
-	'spg', 
-	/** blocks per game */
-	'bpg',
-		/** three point percentage */
-	'tpp', 
-	/** free throw percentage */
-	'ftp', 
-	/** field goal percentage */
-	'fgp', 
-
-	'assists',
-
-	'blocks',
-
-	'steals',
-
-	'turnovers',
-
-	'offReb',
-
-	'defReb',
-
-	'totReb',
-
-	/** field goals made */
-	'fgm',
-	/** field goals attempted */
-	'fga',
-	/** three pointers made */ 
-	'tpm',
-	/** three pointers attemped */
-	'tpa',
-	/** free throws made */
-	'ftm',
-	/** free throws attempted */
-	'fta',
-	/** personal fouls */
-	'pFouls',
-
-	'points',
-
-	'gamesPlayed',
-
-	'gamesStarted',
-
-	'plusMinus',
-
-	'min',
-
-	'dd2',
-
-	'td3',
-
-	'seasonYear',
-
-	'seasonStageId'
-];
-
-export const percentageCategories = [
-	/** three point percentage */
-	'tpp',
-	/** free throw percentage */
-	'ftp',
-	/** field goal percentage */
-	'fgp'
-];
-
-export const calculatedCategories = [
-	/** field goals made per game */
-	'fgmpg',
-	/** field goals attempted per game */
-	'fgapg',
-	/** three pointers made per game */
-	'tpmpg',
-	/** three pointers attempted per game */
-	'tpapg',
-	/** free throws made per game */
-	'ftmpg',
-	/** free throws attempted per game */
-	'ftapg',
-	/** personal fouls per game */
-	'pfpg'
-];
-
-export const invertedCategories = [
-	'topg',
-	'turnovers',
-	'pFouls',
-	'pfpg',
-];
-
-export const excludeCategories = [
-	'seasonStageId',
-	'seasonYear',
-];
-
-export const defaultCategories = [
-	'ppg',
-	'rpg',
-	'apg',
-	'topg',
-	'bpg',
-	'spg',
-	'fgmpg',
-	'tpmpg',
-	'ftmpg'
-];
 
 export const nbaRed = '#c8102e';
 export const nbaBlue = '#1d428a';
@@ -154,6 +41,7 @@ export const getPlayerStats = async (personId: string): Promise<IStatSearchResul
 	}
 	
 	const playerStatsJson = await playerStatsResponse.json();
+	console.log(playerStatsJson.league.standard)
 	return playerStatsJson.league.standard ??
 	{
 		stats: {
@@ -175,10 +63,10 @@ export const getSeasonStats = (player: Player, selectedYear: number = 2019): ISt
 export const calcTeamStats = (roster: Array<Player>, selectedYear: number = 2019): IStatDictionary => {
 	const result: IStatDictionary = {};
 
-	const allStatCategories = [...statCategories, ...calculatedCategories];
+	const allCategories = [...providedCategories, ...calculatedCategories];
 
-	allStatCategories
-		.filter(category => !excludeCategories.includes(category))
+	allCategories
+		.filter(category => !excludedCategories.includes(category))
 		.forEach(category => result[category] = 0);
 	roster.forEach((player): void => {
 		const selectedSeasonStats = getSeasonStats(player, selectedYear)
@@ -217,11 +105,9 @@ export const calcRelativeStatsV2 = (teamList: Array<ITeam>): IRelativeStatsV2 =>
 export const calcAllTotalStats = (teamList: Array<ITeam>): {[key: string]: Array<number>} => {
 	const result: {[key: string]: Array<number>} = {};
 
-	const categories = Object.keys(teamList[0].teamStats)
+	const allCategories = [...providedCategories, ...calculatedCategories];
 
-	console.log(categories)
-
-	categories.forEach(category => {
+	allCategories.forEach(category => {
 		result[category] = [];
 	});
 
@@ -269,14 +155,14 @@ export const isBestInCategory = (value: number, category: string, best: IRelativ
  * This function takes a player's stat object, and returns a new object with all
  * strings converted into numbers. 
  */ 
-export const convertStatStringsToNumbers = ({ latest, regularSeason }: any): any => {
-	const latestCopy = { ...latest };
-	const regularSeasonCopy = { ...regularSeason };
-	const { season } = regularSeasonCopy;
+export const convertStatStringsToNumbers = (input: any): any => {
+	const result = JSON.parse(JSON.stringify(input));
+	const { latest, regularSeason } = result;
+	const { season } = regularSeason;
 
-	for (const stat in latestCopy) {
-		if (typeof latestCopy[stat] === 'string') {
-			latestCopy[stat] = latestCopy[stat] !== '-1' ? parseFloat(latestCopy[stat] as string) : 0
+	for (const stat in latest) {
+		if (typeof latest[stat] === 'string') {
+			latest[stat] = latest[stat] !== '-1' ? parseFloat(latest[stat] as string) : 0
 		} 
 	}
 	
@@ -288,33 +174,18 @@ export const convertStatStringsToNumbers = ({ latest, regularSeason }: any): any
 			}
 		}
 	}
-
-	const result = { latest: latestCopy, regularSeason: regularSeasonCopy };
 	return result;
 }
 
-export const addCalculatedStats = ({latest, regularSeason}: any): any => {
-
-	latest.fgmpg = latest.fgm / latest.gamesPlayed;
-	latest.fgapg = latest.fga / latest.gamesPlayed;
-	latest.tpmpg = latest.tpm / latest.gamesPlayed;
-	latest.tpapg = latest.tpa / latest.gamesPlayed;
-	latest.ftmpg = latest.ftm / latest.gamesPlayed;
-	latest.ftapg = latest.fta / latest.gamesPlayed;
-	latest.pfpg = latest.pFouls / latest.gamesPlayed;
-
-	const { season } = regularSeason;
-
-	for (const year in season) {
-		season[year].total.fgmpg = season[year].total.fgm / season[year].total.gamesPlayed;
-		season[year].total.fgapg = season[year].total.fga / season[year].total.gamesPlayed;
-		season[year].total.tpmpg = season[year].total.tpm / season[year].total.gamesPlayed;
-		season[year].total.tpapg = season[year].total.tpa / season[year].total.gamesPlayed;
-		season[year].total.ftmpg = season[year].total.ftm / season[year].total.gamesPlayed;
-		season[year].total.ftapg = season[year].total.fta / season[year].total.gamesPlayed;
-		season[year].total.pfpg = season[year].total.pFouls / season[year].total.gamesPlayed;
-	}
-
-	const result = { latest, regularSeason };
-	return result;
+export const addCalculatedStats = (input: IStatDictionary): IStatDictionary => {
+	return { 
+		...input,
+		fgmpg: input.fgm / input.gamesPlayed,
+		fgapg: input.fga / input.gamesPlayed,
+		tpmpg: input.tpm / input.gamesPlayed,
+		tpapg: input.tpa / input.gamesPlayed,
+		ftmpg: input.ftm / input.gamesPlayed,
+		ftapg: input.fta / input.gamesPlayed,
+		pfpg: input.pFouls / input.gamesPlayed
+	};
 }

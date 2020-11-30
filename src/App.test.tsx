@@ -7,7 +7,7 @@ import {
   calcMax,
   calcMin,
   calcMedian
-} from './Util'
+} from './Util/Util'
 
 // test('renders learn react link', () => {
 //   const { getByText } = render(<App />);

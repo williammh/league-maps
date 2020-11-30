@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core';
-import { nbaRed, nbaBlue } from '../../Util'
+import { nbaRed, nbaBlue } from '../../Util/Util'
 import { getScrollBarStyles } from '../../SharedStyles/SharedStyles'
 
 export const useSettingsPanelStyles = makeStyles({

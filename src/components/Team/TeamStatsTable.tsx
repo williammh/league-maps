@@ -9,7 +9,7 @@ import {
 	TableContainer
 } from '@material-ui/core'
 import { useTableContainerStyles } from './TeamStatsTable.styles';
-import { calcStatsArray, isBestInCategory } from '../../Util';
+import { calcStatsArray, isBestInCategory } from '../../Util/Util';
 import { IStat, IStatDictionary } from '../../Types/types';
 import { select } from 'd3';
 

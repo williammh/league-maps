@@ -1,5 +1,5 @@
-import { makeStyles } from '@material-ui/core'
-import { nbaRed, nbaBlue } from '../../Util'
+import { makeStyles } from '@material-ui/core';
+import { nbaRed, nbaBlue } from '../../Util/Util';
 
 export const useSeasonSelectStyles = makeStyles({
   root: {
