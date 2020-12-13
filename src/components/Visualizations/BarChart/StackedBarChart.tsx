@@ -42,7 +42,8 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
     const barPadding = 2;
     const barHeight = 30;
     const svgHeight = teamList.length * barHeight;
-    const svgWidth = document.querySelector('.bar-chart-container')!.clientWidth - 160;
+    const svgMargin = 80;
+    const svgWidth = document.querySelector('.bar-chart-container')!.clientWidth - (svgMargin * 2);
     const xScale = d3.scaleLinear()
       .domain([0, max || 100])
       .range([0, svgWidth]);
@@ -96,12 +97,14 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
         
     // team label
     svg.selectAll('[data-team-id]')
-      .append('text')
-        .text((d: any) => d.name || `Team ${d.id}`)
-        .attr('x', -6)
-        .attr('y', barHeight / 2)
-        .attr('text-anchor', 'end')
-        .attr('alignment-baseline', 'middle')
+      .append('foreignObject')
+        .attr('width', svgMargin)
+        .attr('height', barHeight - barPadding)
+        .attr('x', -svgMargin)
+        .attr('y', 0)
+      .append('xhtml:div')
+        .html((d: any) => d.name || `Team ${d.id}`)
+        .style('line-height', `${barHeight - barPadding}px`);
 
     // total stat label
     svg.selectAll('[data-team-id]')

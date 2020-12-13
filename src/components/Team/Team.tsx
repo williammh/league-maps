@@ -78,7 +78,7 @@ export const Team = (props: ITeam) => {
 	}
 
 	const maximize = (event: MouseEvent) => {
-		// stub
+		alert('This feature is still under construction!')
 	}
 
 	const close = (event: MouseEvent) => {

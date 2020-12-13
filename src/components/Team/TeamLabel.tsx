@@ -73,7 +73,7 @@ export const TeamLabel = (props: ITeamLabelProps): JSX.Element => {
         onChange={handleChange}
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
-        inputProps={{ ref: nameEditorRef, /* maxLength: 12 */ }}
+        inputProps={{ ref: nameEditorRef, /*maxLength: 12 */ }}
       />
     )
   }

@@ -39,7 +39,7 @@ export const useAccordionSummaryStyles = makeStyles({
 			paddingLeft: '6px'
 		},
 		'& .label': {
-			cursor: 'pointer'
+			cursor: 'text'
 		},
 		'& button' : {
 			padding: 0

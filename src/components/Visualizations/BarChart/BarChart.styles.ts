@@ -46,6 +46,14 @@ export const useBarChartStyles = makeStyles({
     },
     '& .best rect:nth-child(even)' : {
       fill: '#3560b3'
+    },
+    '& svg div': {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+      textAlign: 'right',
+      height: '100%',
+      padding: '0px 6px',
     }
   }
 })
