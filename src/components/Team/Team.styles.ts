@@ -27,15 +27,27 @@ export const useAccordionSummaryStyles = makeStyles({
 	content: {
 		justifyContent: 'flex-end',
 		margin: '0px !important',
-		'& .teamLabel': {
+		'& .MuiTextField-root': {
+			width: 140
+		},
+		'& input[type=text]' : {
+			padding: '2px 6px',
+		},
+		'& .teamLabelContainer': {
 			flexGrow: 2,
 			display: 'flex',
 			paddingLeft: '6px'
+		},
+		'& .label': {
+			cursor: 'pointer'
 		},
 		'& button' : {
 			padding: 0
 		}
 	},
+	focused: {
+		backgroundColor: 'unset !important'
+	}
 });
 
 export const useAccordionDetailStyles = makeStyles({

@@ -44,7 +44,7 @@ function App() {
                       <SettingsButton />
                       <SeasonSelect />
                     </div>
-                    <h1>www.leaguemaps.com</h1>
+                    <h1>LeagueMaps.com</h1>
                 </Grid>
               </Grid>
 

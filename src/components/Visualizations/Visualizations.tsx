@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { settingsContext } from '../../Contexts/SettingsContext';
-import { StackedBarChart } from '../BarChart/StackedBarChart';
+import { StackedBarChart } from './BarChart/StackedBarChart';
 
 export const Visualizations = () => {
   const { selectedStats } = useContext(settingsContext);

@@ -31,7 +31,7 @@ const TeamListContextProvider = (props: ContextProviderProps) => {
 		}
 	]
 
-	const [teamList, setTeamList] = useState(initialTeamList);
+	const [ teamList, setTeamList ] = useState(initialTeamList);
 	
 	const addTeam = () => {
 		setTeamList([

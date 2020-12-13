@@ -91,7 +91,8 @@ export const usePopoverStyles = makeStyles({
 			height: 40
 		},
 		'& .MuiListItem-root:hover, & .Mui-selected' : {
-			backgroundColor: nbaBlue,
+			// MuiListItem-root.Mui-selected:hover will override this in production version without !improtant
+			backgroundColor: `${nbaBlue} !important`,
 			color: '#fff'
 		},
 	}

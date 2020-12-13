@@ -13,7 +13,6 @@ import {
 	IconButton,
 } from '@material-ui/core'
 import { IStat, ITeam, IStatDictionary } from '../../Types/types';
-import { PlayerSelect } from './PlayerSelect';
 import { teamListContext } from '../../Contexts/TeamListContext';
 import { appStatsContext } from '../../Contexts/AppStatsContext';
 import { settingsContext } from '../../Contexts/SettingsContext';
@@ -26,7 +25,8 @@ import {
 	convertStatStringsToNumbers,
 	addCalculatedStats
 } from '../../Util/Util';
-import { RosterTable } from './RosterTable'
+import { TeamLabel } from './TeamLabel';
+import { RosterTable } from './RosterTable';
 import { TeamStatsTable } from './TeamStatsTable';
 import { 
 	useAccordionStyles,
@@ -122,7 +122,6 @@ export const Team = (props: ITeam) => {
 		<div style={{marginBottom: 6}}>
 			<Accordion
 				classes={accordionClasses}
-				// square
 				expanded={isExpanded}
 			>
 				<AccordionSummary
@@ -130,16 +129,10 @@ export const Team = (props: ITeam) => {
 					aria-controls="additional-actions1-content"
 					classes={accordionSummaryClasses}
 				>
-					<div className='teamLabel'>
-						{/* <RadioButtonUncheckedIcon
-							style={{
-								backgroundColor: color,
-								fill: 'white',
-								borderRadius: '20px',
-							}}
-						/> */}
-						<span>Team {id} ({roster.length}{roster.length >= maxTeamSize && '*'})</span>
-					</div>
+					<TeamLabel 
+						id={id}
+						rosterLength={roster.length}
+					/>
 					<IconButton
 						onClick={minimize}
 						size='small'
@@ -168,7 +161,7 @@ export const Team = (props: ITeam) => {
 						classes={gridClasses}
 					>
 						<RosterTable
-							teamId={id} 
+							id={id} 
 							roster={roster}
 							addPlayer={addPlayer}
 							removePlayer={removePlayer}

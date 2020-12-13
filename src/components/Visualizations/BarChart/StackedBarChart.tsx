@@ -1,18 +1,19 @@
 import React, { useContext, useEffect } from 'react';
 import { Card } from '@material-ui/core';
 import * as d3 from 'd3';
-import { appStatsContext } from '../../Contexts/AppStatsContext';
-import { teamListContext } from '../../Contexts/TeamListContext';
-import { settingsContext } from '../../Contexts/SettingsContext';
+import { appStatsContext } from '../../../Contexts/AppStatsContext';
+import { teamListContext } from '../../../Contexts/TeamListContext';
+import { settingsContext } from '../../../Contexts/SettingsContext';
 import { useBarChartStyles } from './BarChart.styles';
-import { isBestInCategory, getSeasonStats } from '../../Util/Util'
+import { isBestInCategory, getSeasonStats } from '../../../Util/Util';
 
 export interface IStackedBarChartProps {
   statCategory: string
 }
 
 interface ITeamBar {
-  teamId: number;
+  id: number;
+  name?: string;
   teamTotal: number;
   individualBars: Array<IIndividualBar>;
 }
@@ -65,7 +66,8 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
         .filter(({barWidth}) => barWidth > 0);
 
       return {
-        teamId: team.id,
+        id: team.id,
+        name: team.name,
         teamTotal: team.teamStats[statCategory],
         individualBars
       };
@@ -81,7 +83,7 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
       .enter()
       .append('g')
         .attr('transform', (d, i) => `translate(0, ${barHeight * i})`)
-        .attr('data-team-id', (d) => d.teamId)
+        .attr('data-team-id', (d) => d.id)
         .classed('best', (d) => isBestInCategory(d.teamTotal, statCategory, appStats))
       .append('g')
       .selectAll('g')
@@ -95,7 +97,7 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
     // team label
     svg.selectAll('[data-team-id]')
       .append('text')
-        .text((d: any) => `Team ${d.teamId}`)
+        .text((d: any) => d.name || `Team ${d.id}`)
         .attr('x', -6)
         .attr('y', barHeight / 2)
         .attr('text-anchor', 'end')

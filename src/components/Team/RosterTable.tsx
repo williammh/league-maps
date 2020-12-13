@@ -20,7 +20,7 @@ import { useTooltipStyles } from './TeamStatsTable.styles';
 
 
 export interface IRosterTableProps {
-	teamId: number;
+	id: number;
 	roster: Array<Player>;
 	addPlayer: (personId: string, allPlayers: Array<IPlayerSearchResult>) => Promise<void>;
 	removePlayer: (personId: string) => void;
@@ -29,7 +29,7 @@ export interface IRosterTableProps {
 }
 
 export const RosterTable = (props: IRosterTableProps): JSX.Element => {
-	const { teamId, roster, removePlayer, addPlayer, selectedYear, allPlayers } = props;
+	const { id, roster, removePlayer, addPlayer, selectedYear, allPlayers } = props;
 
 	const [openTooltip, setOpenTooltip] = React.useState<number | null>(null);
 
@@ -47,7 +47,7 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 
 	// only display player's first initial if displaying full name causes text overflow
 	useEffect(() => {
-		const nameCells = document.querySelectorAll(`.roster-table-${teamId} .name-cell div`);
+		const nameCells = document.querySelectorAll(`.roster-table-${id} .name-cell div`);
 		nameCells.forEach(nameCell => {
 			if (nameCell.scrollWidth > nameCell.clientWidth) {
 				const fullName = nameCell.innerHTML.split(' ');
@@ -74,7 +74,7 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 					<TableBody>
 						{playerStatsArray.map(({ category, value }: IStat) => {
 							return (
-								<TableRow key={`total-stats-row-${teamId}-${category}`}>
+								<TableRow key={`total-stats-row-${id}-${category}`}>
 									<TableCell>
 										{category}
 									</TableCell>
@@ -90,7 +90,7 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 		)
 
 		return (
-			<TableRow key={`roster-table-row-${teamId}-${personId}`}>
+			<TableRow key={`roster-table-row-${id}-${personId}`}>
 				<TableCell
 					className='button-cell'
 				>
@@ -139,7 +139,7 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 		undraftedRows.push(
 			<UndraftedRow
 				key={`undrafted-table-row-${undraftedRows.length}`}
-				teamId={teamId}
+				teamId={id}
 				roster={roster}
 				addPlayer={addPlayer}
 				selectedYear={selectedYear}
@@ -150,7 +150,7 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 
 	return (
 		<TableContainer classes={tableContainerClasses}>	
-			<Table padding='none' size='small' className={`roster-table-${teamId}`}>
+			<Table padding='none' size='small' className={`roster-table-${id}`}>
 				<TableBody>
 					{playerRows}
 					{undraftedRows}
