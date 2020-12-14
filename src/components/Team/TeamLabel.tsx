@@ -12,17 +12,15 @@ import { teamListContext } from '../../Contexts/TeamListContext';
 
 interface ITeamLabelProps {
   id: number;
-  rosterLength: number;
 }
 
-export const TeamLabel = (props: ITeamLabelProps): JSX.Element => {
-  const { id, rosterLength } = props;
+export const TeamLabel = ({ id }: ITeamLabelProps): JSX.Element => {
   const { teamList, setTeamList } = useContext(teamListContext);
   const defaultDisplayName = `Team ${id}`;
 
   const index = teamList.findIndex(team => team.id === id);
 
-  const { name = defaultDisplayName } = teamList[index];
+  const { name = defaultDisplayName, roster } = teamList[index];
   
   const [ isEditing, setIsEditingName ] = useState(false);
   const [ displayName, setDisplayName ] = useState(name);
@@ -47,11 +45,13 @@ export const TeamLabel = (props: ITeamLabelProps): JSX.Element => {
   }
 
   useEffect(() => {
-    if (!isEditing) {
+    if (isEditing) {
+      nameEditorRef.current!.select();
+    } else {
       teamList[index].name = displayName!.trim();
       setTeamList([...teamList]);
     }
-  }, [isEditing])
+  }, [isEditing]);
 
   const label = (): JSX.Element => {
     return (
@@ -70,8 +70,8 @@ export const TeamLabel = (props: ITeamLabelProps): JSX.Element => {
         variant='outlined'
         value={displayName}
         autoFocus
-        onChange={handleChange}
         onBlur={handleBlur}
+        onChange={handleChange}
         onKeyDown={handleKeyDown}
         inputProps={{ ref: nameEditorRef, /*maxLength: 12 */ }}
       />
@@ -89,7 +89,7 @@ export const TeamLabel = (props: ITeamLabelProps): JSX.Element => {
           borderRadius: '20px',
         }}
       /> */}
-      <span>({rosterLength}{rosterLength >= maxTeamSize && '*'})&nbsp;</span>
+      <span>({roster.length}{roster.length >= maxTeamSize && '*'})&nbsp;</span>
       {isEditing ? nameEditor() : label()}
     </div>
   )

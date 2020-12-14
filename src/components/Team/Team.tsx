@@ -119,7 +119,7 @@ export const Team = (props: ITeam) => {
 	// console.log('rendering team', id, selectedYear)
 
 	return (
-		<div style={{marginBottom: 6}}>
+		<div>
 			<Accordion
 				classes={accordionClasses}
 				expanded={isExpanded}
@@ -129,10 +129,7 @@ export const Team = (props: ITeam) => {
 					aria-controls="additional-actions1-content"
 					classes={accordionSummaryClasses}
 				>
-					<TeamLabel 
-						id={id}
-						rosterLength={roster.length}
-					/>
+					<TeamLabel id={id} />
 					<IconButton
 						onClick={minimize}
 						size='small'

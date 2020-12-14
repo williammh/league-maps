@@ -4,9 +4,12 @@ import { pointer } from 'd3';
 import { getScrollBarStyles } from '../../SharedStyles/SharedStyles';
 import { nbaRed, nbaBlue } from '../../Util/Util';
 
+const avatarSize = 28
+
 export const useTableContainerStyles = makeStyles({
 	root: {
-		height: '124px !important',
+		// to do: merge team table styles
+		height: 'calc(22.5vh - 6px - 6px - 24px - 6px - 6px) !important',
 		width: '60%',
 		marginRight: 3,
 		overflowY: 'scroll',
@@ -23,27 +26,27 @@ export const useTableContainerStyles = makeStyles({
 		},
 		'& td': {
 			display: 'inline-block',
-			height: 30,
+			height: 28,
 			border: 'none',
 			paddingBottom: 1
 		},
 		'& .button-cell' : {
-			width: 30,
+			width: 28,
 		},
 		'& .no-stats ': {
 			opacity: .25
 		},
 		'& .headshot-cell' : {
-			width: 30
+			width: 28
 		},
 		'& .headshot' : {
-			height: 30,
-			width: 30,
+			height: avatarSize,
+			width: avatarSize,
 			backgroundColor: 'lightgray'
 		},
 		'& .mock-player-icon': {
-			height: '30px',
-			width: '30px',
+			height: avatarSize,
+			width: avatarSize,
 			fill: 'white',
 			backgroundColor: 'black',
 			borderRadius: '15px',

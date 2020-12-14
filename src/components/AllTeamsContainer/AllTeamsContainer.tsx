@@ -18,7 +18,7 @@ export const AllTeamsContainer: FunctionComponent = () => {
 	}, [selectedYear])
 
 	return (
-		<div>
+		<>
 			{teamList.map((teamProps: ITeam): React.ReactNode => {
 				return (
 					<Team
@@ -28,6 +28,6 @@ export const AllTeamsContainer: FunctionComponent = () => {
 					/>
 				)
 			})}
-		</div>
+		</>
 	)
 }

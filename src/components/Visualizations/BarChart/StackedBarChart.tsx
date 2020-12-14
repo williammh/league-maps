@@ -6,6 +6,7 @@ import { teamListContext } from '../../../Contexts/TeamListContext';
 import { settingsContext } from '../../../Contexts/SettingsContext';
 import { useBarChartStyles } from './BarChart.styles';
 import { isBestInCategory, getSeasonStats } from '../../../Util/Util';
+import { fullStatNameDictionary } from '../../../Util/StatCategories';
 
 export interface IStackedBarChartProps {
   statCategory: string
@@ -39,8 +40,8 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
   const { [statCategory]: max } = appStats.max;
 
   useEffect(() => {
-    const barPadding = 2;
-    const barHeight = 30;
+    const barMargin = 2;
+    const barHeight = 26;
     const svgHeight = teamList.length * barHeight;
     const svgMargin = 80;
     const svgWidth = document.querySelector('.bar-chart-container')!.clientWidth - (svgMargin * 2);
@@ -93,18 +94,18 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
       .append('rect')
         .attr('x', (d) => d.xPos)
         .attr('width', (d) => d.barWidth)
-        .attr('height', barHeight - barPadding)
+        .attr('height', barHeight - barMargin)
         
     // team label
     svg.selectAll('[data-team-id]')
       .append('foreignObject')
         .attr('width', svgMargin)
-        .attr('height', barHeight - barPadding)
+        .attr('height', barHeight - barMargin)
         .attr('x', -svgMargin)
         .attr('y', 0)
       .append('xhtml:div')
         .html((d: any) => d.name || `Team ${d.id}`)
-        .style('line-height', `${barHeight - barPadding}px`);
+        .style('line-height', `${barHeight - barMargin}px`);
 
     // total stat label
     svg.selectAll('[data-team-id]')
@@ -141,7 +142,7 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
       classes={barChartClasses}
       className={`bar-chart-container ${statCategory}`}
     >
-      <h4>{statCategory}</h4>
+      <p>{statCategory} {fullStatNameDictionary[statCategory] ? `(${fullStatNameDictionary[statCategory]})` : ''}</p>
       <svg />
     </Card>
   )

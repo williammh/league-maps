@@ -6,7 +6,8 @@ export const chartCardMargin = 6;
 
 export const useBarChartStyles = makeStyles({
   root: {
-    width: `calc(100% - ${chartCardMargin * 2}px - ${chartCardPadding * 2}px)`,
+    height: `calc(22.5vh - ${chartCardPadding * 2}px - ${chartCardMargin}px)`,
+    width: `calc(100% - ${chartCardPadding * 2}px - ${chartCardMargin * 2}px)`,
     marginTop: 0,
     marginRight: chartCardMargin,
     marginBottom: chartCardMargin,
@@ -15,7 +16,7 @@ export const useBarChartStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    '& h4': {
+    '& p': {
       textTransform: 'uppercase',
       margin: 0
     },

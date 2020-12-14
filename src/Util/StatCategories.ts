@@ -1,96 +1,54 @@
+// stat categories provided by data.nba.net
 export const providedCategories: Array<string> = [
-	/** points per game */
 	'ppg',
-	/** rebounds per game */
 	'rpg',
-	/** assists per game */
 	'apg', 
-	/** minutes per game */
 	'mpg', 
-	/** turnovers per game */
 	'topg', 
-	/** steals per game */
 	'spg', 
-	/** blocks per game */
 	'bpg',
-		/** three point percentage */
 	'tpp', 
-	/** free throw percentage */
 	'ftp', 
-	/** field goal percentage */
 	'fgp', 
-
 	'assists',
-
 	'blocks',
-
 	'steals',
-
 	'turnovers',
-
 	'offReb',
-
 	'defReb',
-
 	'totReb',
-
-	/** field goals made */
 	'fgm',
-	/** field goals attempted */
 	'fga',
-	/** three pointers made */ 
 	'tpm',
-	/** three pointers attemped */
 	'tpa',
-	/** free throws made */
 	'ftm',
-	/** free throws attempted */
 	'fta',
-	/** personal fouls */
 	'pFouls',
-
 	'points',
-
 	'gamesPlayed',
-
 	'gamesStarted',
-
 	'plusMinus',
-
 	'min',
-
 	'dd2',
-
 	'td3',
-
 	'seasonYear',
-
 	'seasonStageId'
 ];
 
+// categories not provided by data.nba.net
 export const calculatedCategories = [
-	/** field goals made per game */
 	'fgmpg',
-	/** field goals attempted per game */
 	'fgapg',
-	/** three pointers made per game */
 	'tpmpg',
-	/** three pointers attempted per game */
 	'tpapg',
-	/** free throws made per game */
 	'ftmpg',
-	/** free throws attempted per game */
 	'ftapg',
-	/** personal fouls per game */
 	'pfpg'
 ];
 
 export const percentageCategories = [
-	/** three point percentage */
 	'tpp',
-	/** free throw percentage */
 	'ftp',
-	/** field goal percentage */
 	'fgp'
 ];
 
@@ -117,3 +75,36 @@ export const defaultCategories = [
 	'tpmpg',
 	'ftmpg'
 ];
+
+export const fullStatNameDictionary: { [key: string]: string } = {
+	ppg: 'points per game',
+	rpg: 'rebounds per game',
+	apg: 'assists per game',
+	mpg: 'minutes per game',
+	topg: 'turnovers per game',
+	spg: 'steals per game',
+	bpg: 'blocks per game',
+	tpp: 'three point percentage',
+	ftp: 'free throw percentage',
+	fgp: 'field goal percentage',
+	offReb: 'offensive rebounds',
+	defReb: 'defensive rebounds',
+	totReb: 'total rebounds',
+	fgm: 'field goals made',
+	fga: 'field goals attempted',
+	tpm: 'three points made',
+	tpa: 'three points attempted',
+	ftm: 'free throws made',
+	fta: 'free throws attempted',
+	pFouls: 'personal fouls',
+	min: 'minutes',
+	dd2: 'double doubles',
+	td3: 'triple doubles',
+	fgmpg: 'field goals made per game',
+	fgapg: 'field goals attempted per game',
+	tpmpg: 'three points made per game',
+	tpapg: 'three points attempted per game',
+	ftmpg: 'free throws made per game',
+	ftapg: 'free thrwps attempted per game',
+	pfpg: 'personal fouls per game'
+}

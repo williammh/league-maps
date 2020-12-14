@@ -4,10 +4,7 @@ import { getScrollBarStyles } from '../../SharedStyles/SharedStyles';
 export const useAccordionStyles = makeStyles({
 	root: {
 		maxWidth: 'calc(100% - 24px)',
-		marginTop: '0px !important',
-		marginRight: '6px !important',
-		// marginBottom: '6px !important',
-		marginLeft: '6px !important',
+		margin: '0px 6px 6px !important',
 		paddingTop: 6,
 		paddingRight: 6,
 		paddingBottom:6,
@@ -53,7 +50,7 @@ export const useAccordionSummaryStyles = makeStyles({
 export const useAccordionDetailStyles = makeStyles({
 	root: {
 		flexDirection: 'column',
-		padding: '0px'
+		padding: '6px 0px 0px 0px'
 	}
 })
 
