@@ -40,11 +40,12 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
   const { [statCategory]: max } = appStats.max;
 
   useEffect(() => {
+    const svgVerticalMargin = 26;
+    const svgHorizontalMargin = 80;
+    const svgHeight = document.querySelector('.bar-chart-container')!.clientHeight - (svgVerticalMargin * 2);
+    const svgWidth = document.querySelector('.bar-chart-container')!.clientWidth - (svgHorizontalMargin * 2);
     const barMargin = 2;
-    const barHeight = 26;
-    const svgHeight = teamList.length * barHeight;
-    const svgMargin = 80;
-    const svgWidth = document.querySelector('.bar-chart-container')!.clientWidth - (svgMargin * 2);
+    const barHeight = svgHeight / teamList.length;
     const xScale = d3.scaleLinear()
       .domain([0, max || 100])
       .range([0, svgWidth]);
@@ -99,9 +100,9 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
     // team label
     svg.selectAll('[data-team-id]')
       .append('foreignObject')
-        .attr('width', svgMargin)
+        .attr('width', svgHorizontalMargin)
         .attr('height', barHeight - barMargin)
-        .attr('x', -svgMargin)
+        .attr('x', -svgHorizontalMargin)
         .attr('y', 0)
       .append('xhtml:div')
         .html((d: any) => d.name || `Team ${d.id}`)
