@@ -1,8 +1,6 @@
 import {
-	providedCategories,
-	calculatedCategories,
-	excludedCategories,
-	invertedCategories
+	invertedCategories,
+	allStatCategories
 } from './StatCategories';
 
 import {
@@ -61,16 +59,13 @@ export const getSeasonStats = (player: Player, selectedYear: number = 2019): ISt
 
 export const calcTeamStats = (roster: Array<Player>, selectedYear: number = 2019): IStatDictionary => {
 	const result: IStatDictionary = {};
+	allStatCategories.forEach(category => result[category] = 0);
 
-	const allCategories = [...providedCategories, ...calculatedCategories];
-
-	allCategories
-		.filter(category => !excludedCategories.includes(category))
-		.forEach(category => result[category] = 0);
 	roster.forEach((player): void => {
 		const selectedSeasonStats = getSeasonStats(player, selectedYear)
 		for(let category in result) {
-			result[category] += selectedSeasonStats![category] as number >= 0 ? selectedSeasonStats![category] as number : 0;
+			console.log(selectedSeasonStats![category])
+			result[category] += selectedSeasonStats![category] >= 0 ? selectedSeasonStats![category] : 0;
 		}
 	})
 	return result;
@@ -82,7 +77,7 @@ export const calcRelativeStatsV2 = (teamList: Array<ITeam>): IRelativeStatsV2 =>
 		median: {},
 		max: {}
 	};
-	const allTotalStats: {[key: string]: Array<number>} = calcAllTotalStats(teamList);
+	const allTotalStats = calcAllTotalStats(teamList);
 
 	for(let category in allTotalStats) {
 		result.min[category] = calcMin(allTotalStats[category])
@@ -96,11 +91,7 @@ export const calcRelativeStatsV2 = (teamList: Array<ITeam>): IRelativeStatsV2 =>
 export const calcAllTotalStats = (teamList: Array<ITeam>): {[key: string]: Array<number>} => {
 	const result: {[key: string]: Array<number>} = {};
 
-	const allCategories = [...providedCategories, ...calculatedCategories];
-
-	allCategories.forEach(category => {
-		result[category] = [];
-	});
+	allStatCategories.forEach(category => result[category] = []);
 
 	for(let category in result) {
 		teamList.forEach(team => result[category].push(team.teamStats[category]))
@@ -153,7 +144,7 @@ export const convertStatStringsToNumbers = (input: any): any => {
 
 	for (const stat in latest) {
 		if (typeof latest[stat] === 'string') {
-			latest[stat] = latest[stat] !== '-1' ? parseFloat(latest[stat] as string) : 0
+			latest[stat] = latest[stat] !== '-1' ? parseFloat(latest[stat]) : 0
 		} 
 	}
 	

@@ -135,6 +135,14 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
     svg.append('g')
       .attr('transform', `translate(0, ${svgHeight})`)
       .call(xAxis);
+      
+    // y axis line
+    svg.append('line')
+      .attr('x1', 0)
+      .attr('y1', 0)
+      .attr('x2', 0)
+      .attr('y2', svgHeight)
+      .attr('stroke', '#000')
   
     return () => { svg.html(null) };
   });

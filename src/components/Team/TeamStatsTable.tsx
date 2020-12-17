@@ -11,7 +11,6 @@ import {
 import { useTableContainerStyles } from './TeamStatsTable.styles';
 import { isBestInCategory } from '../../Util/Util';
 import { IStatDictionary } from '../../Types/types';
-import { select } from 'd3';
 
 export interface ITeamStatsTableProps {
 	teamId: number;

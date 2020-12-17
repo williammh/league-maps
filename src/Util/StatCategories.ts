@@ -76,6 +76,9 @@ export const defaultCategories = [
 	'ftmpg'
 ];
 
+export const allStatCategories = [...providedCategories,...calculatedCategories]
+.filter(category => !excludedCategories.includes(category));
+
 export const fullStatNameDictionary: { [key: string]: string } = {
 	ppg: 'points per game',
 	rpg: 'rebounds per game',

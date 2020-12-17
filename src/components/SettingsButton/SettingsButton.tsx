@@ -18,21 +18,21 @@ export const SettingsButton = () => {
   };
 
   return (
-      <ClickAwayListener onClickAway={handleClickAway}>
-        <Tooltip
-          title={<SettingsPanel />}
-          disableFocusListener
-          disableHoverListener
-          disableTouchListener
-          open={open}
-          interactive
-          classes={settingsClasses}
-          arrow
-        >
-          <IconButton onClick={handleClick}>
-            <VisibilityIcon style={{color: '#666666'}} />
-          </IconButton>
-        </Tooltip>
-      </ClickAwayListener>
+    <ClickAwayListener onClickAway={handleClickAway}>
+      <Tooltip
+        title={<SettingsPanel />}
+        disableFocusListener
+        disableHoverListener
+        disableTouchListener
+        open={open}
+        interactive
+        classes={settingsClasses}
+        arrow
+      >
+        <IconButton onClick={handleClick}>
+          <VisibilityIcon style={{color: '#666666'}} />
+        </IconButton>
+      </Tooltip>
+    </ClickAwayListener>
   );
 }

@@ -71,15 +71,15 @@ export const Team = (props: ITeam) => {
 
 	// const [ localRoster, setLocalRoster ] = useState({});
 
-	const minimize = (event: MouseEvent) => {
+	const minimize = () => {
 		setIsExpanded(!isExpanded);
 	}
 
-	const maximize = (event: MouseEvent) => {
+	const maximize = () => {
 		alert('This feature is still under construction!')
 	}
 
-	const close = (event: MouseEvent) => {
+	const close = () => {
 		removeTeam(id)
 	}
 
