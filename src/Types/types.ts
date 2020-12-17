@@ -4,7 +4,6 @@ export interface ITeam {
 	roster: Array<Player>;
 	color?: string;
 	teamStats: IStatDictionary;
-	allPlayers: Array<IPlayerSearchResult>
 }
 
 export interface IStatDictionary {

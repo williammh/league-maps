@@ -4,24 +4,28 @@ import React, {
 	MouseEvent,
 	KeyboardEvent,
 	useEffect,
-	useRef
+	useRef,
+	useContext
 } from 'react';
 import { List, ListItem, TextField} from '@material-ui/core'
 import { Player, IPlayerSearchResult } from '../../Types/types';
 import { SignalCellularNull } from '@material-ui/icons';
 import LazyLoad from 'react-lazy-load';
+import { allPlayersContext } from '../../Contexts/AllPlayersContext';
+
 
 export interface IPlayerSelectProps {
 	teamId?: number;
 	roster?: Array<Player>;
 	addPlayer: (personId: string, allPlayers: Array<IPlayerSearchResult>) => Promise<void>;
 	selectedYear: number;
-	allPlayers: Array<IPlayerSearchResult>
 }
 
 export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
-	const { teamId, roster, addPlayer, allPlayers } = props;
+	const { teamId, roster, addPlayer } = props;
 	
+	const { allPlayers } = useContext(allPlayersContext);
+
 	const [ searchString, setSearchString ] = useState('');
 	const [ searchResults, setSearchResults ] = useState(allPlayers);
 	const [ selectedIndex, setSelectedIndex ] = useState(0);

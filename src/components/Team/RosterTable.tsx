@@ -25,11 +25,10 @@ export interface IRosterTableProps {
 	addPlayer: (personId: string, allPlayers: Array<IPlayerSearchResult>) => Promise<void>;
 	removePlayer: (personId: string) => void;
 	selectedYear: number;
-	allPlayers: Array<IPlayerSearchResult>;
 }
 
 export const RosterTable = (props: IRosterTableProps): JSX.Element => {
-	const { id, roster, removePlayer, addPlayer, selectedYear, allPlayers } = props;
+	const { id, roster, removePlayer, addPlayer, selectedYear } = props;
 
 	const [openTooltip, setOpenTooltip] = React.useState<number | null>(null);
 
@@ -142,7 +141,6 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 				roster={roster}
 				addPlayer={addPlayer}
 				selectedYear={selectedYear}
-				allPlayers={allPlayers}
 			/>
 		)
 	}

@@ -8,7 +8,7 @@ import { settingsContext } from '../../Contexts/SettingsContext';
 
 export const AllTeamsContainer: FunctionComponent = () => {
 	const { teamList } = useContext(teamListContext)
-	const { allPlayers, setAllPlayers } = useContext(allPlayersContext);
+	const { setAllPlayers } = useContext(allPlayersContext);
 	const { selectedYear } = useContext(settingsContext)
 
 	useEffect(() => {
@@ -20,11 +20,10 @@ export const AllTeamsContainer: FunctionComponent = () => {
 	return (
 		<>
 			{teamList.map((teamProps: ITeam): React.ReactNode => (
-				<Team
-					{...teamProps}
-					allPlayers={allPlayers}
-					key={teamProps.id}
-				/>
+					<Team
+						{...teamProps}
+						key={teamProps.id}
+					/>
 			))}
 		</>
 	)

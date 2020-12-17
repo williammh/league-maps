@@ -19,11 +19,10 @@ export interface IUndraftedRowProps {
 	addPlayer: (personId: string, allPlayers: Array<IPlayerSearchResult>) => Promise<void>;
 	roster: Array<Player>;
 	selectedYear: number;
-	allPlayers: Array<IPlayerSearchResult>;
 }
 	
 export const UndraftedRow = (props: IUndraftedRowProps): JSX.Element => {
-	const { addPlayer, teamId, roster, selectedYear, allPlayers } = props;
+	const { addPlayer, teamId, roster, selectedYear } = props;
 	
 	const [ openTooltip, setOpenTooltip ] = useState(false);
 	
@@ -44,7 +43,6 @@ export const UndraftedRow = (props: IUndraftedRowProps): JSX.Element => {
 		addPlayer={addPlayer}
 		key={`player-select-${teamId}`}
 		selectedYear={selectedYear}
-		allPlayers={allPlayers}
 	/>
 
 	return (

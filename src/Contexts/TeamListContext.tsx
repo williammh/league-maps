@@ -21,25 +21,21 @@ const TeamListContextProvider = (props: ContextProviderProps) => {
 			id: 1,
 			roster: [],
 			teamStats: calcTeamStats([]),
-			allPlayers: []
 		},
 		{
 			id: 2,
 			roster: [],
 			teamStats: calcTeamStats([]),
-			allPlayers: []
 		},
 		{
 			id: 3,
 			roster: [],
 			teamStats: calcTeamStats([]),
-			allPlayers: []
 		},
 		{
 			id: 4,
 			roster: [],
 			teamStats: calcTeamStats([]),
-			allPlayers: []
 		}
 	]
 
@@ -51,8 +47,7 @@ const TeamListContextProvider = (props: ContextProviderProps) => {
 			{
 				id: (teamList[teamList.length - 1]?.id ?? 0) + 1,
 				roster: [],
-				teamStats: calcTeamStats([]),
-				allPlayers: []
+				teamStats: calcTeamStats([])
 			}
 		])
 	}
