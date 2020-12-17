@@ -66,32 +66,6 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 		const playerSeasonStats = getSeasonStats(player, selectedYear);
 		const playerStatsArray = Object.entries(playerSeasonStats);
 		
-		const playerTooltip = (
-			<>
-				<div className='player-label'>
-					<p>{firstName} {lastName}</p>
-					<p>{selectedYear}-{selectedYear + 1}</p>
-					<p>Regular Season</p>
-				</div>
-				<Table padding='none' size='small'>
-					<TableBody>
-						{playerStatsArray.map(([category, value]) => {
-							return (
-								<TableRow key={`total-stats-row-${id}-${category}`}>
-									<TableCell>
-										{category}
-									</TableCell>
-									<TableCell className='stat-value'>
-										{value.toFixed(1)}
-									</TableCell>
-								</TableRow>
-							)
-						})}
-					</TableBody>
-				</Table>
-			</>
-		)
-
 		return (
 			<TableRow key={`roster-table-row-${id}-${personId}`}>
 				<TableCell
@@ -117,7 +91,29 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 				>
 					<ClickAwayListener onClickAway={handleTooltipClose}>
 						<Tooltip
-							title={playerTooltip}
+							title={
+								<>
+									<div className='player-label'>
+										<p>{firstName} {lastName}</p>
+										<p>{selectedYear}-{selectedYear + 1}</p>
+										<p>Regular Season</p>
+									</div>
+									<Table padding='none' size='small'>
+										<TableBody>
+											{playerStatsArray.map(([category, value]) => (
+												<TableRow key={`total-stats-row-${id}-${category}`}>
+													<TableCell>
+														{category}
+													</TableCell>
+													<TableCell className='stat-value'>
+														{value.toFixed(1)}
+													</TableCell>
+												</TableRow>
+											))}
+										</TableBody>
+									</Table>
+								</>
+							}
 							arrow
 							disableFocusListener
 							disableHoverListener

@@ -9,15 +9,13 @@ export const Visualizations = () => {
     .filter(category => selectedStats[category]);
 
   return (
-    <div style={{width: '100%'}}>
-      {showStatsArray.map(category => {
-        return (
-          <StackedBarChart
-            key={`bar-chart-${category}`}
-            statCategory={category}
-          />
-        )
-      })}
-    </div>
+    <>
+      {showStatsArray.map(category => (
+        <StackedBarChart
+          key={`bar-chart-${category}`}
+          statCategory={category}
+        />
+      ))}
+    </>
   )
 }

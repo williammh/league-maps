@@ -93,28 +93,25 @@ export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
 				disablePadding={true}
 				ref={resultsContainerRef}
 			>
-				{searchResults
-					.map(({ personId, firstName, lastName }, i) => {
-						return (
-							<LazyLoad
-								key={`lazyload-${teamId}-${personId}`}
-								height={lazyLoadHeight}
-								offsetTop={lazyLoadHeight * i}
-								/* way more performant than CSS nth-child selector */
-								className={i % 2 ? 'odd' : 'even'}
-							>
-								<ListItem
-									button
-									onClick={handleClick}
-									data-person-id={personId}
-									selected={selectedIndex === i && !rosterIds?.includes(personId)}
-									disabled={rosterIds?.includes(personId)}
-								>
-									{firstName} {lastName}
-								</ListItem>
-							</LazyLoad>
-						)
-				})}
+				{searchResults.map(({ personId, firstName, lastName }, i) => (
+					<LazyLoad
+						key={`lazyload-${teamId}-${personId}`}
+						height={lazyLoadHeight}
+						offsetTop={lazyLoadHeight * i}
+						/* way more performant than CSS nth-child selector */
+						className={i % 2 ? 'odd' : 'even'}
+					>
+						<ListItem
+							button
+							onClick={handleClick}
+							data-person-id={personId}
+							selected={selectedIndex === i && !rosterIds?.includes(personId)}
+							disabled={rosterIds?.includes(personId)}
+						>
+							{firstName} {lastName}
+						</ListItem>
+					</LazyLoad>
+				))}
 			</List>
 		</div>
 	)

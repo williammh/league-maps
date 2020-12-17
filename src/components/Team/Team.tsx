@@ -49,16 +49,16 @@ export const Team = (props: ITeam) => {
 	const { setAppStats } = useContext(appStatsContext);
 	const { selectedYear } = useContext(settingsContext);
 
+	const index = teamList.findIndex(team => team.id === id);
+	const { roster } = teamList[index];
+	const { color } = teamList[index];
+	const teamStats: IStatDictionary = calcTeamStats(roster, selectedYear as number);
+
 	const accordionClasses = useAccordionStyles();
 	const accordionSummaryClasses = useAccordionSummaryStyles();
 	const accordionDetailClasses = useAccordionDetailStyles();
 	const gridClasses = useGridStyles();
 	
-	const index = teamList.findIndex(team => team.id === id);
-	const roster = teamList[index].roster;
-	const color = teamList[index].color;
-	const teamStats: IStatDictionary = calcTeamStats(roster, selectedYear as number);
-
 	useEffect(() => {
 		teamList[index].teamStats = calcTeamStats(roster, selectedYear as number);
 		setTeamList([...teamList]);

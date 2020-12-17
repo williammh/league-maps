@@ -19,15 +19,13 @@ export const AllTeamsContainer: FunctionComponent = () => {
 
 	return (
 		<>
-			{teamList.map((teamProps: ITeam): React.ReactNode => {
-				return (
-					<Team
-						{...teamProps}
-						allPlayers={allPlayers}
-						key={teamProps.id}
-					/>
-				)
-			})}
+			{teamList.map((teamProps: ITeam): React.ReactNode => (
+				<Team
+					{...teamProps}
+					allPlayers={allPlayers}
+					key={teamProps.id}
+				/>
+			))}
 		</>
 	)
 }

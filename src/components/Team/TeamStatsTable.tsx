@@ -23,7 +23,7 @@ export const TeamStatsTable = (props: ITeamStatsTableProps): JSX.Element => {
 	const { appStats } = useContext(appStatsContext);
 	const { selectedStats } = useContext(settingsContext);
 
-	const teamStatsArray = Object.entries(teamStats)
+	const selectedTeamStats = Object.entries(teamStats)
 		.filter(([category]) => selectedStats[category]);
 
 	const tableContainerClasses = useTableContainerStyles();
@@ -32,20 +32,18 @@ export const TeamStatsTable = (props: ITeamStatsTableProps): JSX.Element => {
 		<TableContainer classes={tableContainerClasses}>
 			<Table padding='none' size='small'>
 				<TableBody>
-					{teamStatsArray.map(([category, value]) => {
-						return (
-							<TableRow key={`total-stats-row-${teamId}-${category}`}>
-								<TableCell className='stat-label'>
-									{category}
-								</TableCell>
-								<TableCell
-									className={`stat-value ${isBestInCategory(value, category, appStats) ? 'best' : ''}`}
-								>
-									{value.toFixed(1)}
-								</TableCell>
-							</TableRow>
-						)
-					})}
+					{selectedTeamStats.map(([category, value]) => (
+						<TableRow key={`total-stats-row-${teamId}-${category}`}>
+							<TableCell className='stat-label'>
+								{category}
+							</TableCell>
+							<TableCell
+								className={`stat-value ${isBestInCategory(value, category, appStats) ? 'best' : ''}`}
+							>
+								{value.toFixed(1)}
+							</TableCell>
+						</TableRow>
+					))}
 				</TableBody>
 			</Table>
 		</TableContainer>

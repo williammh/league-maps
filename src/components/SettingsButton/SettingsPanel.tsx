@@ -24,19 +24,17 @@ export const SettingsPanel = () => {
     <List
       dense
     >
-      {settingsArray.map(({ label, show }) => {
-        return (
-          <ListItem
-            button
-            data-value={label}
-            onClick={handleClick}
-            key={`setting-${label}`}
-          >
-            <Checkbox checked={show} />
-            <span style={{textTransform: 'uppercase'}}>{label}</span>
-          </ListItem>
-        )
-      })}
+      {settingsArray.map(({ label, show }) => (
+        <ListItem
+          button
+          data-value={label}
+          onClick={handleClick}
+          key={`setting-${label}`}
+        >
+          <Checkbox checked={show} />
+          <span style={{textTransform: 'uppercase'}}>{label}</span>
+        </ListItem>
+      ))}
     </List>
   );
 }
