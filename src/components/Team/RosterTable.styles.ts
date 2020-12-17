@@ -1,6 +1,4 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { Block } from '@material-ui/icons';
-import { pointer } from 'd3';
 import { getScrollBarStyles } from '../../SharedStyles/SharedStyles';
 import { nbaRed, nbaBlue } from '../../Util/Util';
 

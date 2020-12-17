@@ -11,11 +11,6 @@ export interface IStatDictionary {
 	[category: string]: number;
 }
 
-export interface IStat {
-	category: string;
-	value: number;
-}
-
 export interface IRelativeStatsV2 {
 	min: IStatDictionary;
 	median: IStatDictionary;

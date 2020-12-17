@@ -11,9 +11,9 @@ import {
 	ClickAwayListener,
 	Card
 } from '@material-ui/core'
-import { IPlayerSearchResult, IStat, Player } from '../../Types/types';
+import { IPlayerSearchResult, Player } from '../../Types/types';
 import { useTableContainerStyles } from './RosterTable.styles';
-import { maxTeamSize, getSeasonStats, calcStatsArray } from '../../Util/Util';
+import { maxTeamSize, getSeasonStats } from '../../Util/Util';
 import { UndraftedRow } from './UndraftedRow'
 import RemoveIcon from '@material-ui/icons/Remove';
 import { useTooltipStyles } from './TeamStatsTable.styles';
@@ -64,7 +64,7 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 		const { personId, firstName, lastName } = player;
 
 		const playerSeasonStats = getSeasonStats(player, selectedYear);
-		const playerStatsArray = calcStatsArray(playerSeasonStats);
+		const playerStatsArray = Object.entries(playerSeasonStats);
 		
 		const playerTooltip = (
 			<>
@@ -75,7 +75,7 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 				</div>
 				<Table padding='none' size='small'>
 					<TableBody>
-						{playerStatsArray.map(({ category, value }: IStat) => {
+						{playerStatsArray.map(([category, value]) => {
 							return (
 								<TableRow key={`total-stats-row-${id}-${category}`}>
 									<TableCell>

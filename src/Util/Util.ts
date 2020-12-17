@@ -7,7 +7,6 @@ import {
 
 import {
 	IStatDictionary,
-	IStat,
 	IRelativeStatsV2,
 	ITeam,
 	IPlayerSearchResult,
@@ -74,14 +73,6 @@ export const calcTeamStats = (roster: Array<Player>, selectedYear: number = 2019
 			result[category] += selectedSeasonStats![category] as number >= 0 ? selectedSeasonStats![category] as number : 0;
 		}
 	})
-	return result;
-}
-
-export const calcStatsArray = (statsObject: IStatDictionary): Array<IStat> => {
-	const result: Array<IStat> = [];
-	for (let category in statsObject) {
-		result.push({category, value: statsObject[category]})
-	}
 	return result;
 }
 

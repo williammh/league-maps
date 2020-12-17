@@ -9,8 +9,8 @@ import {
 	TableContainer
 } from '@material-ui/core'
 import { useTableContainerStyles } from './TeamStatsTable.styles';
-import { calcStatsArray, isBestInCategory } from '../../Util/Util';
-import { IStat, IStatDictionary } from '../../Types/types';
+import { isBestInCategory } from '../../Util/Util';
+import { IStatDictionary } from '../../Types/types';
 import { select } from 'd3';
 
 export interface ITeamStatsTableProps {
@@ -24,8 +24,8 @@ export const TeamStatsTable = (props: ITeamStatsTableProps): JSX.Element => {
 	const { appStats } = useContext(appStatsContext);
 	const { selectedStats } = useContext(settingsContext);
 
-	const teamStatsArray: Array<IStat> = calcStatsArray(teamStats)
-    .filter(({category}: IStat) => selectedStats[category]);
+	const teamStatsArray = Object.entries(teamStats)
+		.filter(([category]) => selectedStats[category]);
 
 	const tableContainerClasses = useTableContainerStyles();
 
@@ -33,7 +33,7 @@ export const TeamStatsTable = (props: ITeamStatsTableProps): JSX.Element => {
 		<TableContainer classes={tableContainerClasses}>
 			<Table padding='none' size='small'>
 				<TableBody>
-					{teamStatsArray.map(({ category, value }: IStat) => {
+					{teamStatsArray.map(([category, value]) => {
 						return (
 							<TableRow key={`total-stats-row-${teamId}-${category}`}>
 								<TableCell className='stat-label'>

@@ -12,7 +12,7 @@ import {
 	Grid,
 	IconButton,
 } from '@material-ui/core'
-import { IStat, ITeam, IStatDictionary } from '../../Types/types';
+import { ITeam, IStatDictionary } from '../../Types/types';
 import { teamListContext } from '../../Contexts/TeamListContext';
 import { appStatsContext } from '../../Contexts/AppStatsContext';
 import { settingsContext } from '../../Contexts/SettingsContext';
@@ -21,7 +21,6 @@ import {
 	getPlayerStats,
 	maxTeamSize,
 	calcRelativeStatsV2,
-	calcStatsArray,
 	convertStatStringsToNumbers,
 	addCalculatedStats
 } from '../../Util/Util';
@@ -59,7 +58,6 @@ export const Team = (props: ITeam) => {
 	const roster = teamList[index].roster;
 	const color = teamList[index].color;
 	const teamStats: IStatDictionary = calcTeamStats(roster, selectedYear as number);
-	const totalStatsArray: Array<number> = calcStatsArray(teamStats).map(({ value }: IStat) => value);
 
 	useEffect(() => {
 		teamList[index].teamStats = calcTeamStats(roster, selectedYear as number);
@@ -69,7 +67,7 @@ export const Team = (props: ITeam) => {
 	useEffect(() => {
 		const relativeStats = calcRelativeStatsV2(teamList)
 		setAppStats(relativeStats);
-	}, [...totalStatsArray, teamList.length, selectedYear])
+	}, [...Object.values(teamStats), selectedYear])
 
 	// const [ localRoster, setLocalRoster ] = useState({});
 

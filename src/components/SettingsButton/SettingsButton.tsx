@@ -1,9 +1,5 @@
 import React, { useContext } from 'react';
-import { IconButton, Popover } from '@material-ui/core'
-import { settingsContext } from '../../Contexts/SettingsContext';
-import { teamListContext } from '../../Contexts/TeamListContext';
-import { appStatsContext } from '../../Contexts/AppStatsContext';
-import SettingsIcon from '@material-ui/icons/Settings';
+import { ClickAwayListener, IconButton, Tooltip } from '@material-ui/core'
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { SettingsPanel } from './SettingsPanel';
 import { useSettingsPanelStyles } from './SettingsPane.styles';
@@ -11,45 +7,32 @@ import { useSettingsPanelStyles } from './SettingsPane.styles';
 export const SettingsButton = () => {
   const settingsClasses = useSettingsPanelStyles();
   
-  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+  const [open, setIsOpen] = React.useState(false);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
+  const handleClick = () => {
+    setIsOpen(true);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleClickAway = () => {
+    setIsOpen(false);
   };
-
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
-
 
   return (
-    <div>
-      <IconButton
-        onClick={handleClick}
-      >
-			  <VisibilityIcon style={{color: '#666666'}} />
-		  </IconButton>
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-        classes={settingsClasses}
-        PaperProps={{ className: 'stat-select-container' }}
-      >
-        <SettingsPanel />
-      </Popover>
-    </div>
+      <ClickAwayListener onClickAway={handleClickAway}>
+        <Tooltip
+          title={<SettingsPanel />}
+          disableFocusListener
+          disableHoverListener
+          disableTouchListener
+          open={open}
+          interactive
+          classes={settingsClasses}
+          arrow
+        >
+          <IconButton onClick={handleClick}>
+            <VisibilityIcon style={{color: '#666666'}} />
+          </IconButton>
+        </Tooltip>
+      </ClickAwayListener>
   );
 }
