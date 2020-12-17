@@ -105,6 +105,6 @@ export const fullStatNameDictionary: { [key: string]: string } = {
 	tpmpg: 'three points made per game',
 	tpapg: 'three points attempted per game',
 	ftmpg: 'free throws made per game',
-	ftapg: 'free thrwps attempted per game',
+	ftapg: 'free throws attempted per game',
 	pfpg: 'personal fouls per game'
 }

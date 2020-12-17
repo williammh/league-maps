@@ -40,10 +40,11 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
   const { [statCategory]: max } = appStats.max;
 
   useEffect(() => {
+    const barChartCard = document.querySelector('.bar-chart-container');
     const svgVerticalMargin = 26;
     const svgHorizontalMargin = 80;
-    const svgHeight = document.querySelector('.bar-chart-container')!.clientHeight - (svgVerticalMargin * 2);
-    const svgWidth = document.querySelector('.bar-chart-container')!.clientWidth - (svgHorizontalMargin * 2);
+    const svgHeight = barChartCard!.clientHeight - (svgVerticalMargin * 2);
+    const svgWidth = barChartCard!.clientWidth - (svgHorizontalMargin * 2);
     const barMargin = 2;
     const barHeight = svgHeight / teamList.length;
     const xScale = d3.scaleLinear()

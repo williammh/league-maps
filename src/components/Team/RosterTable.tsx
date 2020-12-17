@@ -34,10 +34,13 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 	const [openTooltip, setOpenTooltip] = React.useState<number | null>(null);
 
 	const handleTooltipClose = (event: React.MouseEvent<Document, MouseEvent>) => {
-		setOpenTooltip(null)
+		event.stopPropagation();
+		setOpenTooltip(null);
+
 	};
 	
 	const handleTooltipOpen = (event: React.MouseEvent<HTMLElement>) => {
+		event.stopPropagation();
 		const { index } = event.currentTarget.dataset;
 		setOpenTooltip(parseInt(index!))
   };

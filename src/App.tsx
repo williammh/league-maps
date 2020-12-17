@@ -68,7 +68,6 @@ function App() {
                     <Grid
                       container
                       direction='column'
-                     
                     >
                         <AllTeamsContainer />
                     </Grid>
