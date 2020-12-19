@@ -1,8 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { Card } from '@material-ui/core';
 import * as d3 from 'd3';
-import { appStatsContext } from '../../../Contexts/AppStatsContext';
-import { teamListContext } from '../../../Contexts/TeamListContext';
+import { leagueContext } from '../../../Contexts/LeagueContext';
 import { settingsContext } from '../../../Contexts/SettingsContext';
 import { useBarChartStyles } from './BarChart.styles';
 import { isBestInCategory, getSeasonStats } from '../../../Util/Util';
@@ -30,14 +29,13 @@ interface IIndividualBar {
 
 export const StackedBarChart = (props: IStackedBarChartProps) => {
   const { statCategory } = props;
-  const { appStats } = useContext(appStatsContext);
-  const { teamList } = useContext(teamListContext);
+  const { teamList, leagueStats } = useContext(leagueContext);
   const { selectedYear } = useContext(settingsContext);
   const barChartClasses = useBarChartStyles();
 
-  const { [statCategory]: min } = appStats.min;
-  const { [statCategory]: median } = appStats.median;
-  const { [statCategory]: max } = appStats.max;
+  const { [statCategory]: min } = leagueStats.min;
+  const { [statCategory]: median } = leagueStats.median;
+  const { [statCategory]: max } = leagueStats.max;
 
   useEffect(() => {
     const barChartCard = document.querySelector('.bar-chart-container');
@@ -88,7 +86,7 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
       .append('g')
         .attr('transform', (d, i) => `translate(0, ${barHeight * i})`)
         .attr('data-team-id', (d) => d.id)
-        .classed('best', (d) => isBestInCategory(d.teamTotal, statCategory, appStats))
+        .classed('best', (d) => isBestInCategory(d.teamTotal, statCategory, leagueStats))
       .append('g')
       .selectAll('g')
       .data((d) => d.individualBars)

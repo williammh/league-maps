@@ -59,98 +59,100 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 		})
 	}, [roster.length])
 
-	const playerRows = roster.map((player: Player, i) => {
-		const { personId, firstName, lastName } = player;
-
-		const playerSeasonStats = getSeasonStats(player, selectedYear);
-		const playerStatsArray = Object.entries(playerSeasonStats);
-		
-		return (
-			<TableRow key={`roster-table-row-${id}-${personId}`}>
-				<TableCell
-					className='button-cell'
-				>
-					<IconButton
-						onClick={() => removePlayer(personId)}
-						size='small'
-					>
-						<RemoveIcon />
-					</IconButton>
-				</TableCell>
-				<TableCell
-					className={`headshot-cell ${playerSeasonStats.min > 0 ? '' : 'no-stats' }`}
-				>
-					<Avatar
-						src={`https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${personId}.png`}
-						className='headshot'
-					/>
-				</TableCell>
-				<TableCell
-					className={`name-cell ${playerSeasonStats.min > 0 ? '' : 'no-stats' }`}
-				>
-					<ClickAwayListener onClickAway={handleTooltipClose}>
-						<Tooltip
-							title={
-								<>
-									<div className='player-label'>
-										<p>{firstName} {lastName}</p>
-										<p>{selectedYear}-{selectedYear + 1}</p>
-										<p>Regular Season</p>
-									</div>
-									<Table padding='none' size='small'>
-										<TableBody>
-											{playerStatsArray.map(([category, value]) => (
-												<TableRow key={`total-stats-row-${id}-${category}`}>
-													<TableCell>
-														{category}
-													</TableCell>
-													<TableCell className='stat-value'>
-														{value.toFixed(1)}
-													</TableCell>
-												</TableRow>
-											))}
-										</TableBody>
-									</Table>
-								</>
-							}
-							arrow
-							disableFocusListener
-							disableHoverListener
-							disableTouchListener
-							open={openTooltip === i}
-							interactive
-							classes={tooltipClasses}
-						>
-							<div onClick={handleTooltipOpen} data-index={i}>
-								{firstName} {lastName}
-							</div>
-						</Tooltip>
-					</ClickAwayListener>
-				</TableCell>
-			</TableRow>
-		)
-	})
-
-	const undraftedRows: Array<JSX.Element> = [];
-
-	while (roster.length + undraftedRows.length < maxTeamSize) {
-		undraftedRows.push(
-			<UndraftedRow
-				key={`undrafted-table-row-${undraftedRows.length}`}
-				teamId={id}
-				roster={roster}
-				addPlayer={addPlayer}
-				selectedYear={selectedYear}
-			/>
-		)
+	
+	const UndraftedRows = () => {
+		const rows: Array<JSX.Element> = [];
+		while (roster.length + rows.length < maxTeamSize) {
+			rows.push(
+				<UndraftedRow
+					key={`undrafted-table-row-${rows.length}`}
+					teamId={id}
+					roster={roster}
+					addPlayer={addPlayer}
+					selectedYear={selectedYear}
+				/>
+			)
+		}
+		return <>{rows}</>
 	}
+
 
 	return (
 		<TableContainer classes={tableContainerClasses}>	
 			<Table padding='none' size='small' className={`roster-table-${id}`}>
 				<TableBody>
-					{playerRows}
-					{undraftedRows}
+					{roster.map((player: Player, i) => {
+						const { personId, firstName, lastName } = player;
+
+						const playerSeasonStats = getSeasonStats(player, selectedYear);
+						const playerStatsArray = Object.entries(playerSeasonStats);
+						
+						return (
+							<TableRow key={`roster-table-row-${id}-${personId}`}>
+								<TableCell
+									className='button-cell'
+								>
+									<IconButton
+										onClick={() => removePlayer(personId)}
+										size='small'
+									>
+										<RemoveIcon />
+									</IconButton>
+								</TableCell>
+								<TableCell
+									className={`headshot-cell ${playerSeasonStats.min > 0 ? '' : 'no-stats' }`}
+								>
+									<Avatar
+										src={`https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${personId}.png`}
+										className='headshot'
+									/>
+								</TableCell>
+								<TableCell
+									className={`name-cell ${playerSeasonStats.min > 0 ? '' : 'no-stats' }`}
+								>
+									<ClickAwayListener onClickAway={handleTooltipClose}>
+										<Tooltip
+											title={
+												<>
+													<div className='player-label'>
+														<p>{firstName} {lastName}</p>
+														<p>{selectedYear}-{selectedYear + 1}</p>
+														<p>Regular Season</p>
+													</div>
+													<Table padding='none' size='small'>
+														<TableBody>
+															{playerStatsArray.map(([category, value]) => (
+																<TableRow key={`total-stats-row-${id}-${category}`}>
+																	<TableCell>
+																		{category}
+																	</TableCell>
+																	<TableCell className='stat-value'>
+																		{value.toFixed(1)}
+																	</TableCell>
+																</TableRow>
+															))}
+														</TableBody>
+													</Table>
+												</>
+											}
+											arrow
+											disableFocusListener
+											disableHoverListener
+											disableTouchListener
+											open={openTooltip === i}
+											interactive
+											classes={tooltipClasses}
+										>
+											<div onClick={handleTooltipOpen} data-index={i}>
+												{firstName} {lastName}
+											</div>
+										</Tooltip>
+									</ClickAwayListener>
+								</TableCell>
+							</TableRow>
+						)
+					})}
+					<UndraftedRows />
 				</TableBody>	
 			</Table>
 		</TableContainer>

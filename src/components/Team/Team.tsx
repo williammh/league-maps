@@ -13,14 +13,13 @@ import {
 	IconButton,
 } from '@material-ui/core'
 import { ITeam, IStatDictionary } from '../../Types/types';
-import { teamListContext } from '../../Contexts/TeamListContext';
-import { appStatsContext } from '../../Contexts/AppStatsContext';
+import { leagueContext } from '../../Contexts/LeagueContext';
 import { settingsContext } from '../../Contexts/SettingsContext';
 import { 
 	calcTeamStats,
 	getPlayerStats,
 	maxTeamSize,
-	calcRelativeStatsV2,
+	calcLeagueStats,
 	convertStatStringsToNumbers,
 	addCalculatedStats
 } from '../../Util/Util';
@@ -45,36 +44,30 @@ export const Team = (props: ITeam) => {
 	const { id } = props;
 	const [ isExpanded, setIsExpanded ] = useState(true);
 
-	const { setAppStats } = useContext(appStatsContext);
 	const { selectedYear } = useContext(settingsContext);
-	const { teamList, removeTeam, setTeamList } = useContext(teamListContext);
+	const { teamList, removeTeam, updateTeam, updateLeagueStats } = useContext(leagueContext);
 
-	const index = teamList.findIndex(team => team.id === id);
-	const { roster, teamStats, color } = teamList[index];
+	const thisTeam = teamList.find(team => team.id === id)!;	
+
+	// to do: https://casesandberg.github.io/react-color/
+
+	console.log(`render team ${id}`)
 
 	const accordionClasses = useAccordionStyles();
 	const accordionSummaryClasses = useAccordionSummaryStyles();
 	const accordionDetailClasses = useAccordionDetailStyles();
 	const gridClasses = useGridStyles();
-	
-	useEffect(() => {
-		teamList[index].teamStats = calcTeamStats(roster, selectedYear as number);
-		setTeamList([...teamList]);
-	}, [roster.length, selectedYear])
 
 	useEffect(() => {
-		const relativeStats = calcRelativeStatsV2(teamList)
-		setAppStats(relativeStats);
-	}, [...Object.values(teamStats), selectedYear])
-
-	// const [ localRoster, setLocalRoster ] = useState({});
+		updateLeagueStats();
+	}, [...Object.values(thisTeam.teamStats), selectedYear])
 
 	const minimize = () => {
 		setIsExpanded(!isExpanded);
 	}
 
 	const maximize = () => {
-		alert('This feature is still under construction!')
+		alert('This feature is still under construction!');
 	}
 
 	const close = () => {
@@ -97,16 +90,17 @@ export const Team = (props: ITeam) => {
 			lastName,
 			stats
 		};
+		console.log(player);
 
-		roster.push(player);
-		teamList[index].roster = roster;
-		setTeamList([...teamList]);
-		console.log(player)
+		thisTeam.roster.push(player);
+		thisTeam.teamStats = calcTeamStats(thisTeam.roster, selectedYear as number);
+		updateTeam(thisTeam);
 	}
 
 	const removePlayer = (personId: string): void => {
-		teamList[index].roster = roster.filter(player => player.personId !== personId);
-		setTeamList([...teamList]);
+		thisTeam.roster = thisTeam.roster.filter(player => player.personId !== personId);
+		thisTeam.teamStats = calcTeamStats(thisTeam.roster, selectedYear as number);
+		updateTeam(thisTeam);
 	}
 
 	// PersonAdd icon
@@ -155,14 +149,14 @@ export const Team = (props: ITeam) => {
 					>
 						<RosterTable
 							id={id} 
-							roster={roster}
+							roster={thisTeam.roster}
 							addPlayer={addPlayer}
 							removePlayer={removePlayer}
 							selectedYear={selectedYear as number}
 						/>
 						<TeamStatsTable
 							teamId={id}
-							teamStats={teamStats ?? {}}
+							teamStats={thisTeam.teamStats ?? {}}
 						/>
 					</Grid>
 				</AccordionDetails>

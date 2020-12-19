@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import { AllPlayersContextProvider } from './Contexts/AllPlayersContext'
-import { TeamListContextProvider } from './Contexts/TeamListContext'
-import { AppStatsContextProvider } from './Contexts/AppStatsContext'
+import { LeagueContextProvider } from './Contexts/LeagueContext'
 import { SettingsContextProvider } from './Contexts/SettingsContext'
 import { Grid } from '@material-ui/core';
 import { AddTeamButton } from './components/AddTeamButton/AddTeamButton';
@@ -17,84 +16,81 @@ function App() {
   const appGridClasses = useAppGridStyles();
 
   return (
-    <AppStatsContextProvider>
-      <AllPlayersContextProvider>
-        <TeamListContextProvider>
-          <SettingsContextProvider>
+    <AllPlayersContextProvider>
+      <LeagueContextProvider>
+        <SettingsContextProvider>
+          <Grid
+            container
+            direction='column'
+            classes={appGridClasses}
+          >
+
+            {/* top 10% */}
             <Grid
-              container
-              direction='column'
-              classes={appGridClasses}
+              item
+              md={12}
             >
-
-              {/* top 10% */}
               <Grid
-                item
-                md={12}
+                container
+                direction='row'
+                className='top-bar'
+                alignItems='center'
+                justify='space-between'
               >
-                <Grid
-                  container
-                  direction='row'
-                  className='top-bar'
-                  alignItems='center'
-                  justify='space-between'
-                >
-                    <div style={{display: 'flex', alignItems: 'center'}}>
-                      <AddTeamButton />
-                      <SettingsButton />
-                      <SeasonSelect />
-                    </div>
-                    <h1>LeagueMaps.com</h1>
-                </Grid>
+                  <div style={{display: 'flex', alignItems: 'center'}}>
+                    <AddTeamButton />
+                    <SettingsButton />
+                    <SeasonSelect />
+                  </div>
+                  <h1>LeagueMaps.com</h1>
               </Grid>
+            </Grid>
 
-              {/* bottom 90% */}
+            {/* bottom 90% */}
+            <Grid
+              item
+              md={12}
+            >
               <Grid
-                item
-                md={12}
+                container
+                direction='row'
               >
+
+                {/* left 25% */}
                 <Grid
-                  container
-                  direction='row'
+                  item
+                  md={3}
+                  style={{height: '90vh', overflowY: 'scroll'}}
+                  className='sidebar-scrollbar scrollbar-padding-top'
                 >
-
-                  {/* left 25% */}
                   <Grid
-                    item
-                    md={3}
-                    style={{height: '90vh', overflowY: 'scroll'}}
-                    className='sidebar-scrollbar scrollbar-padding-top'
+                    container
+                    direction='column'
                   >
-                    <Grid
-                      container
-                      direction='column'
-                    >
-                        <AllTeamsContainer />
-                    </Grid>
+                      <AllTeamsContainer />
                   </Grid>
+                </Grid>
 
-                  {/* right 75% */}
+                {/* right 75% */}
+                <Grid
+                  item
+                  md={9}
+                  style={{height: '90vh', overflowY: 'scroll'}}
+                  className='visualizations-container scrollbar-padding-top'
+                >
                   <Grid
-                    item
-                    md={9}
-                    style={{height: '90vh', overflowY: 'scroll'}}
-                    className='visualizations-container scrollbar-padding-top'
+                    container
+                    direction='column'
                   >
-                    <Grid
-                      container
-                      direction='column'
-                     
-                    >
-                      <Visualizations />
-                    </Grid>
+                    <Visualizations />
                   </Grid>
                 </Grid>
               </Grid>
             </Grid>
-          </SettingsContextProvider>
-        </TeamListContextProvider>
-      </AllPlayersContextProvider>
-    </AppStatsContextProvider>
+          </Grid>
+        </SettingsContextProvider>
+      </LeagueContextProvider>
+    </AllPlayersContextProvider>
   );
 }
 

@@ -5,7 +5,7 @@ import {
 
 import {
 	IStatDictionary,
-	IRelativeStatsV2,
+	ILeagueStats,
 	ITeam,
 	IPlayerSearchResult,
 	IStatSearchResult,
@@ -64,15 +64,15 @@ export const calcTeamStats = (roster: Array<Player>, selectedYear: number = 2019
 	roster.forEach((player): void => {
 		const selectedSeasonStats = getSeasonStats(player, selectedYear)
 		for(let category in result) {
-			console.log(selectedSeasonStats![category])
+			// console.log(selectedSeasonStats![category])
 			result[category] += selectedSeasonStats![category] >= 0 ? selectedSeasonStats![category] : 0;
 		}
 	})
 	return result;
 }
 
-export const calcRelativeStatsV2 = (teamList: Array<ITeam>): IRelativeStatsV2 => {
-	const result: IRelativeStatsV2 = {
+export const calcLeagueStats = (teamList: Array<ITeam>): ILeagueStats => {
+	const result: ILeagueStats = {
 		min: {},
 		median: {},
 		max: {}
@@ -121,7 +121,7 @@ export const calcMean = (arr: Array<number>): number => {
   return arr.reduce((acc, cur) => acc + cur) / arr.length ;
 }
 
-export const isBestInCategory = (value: number, category: string, best: IRelativeStatsV2): boolean => {
+export const isBestInCategory = (value: number, category: string, best: ILeagueStats): boolean => {
 	if (value === 0 && !invertedCategories.includes(category)) {
 		return false
 	}

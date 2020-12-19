@@ -4,13 +4,14 @@ export interface ITeam {
 	roster: Array<Player>;
 	color?: string;
 	teamStats: IStatDictionary;
+	categoryLeads?: number;
 }
 
 export interface IStatDictionary {
 	[category: string]: number;
 }
 
-export interface IRelativeStatsV2 {
+export interface ILeagueStats {
 	min: IStatDictionary;
 	median: IStatDictionary;
 	max: IStatDictionary;

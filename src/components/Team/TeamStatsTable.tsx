@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from 'react';
-import { appStatsContext } from '../../Contexts/AppStatsContext';
+import { leagueContext } from '../../Contexts/LeagueContext';
 import { settingsContext } from '../../Contexts/SettingsContext';
 import {
 	Table,
@@ -20,7 +20,7 @@ export interface ITeamStatsTableProps {
 export const TeamStatsTable = (props: ITeamStatsTableProps): JSX.Element => {
 	const { teamId, teamStats } = props;
 
-	const { appStats } = useContext(appStatsContext);
+	const { leagueStats } = useContext(leagueContext);
 	const { selectedStats } = useContext(settingsContext);
 
 	const selectedTeamStats = Object.entries(teamStats)
@@ -32,13 +32,13 @@ export const TeamStatsTable = (props: ITeamStatsTableProps): JSX.Element => {
 		<TableContainer classes={tableContainerClasses}>
 			<Table padding='none' size='small'>
 				<TableBody>
-					{selectedTeamStats.map(([category, value]) => (
+					{selectedTeamStats.map(([ category, value ]) => (
 						<TableRow key={`total-stats-row-${teamId}-${category}`}>
 							<TableCell className='stat-label'>
 								{category}
 							</TableCell>
 							<TableCell
-								className={`stat-value ${isBestInCategory(value, category, appStats) ? 'best' : ''}`}
+								className={`stat-value ${isBestInCategory(value, category, leagueStats) ? 'best' : ''}`}
 							>
 								{value.toFixed(1)}
 							</TableCell>

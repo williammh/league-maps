@@ -1,10 +1,10 @@
 import React from 'react';
 import { IconButton } from '@material-ui/core'
-import { teamListContext } from '../../Contexts/TeamListContext';
+import { leagueContext } from '../../Contexts/LeagueContext';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 
 export const AddTeamButton = () => {
-	const { addTeam } = React.useContext(teamListContext);
+	const { addTeam } = React.useContext(leagueContext);
 	
 	const handleClick = () => {
 		addTeam()

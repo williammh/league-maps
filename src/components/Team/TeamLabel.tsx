@@ -6,24 +6,39 @@ import React, {
   KeyboardEvent,
   useEffect
 } from 'react';
-import { maxTeamSize } from '../../Util/Util'
+import { maxTeamSize, isBestInCategory } from '../../Util/Util'
 import { TextField } from '@material-ui/core';
-import { teamListContext } from '../../Contexts/TeamListContext';
+import { leagueContext } from '../../Contexts/LeagueContext';
+import { settingsContext } from '../../Contexts/SettingsContext';
+
 
 interface ITeamLabelProps {
   id: number;
 }
 
 export const TeamLabel = ({ id }: ITeamLabelProps): JSX.Element => {
-  const { teamList, setTeamList } = useContext(teamListContext);
+  const { teamList, setTeamList, leagueStats } = useContext(leagueContext);
+  const { selectedStats } = useContext(settingsContext);
+
   const defaultDisplayName = `Team ${id}`;
 
   const index = teamList.findIndex(team => team.id === id);
+  const { teamStats } = teamList[index];
 
   const { name = defaultDisplayName, roster } = teamList[index];
   
   const [ isEditing, setIsEditingName ] = useState(false);
   const [ displayName, setDisplayName ] = useState(name);
+
+  const calcCategoryLeads = () => {
+    let result = 0;
+		for (const category in teamStats) {
+		  isBestInCategory(teamStats[category], category, leagueStats) && selectedStats[category] && result++;
+		}
+		return result;
+	}
+
+  const categoryLeads = calcCategoryLeads()
 
   const nameEditorRef = useRef<HTMLInputElement>(null);
 
@@ -91,6 +106,7 @@ export const TeamLabel = ({ id }: ITeamLabelProps): JSX.Element => {
       /> */}
       <span>({roster.length}{roster.length >= maxTeamSize && '*'})&nbsp;</span>
       {isEditing ? nameEditor() : label()}
+      <span>&nbsp; Leads {categoryLeads} {categoryLeads === 1 ? 'Category' : 'Categories'}</span>
     </div>
   )
 }
