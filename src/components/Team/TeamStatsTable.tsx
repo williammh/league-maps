@@ -6,10 +6,12 @@ import {
 	TableBody,
 	TableRow,
 	TableCell,
-	TableContainer
+	TableContainer,
+	Tooltip
 } from '@material-ui/core'
 import { useTableContainerStyles } from './TeamStatsTable.styles';
 import { isBestInCategory } from '../../Util/Util';
+import { fullStatNameDictionary } from '../../Util/StatCategories';
 import { IStatDictionary } from '../../Types/types';
 
 export interface ITeamStatsTableProps {
@@ -34,9 +36,16 @@ export const TeamStatsTable = (props: ITeamStatsTableProps): JSX.Element => {
 				<TableBody>
 					{selectedTeamStats.map(([ category, value ]) => (
 						<TableRow key={`total-stats-row-${teamId}-${category}`}>
-							<TableCell className='stat-label'>
-								{category}
-							</TableCell>
+							{fullStatNameDictionary[category] ? (
+								<Tooltip
+									title={fullStatNameDictionary[category]}
+									placement='top'
+								>
+									<TableCell className='stat-label'>{category}</TableCell>
+								</Tooltip>
+							) : (
+								<TableCell className='stat-label'>{category}</TableCell>
+							)}
 							<TableCell
 								className={`stat-value ${isBestInCategory(value, category, leagueStats) ? 'best' : ''}`}
 							>

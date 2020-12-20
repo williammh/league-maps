@@ -64,7 +64,6 @@ export const calcTeamStats = (roster: Array<Player>, selectedYear: number = 2019
 	roster.forEach((player): void => {
 		const selectedSeasonStats = getSeasonStats(player, selectedYear)
 		for(let category in result) {
-			// console.log(selectedSeasonStats![category])
 			result[category] += selectedSeasonStats![category] >= 0 ? selectedSeasonStats![category] : 0;
 		}
 	})
@@ -122,6 +121,7 @@ export const calcMean = (arr: Array<number>): number => {
 }
 
 export const isBestInCategory = (value: number, category: string, best: ILeagueStats): boolean => {
+	// console.log(value, category)
 	if (value === 0 && !invertedCategories.includes(category)) {
 		return false
 	}

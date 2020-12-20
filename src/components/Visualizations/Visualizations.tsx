@@ -11,10 +11,12 @@ export const Visualizations = () => {
   return (
     <>
       {showStatsArray.map(category => (
-        <StackedBarChart
-          key={`bar-chart-${category}`}
-          statCategory={category}
-        />
+        category !== 'scl' && (
+          <StackedBarChart
+            key={`bar-chart-${category}`}
+            statCategory={category}
+          />
+        )
       ))}
     </>
   )

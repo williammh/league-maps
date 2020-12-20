@@ -43,7 +43,8 @@ export const calculatedCategories = [
 	'tpapg',
 	'ftmpg',
 	'ftapg',
-	'pfpg'
+	'pfpg',
+	'scl' /** team stat only */
 ];
 
 export const percentageCategories = [
@@ -65,6 +66,7 @@ export const excludedCategories = [
 ];
 
 export const defaultCategories = [
+	'scl',
 	'ppg',
 	'rpg',
 	'apg',
@@ -76,8 +78,9 @@ export const defaultCategories = [
 	'ftmpg'
 ];
 
-export const allStatCategories = [...providedCategories,...calculatedCategories]
-.filter(category => !excludedCategories.includes(category));
+export const allStatCategories = [...defaultCategories, ...providedCategories,...calculatedCategories]
+/** remove duplicates and excluded categories */
+.filter((category, index, array) => array.indexOf(category) === index && !excludedCategories.includes(category));
 
 export const fullStatNameDictionary: { [key: string]: string } = {
 	ppg: 'points per game',
@@ -109,5 +112,6 @@ export const fullStatNameDictionary: { [key: string]: string } = {
 	tpapg: 'three points attempted per game',
 	ftmpg: 'free throws made per game',
 	ftapg: 'free throws attempted per game',
-	pfpg: 'personal fouls per game'
+	pfpg: 'personal fouls per game',
+	scl: 'stat category leads'
 }

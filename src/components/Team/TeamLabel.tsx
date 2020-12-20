@@ -17,28 +17,18 @@ interface ITeamLabelProps {
 }
 
 export const TeamLabel = ({ id }: ITeamLabelProps): JSX.Element => {
-  const { teamList, setTeamList, leagueStats } = useContext(leagueContext);
-  const { selectedStats } = useContext(settingsContext);
+  const { teamList, setTeamList, leagueStats, updateTeam } = useContext(leagueContext);
+  const thisTeam = teamList.find(team => team.id === id)!;
+  const { teamStats } = thisTeam;
 
+  const { selectedStats } = useContext(settingsContext);
+  
   const defaultDisplayName = `Team ${id}`;
 
-  const index = teamList.findIndex(team => team.id === id);
-  const { teamStats } = teamList[index];
-
-  const { name = defaultDisplayName, roster } = teamList[index];
+  const { name = defaultDisplayName, roster } = thisTeam;
   
   const [ isEditing, setIsEditingName ] = useState(false);
   const [ displayName, setDisplayName ] = useState(name);
-
-  const calcCategoryLeads = () => {
-    let result = 0;
-		for (const category in teamStats) {
-		  isBestInCategory(teamStats[category], category, leagueStats) && selectedStats[category] && result++;
-		}
-		return result;
-	}
-
-  const categoryLeads = calcCategoryLeads()
 
   const nameEditorRef = useRef<HTMLInputElement>(null);
 
@@ -63,8 +53,8 @@ export const TeamLabel = ({ id }: ITeamLabelProps): JSX.Element => {
     if (isEditing) {
       nameEditorRef.current!.select();
     } else {
-      teamList[index].name = displayName!.trim();
-      setTeamList([...teamList]);
+      thisTeam.name = displayName.trim();
+      updateTeam(thisTeam);
     }
   }, [isEditing]);
 
@@ -106,7 +96,7 @@ export const TeamLabel = ({ id }: ITeamLabelProps): JSX.Element => {
       /> */}
       <span>({roster.length}{roster.length >= maxTeamSize && '*'})&nbsp;</span>
       {isEditing ? nameEditor() : label()}
-      <span>&nbsp; Leads {categoryLeads} {categoryLeads === 1 ? 'Category' : 'Categories'}</span>
+      {/* <span>&nbsp; Leads {teamStats.cl} {teamStats.cl === 1 ? 'Category' : 'Categories'}</span> */}
     </div>
   )
 }

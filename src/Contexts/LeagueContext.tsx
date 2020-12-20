@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ILeagueStats, ITeam } from '../Types/types';
 import { calcLeagueStats, calcTeamStats } from '../Util/Util';
+import { allStatCategories } from '../Util/StatCategories';
 
 const leagueContext = React.createContext({} as ILeagueContext);
 
@@ -43,7 +44,12 @@ const LeagueContextProvider = (props: ContextProviderProps) => {
 		}
 	];
 
-	const initialLeagueStats = { min: {}, median: {}, max: {} };
+	const initialLeagueStats: ILeagueStats  = { min: {}, median: {}, max: {} };
+	allStatCategories.forEach(category => {
+		initialLeagueStats.min[category] = 0;
+		initialLeagueStats.median[category] = 0;
+		initialLeagueStats.max[category] = 0;
+	})
 
 	const [ teamList, setTeamList ] = useState(initialTeamList);
 	const [ leagueStats, setLeagueStats ] = useState(initialLeagueStats);

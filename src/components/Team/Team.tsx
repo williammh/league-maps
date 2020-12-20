@@ -18,10 +18,9 @@ import { settingsContext } from '../../Contexts/SettingsContext';
 import { 
 	calcTeamStats,
 	getPlayerStats,
-	maxTeamSize,
-	calcLeagueStats,
 	convertStatStringsToNumbers,
-	addCalculatedStats
+	addCalculatedStats,
+	isBestInCategory
 } from '../../Util/Util';
 import { TeamLabel } from './TeamLabel';
 import { RosterTable } from './RosterTable';
@@ -44,14 +43,14 @@ export const Team = (props: ITeam) => {
 	const { id } = props;
 	const [ isExpanded, setIsExpanded ] = useState(true);
 
-	const { selectedYear } = useContext(settingsContext);
-	const { teamList, removeTeam, updateTeam, updateLeagueStats } = useContext(leagueContext);
+	const { selectedYear, selectedStats } = useContext(settingsContext);
+	const { teamList, removeTeam, updateTeam, leagueStats, updateLeagueStats } = useContext(leagueContext);
 
 	const thisTeam = teamList.find(team => team.id === id)!;	
 
 	// to do: https://casesandberg.github.io/react-color/
 
-	console.log(`render team ${id}`)
+	// console.log(`render team ${id}`)
 
 	const accordionClasses = useAccordionStyles();
 	const accordionSummaryClasses = useAccordionSummaryStyles();
@@ -61,6 +60,11 @@ export const Team = (props: ITeam) => {
 	useEffect(() => {
 		updateLeagueStats();
 	}, [...Object.values(thisTeam.teamStats), selectedYear])
+
+	useEffect(() => {
+		thisTeam.teamStats.scl = calcCategoryLeads(thisTeam.teamStats);
+		updateTeam(thisTeam);
+	}, [...Object.values(leagueStats.max)])
 
 	const minimize = () => {
 		setIsExpanded(!isExpanded);
@@ -72,6 +76,22 @@ export const Team = (props: ITeam) => {
 
 	const close = () => {
 		removeTeam(id)
+	}
+
+	const calcCategoryLeads = (teamStats: IStatDictionary) => {
+		let result = 0;
+		console.log(selectedStats)
+		for (const category in teamStats) {
+			if (!selectedStats[category] || category === 'scl' ) {
+				continue;
+			}
+			console.log(`${category}: ${teamStats[category]}`)
+		  if (isBestInCategory(teamStats[category], category, leagueStats)) {
+				result++;
+			};
+		}
+		console.log(result)
+		return result;
 	}
 
 	const addPlayer = async (personId: string, allPlayers: Array<IPlayerSearchResult>): Promise<void> => {

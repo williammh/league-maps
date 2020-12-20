@@ -5,10 +5,8 @@ import React, {
 	useState
 } from 'react';
 import {
-	providedCategories,
-	calculatedCategories,
-	excludedCategories,
-	defaultCategories
+	defaultCategories,
+	allStatCategories
  } from '../Util/StatCategories'
 
 const settingsContext = React.createContext({} as ISettingsContext);
@@ -26,19 +24,9 @@ interface ISettingsContext {
 
 const SettingsContextProvider = (props: ContextProviderProps) => {
 	const defaultSelectedStats: any = {};
-	const allCategories = [
-		...defaultCategories,
-		...providedCategories,
-		...calculatedCategories,
-	];
-	allCategories
-		/** remove duplicates, seasonStageId, and seasonYear */ 
-		.filter((category, index) => (
-			allCategories.indexOf(category) === index && !excludedCategories.includes(category)
-		))
-		.forEach(category => (
-			defaultSelectedStats[category] = defaultCategories.includes(category)
-		));
+	allStatCategories.forEach(category => (
+		defaultSelectedStats[category] = defaultCategories.includes(category)
+	));
 
 	const [ selectedStats, setSelectedStats ] = useState(defaultSelectedStats);
 
