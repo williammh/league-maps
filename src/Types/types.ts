@@ -3,7 +3,7 @@ export interface ITeam {
 	name?: string;
 	roster: Array<Player>;
 	color?: string;
-	teamStats: IStatDictionary;
+	stats: IStatDictionary;
 	categoryLeads?: number;
 }
 

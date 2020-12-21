@@ -16,11 +16,11 @@ import { IStatDictionary } from '../../Types/types';
 
 export interface ITeamStatsTableProps {
 	teamId: number;
-	teamStats: IStatDictionary;
+	stats: IStatDictionary;
 }
 
 export const TeamStatsTable = (props: ITeamStatsTableProps): JSX.Element => {
-	const { teamId, teamStats } = props;
+	const { teamId, stats: teamStats } = props;
 
 	const { leagueStats } = useContext(leagueContext);
 	const { selectedStats } = useContext(settingsContext);
@@ -49,7 +49,7 @@ export const TeamStatsTable = (props: ITeamStatsTableProps): JSX.Element => {
 							<TableCell
 								className={`stat-value ${isBestInCategory(value, category, leagueStats) ? 'best' : ''}`}
 							>
-								{value.toFixed(1)}
+								{value?.toFixed(1)}
 							</TableCell>
 						</TableRow>
 					))}

@@ -46,11 +46,10 @@ export const Team = (props: ITeam) => {
 	const { selectedYear, selectedStats } = useContext(settingsContext);
 	const { teamList, removeTeam, updateTeam, leagueStats, updateLeagueStats } = useContext(leagueContext);
 
-	const thisTeam = teamList.find(team => team.id === id)!;	
+	const thisTeam = teamList.find(team => team.id === id)!;
 
 	// to do: https://casesandberg.github.io/react-color/
 
-	// console.log(`render team ${id}`)
 
 	const accordionClasses = useAccordionStyles();
 	const accordionSummaryClasses = useAccordionSummaryStyles();
@@ -59,12 +58,13 @@ export const Team = (props: ITeam) => {
 
 	useEffect(() => {
 		updateLeagueStats();
-	}, [...Object.values(thisTeam.teamStats), selectedYear])
+	}, [...Object.values(thisTeam.stats)])
 
 	useEffect(() => {
-		thisTeam.teamStats.scl = calcCategoryLeads(thisTeam.teamStats);
+		thisTeam.stats = calcTeamStats(thisTeam.roster, selectedYear);
+		thisTeam.stats.scl = calcCategoryLeads(thisTeam.stats);
 		updateTeam(thisTeam);
-	}, [...Object.values(leagueStats.max)])
+	}, [...Object.values(leagueStats.max), ...Object.values(selectedStats), selectedYear])
 
 	const minimize = () => {
 		setIsExpanded(!isExpanded);
@@ -80,17 +80,14 @@ export const Team = (props: ITeam) => {
 
 	const calcCategoryLeads = (teamStats: IStatDictionary) => {
 		let result = 0;
-		console.log(selectedStats)
 		for (const category in teamStats) {
-			if (!selectedStats[category] || category === 'scl' ) {
+			if (!selectedStats[category] || category === 'scl') {
 				continue;
 			}
-			console.log(`${category}: ${teamStats[category]}`)
 		  if (isBestInCategory(teamStats[category], category, leagueStats)) {
 				result++;
 			};
 		}
-		console.log(result)
 		return result;
 	}
 
@@ -113,20 +110,18 @@ export const Team = (props: ITeam) => {
 		console.log(player);
 
 		thisTeam.roster.push(player);
-		thisTeam.teamStats = calcTeamStats(thisTeam.roster, selectedYear as number);
+		thisTeam.stats = calcTeamStats(thisTeam.roster, selectedYear);
 		updateTeam(thisTeam);
 	}
 
 	const removePlayer = (personId: string): void => {
 		thisTeam.roster = thisTeam.roster.filter(player => player.personId !== personId);
-		thisTeam.teamStats = calcTeamStats(thisTeam.roster, selectedYear as number);
+		thisTeam.stats = calcTeamStats(thisTeam.roster, selectedYear);
 		updateTeam(thisTeam);
 	}
 
 	// PersonAdd icon
 	// FilterNone (for copy)
-
-	// console.log('rendering team', id, selectedYear)
 
 	return (
 		<div>
@@ -134,11 +129,7 @@ export const Team = (props: ITeam) => {
 				classes={accordionClasses}
 				expanded={isExpanded}
 			>
-				<AccordionSummary
-					aria-label="Expand"
-					aria-controls="additional-actions1-content"
-					classes={accordionSummaryClasses}
-				>
+				<AccordionSummary classes={accordionSummaryClasses}>
 					<TeamLabel id={id} />
 					<IconButton
 						onClick={minimize}
@@ -172,11 +163,10 @@ export const Team = (props: ITeam) => {
 							roster={thisTeam.roster}
 							addPlayer={addPlayer}
 							removePlayer={removePlayer}
-							selectedYear={selectedYear as number}
 						/>
 						<TeamStatsTable
 							teamId={id}
-							teamStats={thisTeam.teamStats ?? {}}
+							stats={thisTeam.stats}
 						/>
 					</Grid>
 				</AccordionDetails>

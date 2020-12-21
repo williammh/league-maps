@@ -1,4 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React, {
+	useEffect,
+	useContext
+} from 'react';
 import {
 	IconButton,
 	Table,
@@ -17,6 +20,7 @@ import { maxTeamSize, getSeasonStats } from '../../Util/Util';
 import { UndraftedRow } from './UndraftedRow'
 import RemoveIcon from '@material-ui/icons/Remove';
 import { useTooltipStyles } from './TeamStatsTable.styles';
+import { settingsContext } from '../../Contexts/SettingsContext' 
 
 
 export interface IRosterTableProps {
@@ -24,11 +28,12 @@ export interface IRosterTableProps {
 	roster: Array<Player>;
 	addPlayer: (personId: string, allPlayers: Array<IPlayerSearchResult>) => Promise<void>;
 	removePlayer: (personId: string) => void;
-	selectedYear: number;
 }
 
 export const RosterTable = (props: IRosterTableProps): JSX.Element => {
-	const { id, roster, removePlayer, addPlayer, selectedYear } = props;
+	const { id, roster, removePlayer, addPlayer } = props;
+
+	const { selectedYear } = useContext(settingsContext);
 
 	const [openTooltip, setOpenTooltip] = React.useState<number | null>(null);
 
@@ -69,7 +74,7 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 					teamId={id}
 					roster={roster}
 					addPlayer={addPlayer}
-					selectedYear={selectedYear}
+					selectedYear={selectedYear as number}
 				/>
 			)
 		}
@@ -84,14 +89,12 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 					{roster.map((player: Player, i) => {
 						const { personId, firstName, lastName } = player;
 
-						const playerSeasonStats = getSeasonStats(player, selectedYear);
+						const playerSeasonStats = getSeasonStats(player, selectedYear as number);
 						const playerStatsArray = Object.entries(playerSeasonStats);
 						
 						return (
 							<TableRow key={`roster-table-row-${id}-${personId}`}>
-								<TableCell
-									className='button-cell'
-								>
+								<TableCell className='button-cell'>
 									<IconButton
 										onClick={() => removePlayer(personId)}
 										size='small'
@@ -116,7 +119,7 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 												<>
 													<div className='player-label'>
 														<p>{firstName} {lastName}</p>
-														<p>{selectedYear}-{selectedYear + 1}</p>
+														<p>{selectedYear}-{(selectedYear as number) + 1}</p>
 														<p>Regular Season</p>
 													</div>
 													<Table padding='none' size='small'>

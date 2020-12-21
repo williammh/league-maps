@@ -70,7 +70,7 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
       return {
         id: team.id,
         name: team.name,
-        teamTotal: team.teamStats[statCategory],
+        teamTotal: team.stats[statCategory],
         individualBars
       };
     });

@@ -18,7 +18,7 @@ interface ContextProviderProps {
 interface ISettingsContext {
 	selectedStats: { [key: string]: boolean };
 	setSelectedStats:  Dispatch<SetStateAction<{ [key: string]: boolean }>>;
-	selectedYear?: number | Promise<number>;
+	selectedYear: number | Promise<number>;
 	setSelectedYear: Dispatch<SetStateAction<number>>;
 }
 

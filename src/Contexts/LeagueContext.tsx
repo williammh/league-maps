@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ILeagueStats, ITeam } from '../Types/types';
-import { calcLeagueStats, calcTeamStats } from '../Util/Util';
+import { calcLeagueStats, generateEmptyStats } from '../Util/Util';
 import { allStatCategories } from '../Util/StatCategories';
 
 const leagueContext = React.createContext({} as ILeagueContext);
@@ -13,10 +13,10 @@ interface ILeagueContext {
 	teamList: Array<ITeam>;
 	setTeamList: React.Dispatch<React.SetStateAction<ITeam[]>>;
 	addTeam: () => void;
+	updateTeam: (team: ITeam) => void;
 	removeTeam: (id: number) => void;
 	leagueStats: ILeagueStats;
 	updateLeagueStats: () => void;
-	updateTeam: (team: ITeam) => void;
 }
 
 const LeagueContextProvider = (props: ContextProviderProps) => {
@@ -25,22 +25,22 @@ const LeagueContextProvider = (props: ContextProviderProps) => {
 		{
 			id: 1,
 			roster: [],
-			teamStats: calcTeamStats([]),
+			stats: generateEmptyStats(),
 		},
 		{
 			id: 2,
 			roster: [],
-			teamStats: calcTeamStats([]),
+			stats: generateEmptyStats(),
 		},
 		{
 			id: 3,
 			roster: [],
-			teamStats: calcTeamStats([]),
+			stats: generateEmptyStats(),
 		},
 		{
 			id: 4,
 			roster: [],
-			teamStats: calcTeamStats([]),
+			stats: generateEmptyStats(),
 		}
 	];
 
@@ -60,7 +60,7 @@ const LeagueContextProvider = (props: ContextProviderProps) => {
 			{
 				id: (teamList[teamList.length - 1]?.id ?? 0) + 1,
 				roster: [],
-				teamStats: calcTeamStats([])
+				stats: generateEmptyStats()
 			}
 		])
 	}

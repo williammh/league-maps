@@ -19,6 +19,12 @@ export const maxTeamSize = 15;
 export const nbaRed = '#c8102e';
 export const nbaBlue = '#1d428a';
 
+export const generateEmptyStats = (): IStatDictionary => {
+	const result: IStatDictionary = {};
+	allStatCategories.forEach(category => result[category] = 0);
+	return result;
+}
+
 export const getAllPlayers = async (year: number = (new Date()).getFullYear()): Promise<Array<IPlayerSearchResult>> => {
 	let playerListResponse = await fetch(`https://data.nba.net/prod/v1/${year}/players.json`);
 	let playerList = await playerListResponse.json();
@@ -44,29 +50,27 @@ export const getPlayerStats = async (personId: string): Promise<IStatSearchResul
 		stats: {
 			regularSeason: {
 				season: [{
-					total: { min: 0 }
+					total: generateEmptyStats()
 				}]
 			}
 		}
 	};
 }
 
-export const getSeasonStats = (player: Player, selectedYear: number = 2019): IStatDictionary => {
+export const getSeasonStats = (player: Player, selectedYear: number | Promise<number>): IStatDictionary => {
 	const selectedStats = player.stats.regularSeason.season
 		.find((season) => season.seasonYear === selectedYear)?.total;
-	return selectedStats ?? { min: 0 };
+	return selectedStats ?? generateEmptyStats();
 }
 
-export const calcTeamStats = (roster: Array<Player>, selectedYear: number = 2019): IStatDictionary => {
+export const calcTeamStats = (roster: Array<Player>, selectedYear: number | Promise<number>): IStatDictionary => {
+	if (!roster.length) { return generateEmptyStats() };
 	const result: IStatDictionary = {};
-	allStatCategories.forEach(category => result[category] = 0);
-
-	roster.forEach((player): void => {
-		const selectedSeasonStats = getSeasonStats(player, selectedYear)
-		for(let category in result) {
-			result[category] += selectedSeasonStats![category] >= 0 ? selectedSeasonStats![category] : 0;
-		}
-	})
+	allStatCategories.forEach(category => {
+		result[category] = roster
+			.map(player => getSeasonStats(player, selectedYear)[category])
+			.reduce((acc, cur) => acc + cur);
+	});
 	return result;
 }
 
@@ -76,28 +80,15 @@ export const calcLeagueStats = (teamList: Array<ITeam>): ILeagueStats => {
 		median: {},
 		max: {}
 	};
-	const allTotalStats = calcAllTotalStats(teamList);
 
-	for(let category in allTotalStats) {
-		result.min[category] = calcMin(allTotalStats[category])
-		result.median[category] = calcMedian(allTotalStats[category])
-		result.max[category] = calcMax(allTotalStats[category])
-	}
+	allStatCategories.forEach(category => {
+		result.min[category] = calcMin(teamList.map(team => team.stats[category]));
+		result.median[category] = calcMedian(teamList.map(team => team.stats[category]));
+		result.max[category] = calcMax(teamList.map(team => team.stats[category]));
+	})
 
 	return result;
 };
-
-export const calcAllTotalStats = (teamList: Array<ITeam>): {[key: string]: Array<number>} => {
-	const result: {[key: string]: Array<number>} = {};
-
-	allStatCategories.forEach(category => result[category] = []);
-
-	for(let category in result) {
-		teamList.forEach(team => result[category].push(team.teamStats[category]))
-	}
-
-	return result;
-}
 
 export const calcMin = (arr: Array<number>): number => {
   return arr.reduce((acc, cur) => acc < cur ? acc : cur);
@@ -121,7 +112,6 @@ export const calcMean = (arr: Array<number>): number => {
 }
 
 export const isBestInCategory = (value: number, category: string, best: ILeagueStats): boolean => {
-	// console.log(value, category)
 	if (value === 0 && !invertedCategories.includes(category)) {
 		return false
 	}
