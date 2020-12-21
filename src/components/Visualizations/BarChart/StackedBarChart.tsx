@@ -16,6 +16,7 @@ interface ITeamBar {
   name?: string;
   teamTotal: number;
   individualBars: Array<IIndividualBar>;
+  color?: string;
 }
 
 interface IIndividualBar {
@@ -25,6 +26,7 @@ interface IIndividualBar {
   statValue: number;
   xPos: number;
   barWidth: number;
+  color?: string;
 }
 
 export const StackedBarChart = (props: IStackedBarChartProps) => {
@@ -63,7 +65,15 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
           const statValue = selectedSeasonStats[statCategory] ?? 0;
           const xPos = i === 0 ? 0 : barWidths.reduce((acc, cur, idx) => idx < i ? acc + cur : acc); 
           const barWidth = barWidths[i];
-          return { personId, firstName, lastName, statValue, xPos, barWidth };
+          return {
+            personId,
+            firstName,
+            lastName,
+            statValue,
+            xPos,
+            barWidth,
+            color: team.color
+          };
         })
         .filter(({barWidth}) => barWidth > 0);
 
@@ -95,6 +105,7 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
         .attr('x', (d) => d.xPos)
         .attr('width', (d) => d.barWidth)
         .attr('height', barHeight - barMargin)
+        .attr('fill', (d) => d.color ?? 'gray' )
         
     // team label
     svg.selectAll('[data-team-id]')

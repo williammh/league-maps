@@ -1,6 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 import { getScrollBarStyles } from '../../SharedStyles/SharedStyles';
 import { nbaRed, nbaBlue } from '../../Util/Util';
+import { ITeam } from '../../Types/types'
 
 const avatarSize = 28
 
@@ -40,13 +41,13 @@ export const useTableContainerStyles = makeStyles({
 		'& .headshot' : {
 			height: avatarSize,
 			width: avatarSize,
-			backgroundColor: 'lightgray'
+			backgroundColor: ({color}: ITeam) => color ?? 'lightgray',
 		},
 		'& .mock-player-icon': {
 			height: avatarSize,
 			width: avatarSize,
 			fill: 'white',
-			backgroundColor: 'black',
+			backgroundColor: ({color}: ITeam) => color ?? 'black',
 			borderRadius: '15px',
 		},
 		'& .name-cell' : {

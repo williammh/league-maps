@@ -26,10 +26,10 @@ export const useBarChartStyles = makeStyles({
       backgroundColor: '#dddddd'
     },
     '& rect:nth-child(odd)': {
-      fill: '#444444',
+      // fill: '#444444',
     },
     '& rect:nth-child(even)': {
-      fill: '#666666',
+      // fill: '#666666',
     },
     '& rect:hover': {
       opacity: 1 
@@ -43,10 +43,10 @@ export const useBarChartStyles = makeStyles({
       cursor: 'default'
     },
     '& .best rect:nth-child(odd)': {
-      fill: nbaBlue
+      // fill: nbaBlue
     },
     '& .best rect:nth-child(even)' : {
-      fill: '#3560b3'
+      // fill: '#3560b3'
     },
     '& svg div': {
       overflow: 'hidden',

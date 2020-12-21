@@ -21,6 +21,7 @@ import { UndraftedRow } from './UndraftedRow'
 import RemoveIcon from '@material-ui/icons/Remove';
 import { useTooltipStyles } from './TeamStatsTable.styles';
 import { settingsContext } from '../../Contexts/SettingsContext' 
+import { leagueContext } from '../../Contexts/LeagueContext' 
 
 
 export interface IRosterTableProps {
@@ -34,6 +35,8 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 	const { id, roster, removePlayer, addPlayer } = props;
 
 	const { selectedYear } = useContext(settingsContext);
+	const { teamList } = useContext(leagueContext);
+	const thisTeam = teamList.find(team => team.id === id);
 
 	const [openTooltip, setOpenTooltip] = React.useState<number | null>(null);
 
@@ -49,7 +52,7 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 		setOpenTooltip(parseInt(index!))
   };
 
-	const tableContainerClasses = useTableContainerStyles();
+	const tableContainerClasses = useTableContainerStyles(thisTeam);
 	const tooltipClasses = useTooltipStyles();
 
 	// only display player's first initial if displaying full name causes text overflow

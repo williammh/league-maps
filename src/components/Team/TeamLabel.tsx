@@ -7,10 +7,11 @@ import React, {
   useEffect
 } from 'react';
 import { maxTeamSize, isBestInCategory } from '../../Util/Util'
-import { TextField } from '@material-ui/core';
+import { TextField, Tooltip, ClickAwayListener } from '@material-ui/core';
+import { RadioButtonUncheckedRounded } from '@material-ui/icons';
 import { leagueContext } from '../../Contexts/LeagueContext';
 import { settingsContext } from '../../Contexts/SettingsContext';
-
+import { CirclePicker } from 'react-color';
 
 interface ITeamLabelProps {
   id: number;
@@ -19,7 +20,7 @@ interface ITeamLabelProps {
 export const TeamLabel = ({ id }: ITeamLabelProps): JSX.Element => {
   const { teamList, setTeamList, leagueStats, updateTeam } = useContext(leagueContext);
   const thisTeam = teamList.find(team => team.id === id)!;
-  const { stats: teamStats } = thisTeam;
+  const { stats, color } = thisTeam;
 
   const { selectedStats } = useContext(settingsContext);
   
@@ -27,8 +28,10 @@ export const TeamLabel = ({ id }: ITeamLabelProps): JSX.Element => {
 
   const { name = defaultDisplayName, roster } = thisTeam;
   
-  const [ isEditing, setIsEditingName ] = useState(false);
+  const [ isEditingName, setIsEditingName ] = useState(false);
   const [ displayName, setDisplayName ] = useState(name);
+  const [ isEditingColor, setIsEditingColor ] = useState(false);
+
 
   const nameEditorRef = useRef<HTMLInputElement>(null);
 
@@ -50,13 +53,13 @@ export const TeamLabel = ({ id }: ITeamLabelProps): JSX.Element => {
   }
 
   useEffect(() => {
-    if (isEditing) {
+    if (isEditingName) {
       nameEditorRef.current!.select();
     } else {
       thisTeam.name = displayName.trim();
       updateTeam(thisTeam);
     }
-  }, [isEditing]);
+  }, [isEditingName]);
 
   const label = (): JSX.Element => {
     return (
@@ -67,6 +70,20 @@ export const TeamLabel = ({ id }: ITeamLabelProps): JSX.Element => {
         {name}
       </span>
     )
+  }
+
+  const editColor = () => {
+    setIsEditingColor(true);
+  }
+
+  const handleChangeComplete = (color: any) => {
+    // console.log(color.constructor.name);
+    thisTeam.color = color.hex;
+    updateTeam(thisTeam);
+  }
+
+  const onClickAway = () => {
+    setIsEditingColor(false)
   }
 
   const nameEditor = (): JSX.Element => {
@@ -87,16 +104,39 @@ export const TeamLabel = ({ id }: ITeamLabelProps): JSX.Element => {
     <div
       className='teamLabelContainer'
     >
-      {/* <RadioButtonUncheckedIcon
-        style={{
-          backgroundColor: color,
-          fill: 'white',
-          borderRadius: '20px',
-        }}
-      /> */}
       <span>({roster.length}{roster.length >= maxTeamSize && '*'})&nbsp;</span>
-      {isEditing ? nameEditor() : label()}
-      {/* <span>&nbsp; Leads {teamStats.cl} {teamStats.cl === 1 ? 'Category' : 'Categories'}</span> */}
+      <ClickAwayListener onClickAway={onClickAway}>
+        <Tooltip
+          title={
+            <CirclePicker 
+              color={color}
+              onChangeComplete={handleChangeComplete}
+            />
+          }
+          open={isEditingColor}
+          disableFocusListener
+          disableHoverListener
+          disableTouchListener
+          interactive
+        >
+          <RadioButtonUncheckedRounded
+            style={{
+              backgroundColor: color,
+              fill: '#fff',
+              borderRadius: '20px',
+              margin: '0px 6px'
+            }}
+            onClick={editColor}
+          />
+        </Tooltip>
+      </ClickAwayListener>
+      {/* {isEditingColor && (
+        <CirclePicker 
+          color={color}
+          onChangeComplete={handleChangeComplete}
+        />
+      )} */}
+      {isEditingName ? nameEditor() : label()}
     </div>
   )
 }
