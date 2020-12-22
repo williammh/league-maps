@@ -124,8 +124,10 @@ export const TeamLabel = ({ id }: ITeamLabelProps): JSX.Element => {
               backgroundColor: color,
               fill: '#fff',
               borderRadius: '20px',
-              margin: '0px 2px',
-              cursor: 'pointer'
+              margin: '0px 4px 0px 0px',
+              cursor: 'pointer',
+              height: 28,
+              width: 28
             }}
             onClick={editColor}
           />
