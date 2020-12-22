@@ -26,21 +26,25 @@ const LeagueContextProvider = (props: ContextProviderProps) => {
 			id: 1,
 			roster: [],
 			stats: generateEmptyStats(),
+			color: 'gray'
 		},
 		{
 			id: 2,
 			roster: [],
 			stats: generateEmptyStats(),
+			color: 'gray'
 		},
 		{
 			id: 3,
 			roster: [],
 			stats: generateEmptyStats(),
+			color: 'gray'
 		},
 		{
 			id: 4,
 			roster: [],
 			stats: generateEmptyStats(),
+			color: 'gray'
 		}
 	];
 
@@ -60,7 +64,8 @@ const LeagueContextProvider = (props: ContextProviderProps) => {
 			{
 				id: (teamList[teamList.length - 1]?.id ?? 0) + 1,
 				roster: [],
-				stats: generateEmptyStats()
+				stats: generateEmptyStats(),
+				color: 'gray'
 			}
 		])
 	}

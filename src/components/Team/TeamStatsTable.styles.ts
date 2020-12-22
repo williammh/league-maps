@@ -41,7 +41,7 @@ export const useTableContainerStyles = makeStyles({
             textAlign: 'right',
         },
         '& .best' : {
-            backgroundColor: nbaBlue,
+            backgroundColor: (props: any) => props.color,
             color: 'white'
         }
     }

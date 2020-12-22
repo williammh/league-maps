@@ -167,6 +167,7 @@ export const Team = (props: ITeam) => {
 						<TeamStatsTable
 							teamId={id}
 							stats={thisTeam.stats}
+							color={thisTeam.color ?? 'lightgray'}
 						/>
 					</Grid>
 				</AccordionDetails>

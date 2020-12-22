@@ -17,18 +17,19 @@ import { IStatDictionary } from '../../Types/types';
 export interface ITeamStatsTableProps {
 	teamId: number;
 	stats: IStatDictionary;
+	color: string;
 }
 
 export const TeamStatsTable = (props: ITeamStatsTableProps): JSX.Element => {
-	const { teamId, stats: teamStats } = props;
+	const { teamId, stats, color } = props;
 
 	const { leagueStats } = useContext(leagueContext);
 	const { selectedStats } = useContext(settingsContext);
 
-	const selectedTeamStats = Object.entries(teamStats)
+	const selectedTeamStats = Object.entries(stats)
 		.filter(([category]) => selectedStats[category]);
 
-	const tableContainerClasses = useTableContainerStyles();
+	const tableContainerClasses = useTableContainerStyles({color});
 
 	return (
 		<TableContainer classes={tableContainerClasses}>

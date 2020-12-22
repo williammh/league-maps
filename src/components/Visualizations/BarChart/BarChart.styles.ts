@@ -25,6 +25,9 @@ export const useBarChartStyles = makeStyles({
       marginBottom: 20,
       backgroundColor: '#dddddd'
     },
+    '& rect' : {
+      outline: '1px solid #dddddd'
+    },
     '& rect:nth-child(odd)': {
       // fill: '#444444',
     },
