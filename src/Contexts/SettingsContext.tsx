@@ -42,7 +42,7 @@ const SettingsContextProvider = (props: ContextProviderProps) => {
 					currentYear--;
 				}
 			}
-			setSelectedYear(2019);
+			setSelectedYear(2020);
 		})();
 	}, []);
 

@@ -28,8 +28,7 @@ export const generateEmptyStats = (): IStatDictionary => {
 export const getAllPlayers = async (year: number = (new Date()).getFullYear()): Promise<Array<IPlayerSearchResult>> => {
 	let playerListResponse = await fetch(`https://data.nba.net/prod/v1/${year}/players.json`);
 	let playerList = await playerListResponse.json();
-	console.log(playerList.league.standard);
-	return playerList.league.standard;
+	return playerList.league?.standard;
 }
 
 export const getPlayerStats = async (personId: string): Promise<IStatSearchResult | any> => {

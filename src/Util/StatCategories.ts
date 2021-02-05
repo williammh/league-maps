@@ -58,6 +58,12 @@ export const invertedCategories = [
 	'turnovers',
 	'pFouls',
 	'pfpg',
+	'fga',
+	'tpa',
+	'fta',
+	'fgapg',
+	'tpapg',
+	'ftapg',
 ];
 
 export const excludedCategories = [
