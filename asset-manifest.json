@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/league-maps/static/css/main.2ae47eeb.chunk.css",
-    "main.js": "/league-maps/static/js/main.ae19723f.chunk.js",
-    "main.js.map": "/league-maps/static/js/main.ae19723f.chunk.js.map",
+    "main.js": "/league-maps/static/js/main.63ab6379.chunk.js",
+    "main.js.map": "/league-maps/static/js/main.63ab6379.chunk.js.map",
     "runtime-main.js": "/league-maps/static/js/runtime-main.27aabf0e.js",
     "runtime-main.js.map": "/league-maps/static/js/runtime-main.27aabf0e.js.map",
     "static/js/2.018a61b6.chunk.js": "/league-maps/static/js/2.018a61b6.chunk.js",
@@ -15,6 +15,6 @@
     "static/js/runtime-main.27aabf0e.js",
     "static/js/2.018a61b6.chunk.js",
     "static/css/main.2ae47eeb.chunk.css",
-    "static/js/main.ae19723f.chunk.js"
+    "static/js/main.63ab6379.chunk.js"
   ]
 }
