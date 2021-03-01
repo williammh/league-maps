@@ -24,7 +24,7 @@ import {
 } from '../../Util/Util';
 import { TeamLabel } from './TeamLabel';
 import { RosterTable } from './RosterTable';
-import { TeamStatsTable } from './TeamStatsTable';
+import { StatsTable } from './StatsTable';
 import { 
 	useAccordionStyles,
 	useAccordionSummaryStyles,
@@ -164,7 +164,7 @@ export const Team = (props: ITeam) => {
 							addPlayer={addPlayer}
 							removePlayer={removePlayer}
 						/>
-						<TeamStatsTable
+						<StatsTable
 							teamId={id}
 							stats={thisTeam.stats}
 							color={thisTeam.color ?? 'lightgray'}

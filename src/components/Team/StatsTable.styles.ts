@@ -2,31 +2,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { nbaBlue } from '../../Util/Util';
 import { getScrollBarStyles } from '../../SharedStyles/SharedStyles';
 
-export const useTableContainerStyles = makeStyles({
+export const useStatsTableStyles = makeStyles({
     root: {
-       	// to do: merge team table styles
-        height: 'calc(22.5vh - 6px - 6px - 24px - 6px - 6px) !important',
-        width: '40%',
-        marginLeft: 3,
-        overflowY: 'scroll',
-        overflowX: 'hidden',
-        '& table': {
-            width: '100%'
-        },
-        '& tbody' : {
-            width: '100%',
-        },
-        '& tr': {
-            width: '100%',
-            
-        },
-        '& td': {
-            height: 28,
-            lineHeight: '32px',
-            display: 'inline-block',
-            border: 'none',
-            paddingBottom: 1
-        },
         '& .stat-label' : {
             textTransform: 'uppercase',
             overflow: 'hidden',

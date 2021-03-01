@@ -81,21 +81,13 @@ export const calcLeagueStats = (teamList: Array<ITeam>): ILeagueStats => {
 	};
 
 	allStatCategories.forEach(category => {
-		result.min[category] = calcMin(teamList.map(team => team.stats[category]));
+		result.min[category] = Math.min(...teamList.map(team => team.stats[category]));
 		result.median[category] = calcMedian(teamList.map(team => team.stats[category]));
-		result.max[category] = calcMax(teamList.map(team => team.stats[category]));
+		result.max[category] = Math.max(...teamList.map(team => team.stats[category]));
 	})
 
 	return result;
 };
-
-export const calcMin = (arr: Array<number>): number => {
-  return arr.reduce((acc, cur) => acc < cur ? acc : cur);
-}
-
-export const calcMax = (arr: Array<number>): number => {
-  return arr.reduce((acc, cur) =>  acc > cur ? acc : cur);
-}
 
 export const calcMedian = (arr: Array<number>): number => {
 	arr.sort((a, b) => a - b);

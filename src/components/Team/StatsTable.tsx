@@ -9,10 +9,11 @@ import {
 	TableContainer,
 	Tooltip
 } from '@material-ui/core'
-import { useTableContainerStyles } from './TeamStatsTable.styles';
+import { useStatsTableStyles } from './StatsTable.styles';
 import { isBestInCategory } from '../../Util/Util';
 import { fullStatNameDictionary } from '../../Util/StatCategories';
 import { IStatDictionary } from '../../Types/types';
+import { useTableContainerStyles } from './Team.styles';
 
 export interface ITeamStatsTableProps {
 	teamId: number;
@@ -20,7 +21,7 @@ export interface ITeamStatsTableProps {
 	color: string;
 }
 
-export const TeamStatsTable = (props: ITeamStatsTableProps): JSX.Element => {
+export const StatsTable = (props: ITeamStatsTableProps): JSX.Element => {
 	const { teamId, stats, color } = props;
 
 	const { leagueStats } = useContext(leagueContext);
@@ -29,11 +30,12 @@ export const TeamStatsTable = (props: ITeamStatsTableProps): JSX.Element => {
 	const selectedTeamStats = Object.entries(stats)
 		.filter(([category]) => selectedStats[category]);
 
-	const tableContainerClasses = useTableContainerStyles({color});
+	const tableContainerClasses = useTableContainerStyles({width: '40%'});
+	const statsTableClasses = useStatsTableStyles({color});
 
 	return (
 		<TableContainer classes={tableContainerClasses}>
-			<Table padding='none' size='small'>
+			<Table padding='none' size='small' classes={statsTableClasses}>
 				<TableBody>
 					{selectedTeamStats.map(([ category, value ]) => (
 						<TableRow key={`total-stats-row-${teamId}-${category}`}>

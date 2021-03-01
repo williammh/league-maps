@@ -15,13 +15,14 @@ import {
 	Card
 } from '@material-ui/core'
 import { IPlayerSearchResult, Player } from '../../Types/types';
-import { useTableContainerStyles } from './RosterTable.styles';
+import { useRosterTableStyles } from './RosterTable.styles';
 import { maxTeamSize, getSeasonStats } from '../../Util/Util';
 import { UndraftedRow } from './UndraftedRow'
 import RemoveIcon from '@material-ui/icons/Remove';
-import { useTooltipStyles } from './TeamStatsTable.styles';
+import { useTooltipStyles } from './StatsTable.styles';
 import { settingsContext } from '../../Contexts/SettingsContext' 
 import { leagueContext } from '../../Contexts/LeagueContext' 
+import { useTableContainerStyles } from './Team.styles';
 
 
 export interface IRosterTableProps {
@@ -52,7 +53,9 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 		setOpenTooltip(parseInt(index!))
   };
 
-	const tableContainerClasses = useTableContainerStyles(thisTeam);
+	// const tableContainerClasses = useTableContainerStyles(thisTeam);
+	const tableContainerClasses = useTableContainerStyles({width: '60%'});
+	const rosterTableClasses = useRosterTableStyles(thisTeam);
 	const tooltipClasses = useTooltipStyles();
 
 	// only display player's first initial if displaying full name causes text overflow
@@ -87,7 +90,12 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 
 	return (
 		<TableContainer classes={tableContainerClasses}>	
-			<Table padding='none' size='small' className={`roster-table-${id}`}>
+			<Table
+				padding='none'
+				size='small'
+				classes={rosterTableClasses}
+				className={`roster-table-${id}`}
+			>
 				<TableBody>
 					{roster.map((player: Player, i) => {
 						const { personId, firstName, lastName } = player;

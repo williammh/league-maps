@@ -5,30 +5,9 @@ import { ITeam } from '../../Types/types'
 
 const avatarSize = 28
 
-export const useTableContainerStyles = makeStyles({
+export const useRosterTableStyles = makeStyles({
 	root: {
-		// to do: merge team table styles
-		height: 'calc(22.5vh - 6px - 6px - 24px - 6px - 6px) !important',
 		width: '60%',
-		marginRight: 3,
-		overflowY: 'scroll',
-		overflowX: 'hidden',
-		'& table': {
-			width: '100%'
-		},
-		'& tbody': {
-			width: '100%',
-		},
-		'& tr': {
-			width: '100%',
-			
-		},
-		'& td': {
-			display: 'inline-block',
-			height: 28,
-			border: 'none',
-			paddingBottom: 1
-		},
 		'& .button-cell' : {
 			width: 28,
 		},

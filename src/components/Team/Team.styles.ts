@@ -9,7 +9,7 @@ export const useAccordionStyles = makeStyles({
 		paddingRight: 6,
 		paddingBottom:6,
 		paddingLeft: 6,
-		minWidth: 'fit-content;'
+		minWidth: 'fit-content'
 	}
 })
 
@@ -19,7 +19,8 @@ export const useAccordionSummaryStyles = makeStyles({
 		padding: '0px',
 		'& :hover': {
 			cursor: 'default'
-		},
+		}
+		
 	},
 	content: {
 		justifyContent: 'flex-end',
@@ -33,9 +34,15 @@ export const useAccordionSummaryStyles = makeStyles({
 		'& .teamLabelContainer': {
 			flexGrow: 2,
 			display: 'flex',
-			paddingLeft: '6px'
 		},
-		'& .label': {
+		'& span': {
+			lineHeight: '28px'
+		},
+		'& span.roster-size' : {
+			textAlign: 'center',
+			width: 28
+		},
+		'& span.label': {
 			cursor: 'text'
 		},
 		'& button' : {
@@ -65,5 +72,30 @@ export const useGridStyles = makeStyles({
 			backgroundColor: '#F0F0F0'
 		},
 		...getScrollBarStyles('.MuiTableContainer-root')
+	}
+})
+
+export const useTableContainerStyles = makeStyles({
+	root: {
+		height: 'calc(22.5vh - 6px - 6px - 24px - 6px - 6px - 4px) !important',
+		width: (props: React.CSSProperties) => props.width,
+		overflowY: 'scroll',
+		overflowX: 'hidden',
+		'& table': {
+			width: '100%'
+		},
+		'& tbody' : {
+			width: '100%',
+		},
+		'& tr': {
+			width: '100%',
+		},
+		'& td': {
+			height: 28,
+			lineHeight: '32px',
+			display: 'inline-block',
+			border: 'none',
+			paddingBottom: 1
+		}
 	}
 })
