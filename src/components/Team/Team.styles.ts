@@ -79,6 +79,7 @@ export const useTableContainerStyles = makeStyles({
 	root: {
 		height: 'calc(22.5vh - 6px - 6px - 24px - 6px - 6px - 4px) !important',
 		width: (props: React.CSSProperties) => props.width,
+		padding: (props: React.CSSProperties) => props.padding,
 		overflowY: 'scroll',
 		overflowX: 'hidden',
 		'& table': {

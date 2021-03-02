@@ -3,39 +3,46 @@ import { getScrollBarStyles } from '../../SharedStyles/SharedStyles';
 import { nbaRed, nbaBlue } from '../../Util/Util';
 import { ITeam } from '../../Types/types'
 
-const avatarSize = 28
+const avatarSize = 28;
+const buttonCellWidth = 28;
+const headshotCellWidth = 28;
+const nameCellPaddingLeft = 6;
 
 export const useRosterTableStyles = makeStyles({
 	root: {
 		width: '60%',
 		'& .button-cell' : {
-			width: 28,
+			width: buttonCellWidth,
 		},
 		'& .no-stats ': {
 			opacity: .25
 		},
 		'& .headshot-cell' : {
-			width: 28
+			width: headshotCellWidth
 		},
 		'& .headshot' : {
 			height: avatarSize,
 			width: avatarSize,
-			backgroundColor: ({color}: ITeam) => color ?? 'lightgray',
+			backgroundColor: ({teamColor}: any) => teamColor ?? 'lightgray',
 		},
 		'& .mock-player-icon': {
 			height: avatarSize,
 			width: avatarSize,
 			fill: 'white',
-			backgroundColor: ({color}: ITeam) => color ?? 'black',
+			backgroundColor: ({teamColor}: any) => teamColor ?? 'black',
 			borderRadius: '15px',
 		},
 		'& .name-cell' : {
-			width: 'calc(100% - 30px - 30px - 6px)',
+			width: ({selectedFormat}: any) => {
+				return selectedFormat === 'roto' ?
+					`calc(100% - ${buttonCellWidth}px - ${headshotCellWidth}px - ${nameCellPaddingLeft}px)` :
+					`calc(100% - ${buttonCellWidth}px - ${headshotCellWidth}px - ${nameCellPaddingLeft}px - 30px)`
+			},
 			lineHeight: '32px',
 			cursor: 'default',
 			overflow: 'hidden',
 			textOverflow: 'ellipsis',
-			paddingLeft: 6
+			paddingLeft: nameCellPaddingLeft
 		},
 		'& .name-cell div' : {
 			width: '100%',

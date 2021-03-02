@@ -44,7 +44,7 @@ export const calculatedCategories = [
 	'ftmpg',
 	'ftapg',
 	'pfpg',
-	'scl' /** team stat only */
+	// 'scl' /** team stat only */
 ];
 
 export const percentageCategories = [
@@ -72,7 +72,7 @@ export const excludedCategories = [
 ];
 
 export const defaultCategories = [
-	'scl',
+	// 'scl',
 	'ppg',
 	'rpg',
 	'apg',
@@ -84,9 +84,37 @@ export const defaultCategories = [
 	'ftmpg'
 ];
 
+
 export const allStatCategories = [...defaultCategories, ...providedCategories,...calculatedCategories]
 /** remove duplicates and excluded categories */
 .filter((category, index, array) => array.indexOf(category) === index && !excludedCategories.includes(category));
+
+
+export const defaultRotoMultipliers: {[key: string]: number} = {
+	ppg: 1,
+	rpg: 1,
+	apg: 1,
+	topg: 1,
+	bpg: 1,
+	spg: 1,
+	fgmpg: 1,
+	tpmpg: 1,
+	ftmpg: 1,
+};
+
+export const defaultEspnMultipliers: {[key: string]: number} = {
+	ppg: 1,
+	rpg: 1,
+	apg: 2,
+	topg: -2,
+	bpg: 4,
+	spg: 4,
+	fgmpg: 2,
+	tpmpg: 1,
+	fgapg: -1,
+	ftapg: -1,
+	ftmpg: 1,
+}
 
 export const fullStatNameDictionary: { [key: string]: string } = {
 	ppg: 'points per game',

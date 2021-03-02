@@ -16,7 +16,7 @@ import {
 } from '@material-ui/core'
 import { IPlayerSearchResult, Player } from '../../Types/types';
 import { useRosterTableStyles } from './RosterTable.styles';
-import { maxTeamSize, getSeasonStats } from '../../Util/Util';
+import { maxTeamSize, getSeasonStats, calcFantasyPoints } from '../../Util/Util';
 import { UndraftedRow } from './UndraftedRow'
 import RemoveIcon from '@material-ui/icons/Remove';
 import { useTooltipStyles } from './StatsTable.styles';
@@ -35,7 +35,7 @@ export interface IRosterTableProps {
 export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 	const { id, roster, removePlayer, addPlayer } = props;
 
-	const { selectedYear } = useContext(settingsContext);
+	const { selectedYear, selectedFormat, statMultipliers } = useContext(settingsContext);
 	const { teamList } = useContext(leagueContext);
 	const thisTeam = teamList.find(team => team.id === id);
 
@@ -44,7 +44,6 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 	const handleTooltipClose = (event: React.MouseEvent<Document, MouseEvent>) => {
 		event.stopPropagation();
 		setOpenTooltip(null);
-
 	};
 	
 	const handleTooltipOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -54,8 +53,13 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
   };
 
 	// const tableContainerClasses = useTableContainerStyles(thisTeam);
-	const tableContainerClasses = useTableContainerStyles({width: '60%'});
-	const rosterTableClasses = useRosterTableStyles(thisTeam);
+	const tableContainerClasses = useTableContainerStyles({
+		width: selectedFormat === 'roto' ? '60%' : '100%'
+	});
+	const rosterTableClasses = useRosterTableStyles({
+		teamColor: thisTeam!.color,
+		selectedFormat
+	});
 	const tooltipClasses = useTooltipStyles();
 
 	// only display player's first initial if displaying full name causes text overflow
@@ -163,6 +167,11 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 										</Tooltip>
 									</ClickAwayListener>
 								</TableCell>
+								{selectedFormat === 'points' && (
+									<TableCell className='fantasy-points-cell'>
+										{calcFantasyPoints(playerSeasonStats, statMultipliers).toFixed(1)}
+									</TableCell>
+								)}
 							</TableRow>
 						)
 					})}

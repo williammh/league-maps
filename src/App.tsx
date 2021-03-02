@@ -9,6 +9,7 @@ import { useAppGridStyles } from './App.styles';
 import { SettingsButton } from './components/SettingsButton/SettingsButton';
 import { Visualizations } from './components/Visualizations/Visualizations';
 import { SeasonSelect } from './components/SeasonSelect/SeasonSelect';
+import { FormatSelect } from './components/FormatSelect/FormatSelect';
 import { nbaBlue } from './Util/Util'
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
                   <div style={{display: 'flex', alignItems: 'center'}}>
                     <AddTeamButton />
                     <SettingsButton />
+                    <FormatSelect />
                     <SeasonSelect />
                   </div>
                   <h1>LeagueMaps.com</h1>

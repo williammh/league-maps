@@ -73,6 +73,14 @@ export const calcTeamStats = (roster: Array<Player>, selectedYear: number | Prom
 	return result;
 }
 
+export const calcFantasyPoints = (stats: IStatDictionary, statMultipliers: IStatDictionary): number => {
+	let result = 0;
+	for (const category in stats) {
+		result += stats[category] * statMultipliers[category];
+	}
+	return result;
+}
+
 export const calcLeagueStats = (teamList: Array<ITeam>): ILeagueStats => {
 	const result: ILeagueStats = {
 		min: {},

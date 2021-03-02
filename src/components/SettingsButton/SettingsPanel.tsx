@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { List, ListItem, Checkbox } from '@material-ui/core'
 import { settingsContext } from '../../Contexts/SettingsContext';
-import { useSettingsPanelStyles } from './SettingsPane.styles';
 
 export const SettingsPanel = () => {
   const { selectedStats, setSelectedStats } = useContext(settingsContext);
@@ -18,7 +17,6 @@ export const SettingsPanel = () => {
     setSelectedStats({...selectedStats})
   };
 
-  const settingsClasses = useSettingsPanelStyles()
 
   return (
     <List

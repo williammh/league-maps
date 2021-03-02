@@ -43,7 +43,7 @@ export const Team = (props: ITeam) => {
 	const { id } = props;
 	const [ isExpanded, setIsExpanded ] = useState(true);
 
-	const { selectedYear, selectedStats } = useContext(settingsContext);
+	const { selectedYear, selectedStats, selectedFormat, statMultipliers } = useContext(settingsContext);
 	const { teamList, removeTeam, updateTeam, leagueStats, updateLeagueStats } = useContext(leagueContext);
 
 	const thisTeam = teamList.find(team => team.id === id)!;
@@ -62,16 +62,27 @@ export const Team = (props: ITeam) => {
 
 	useEffect(() => {
 		thisTeam.stats = calcTeamStats(thisTeam.roster, selectedYear);
-		thisTeam.stats.scl = calcCategoryLeads(thisTeam.stats);
+		// thisTeam.stats.scl = calcCategoryLeads(thisTeam.stats);
 		updateTeam(thisTeam);
 	}, [...Object.values(leagueStats.max), ...Object.values(selectedStats), selectedYear])
+
+	
+	const [fPoints, setFPoints] = useState(0);
+
+	useEffect(() => {
+		let sum = 0;
+		for (const category in thisTeam.stats) {
+			sum += thisTeam.stats[category] * statMultipliers[category];
+		}
+		setFPoints(sum);
+	}, [...Object.values(statMultipliers), ...Object.values(thisTeam.stats)])
 
 	const minimize = () => {
 		setIsExpanded(!isExpanded);
 	}
 
 	const maximize = () => {
-		alert('This feature is still under construction!');
+		alert('This feature is yet to be constructed!');
 	}
 
 	const close = () => {
@@ -164,11 +175,13 @@ export const Team = (props: ITeam) => {
 							addPlayer={addPlayer}
 							removePlayer={removePlayer}
 						/>
-						<StatsTable
-							teamId={id}
-							stats={thisTeam.stats}
-							color={thisTeam.color ?? 'lightgray'}
-						/>
+						{selectedFormat === 'roto' && (
+							<StatsTable
+								teamId={id}
+								stats={thisTeam.stats}
+								color={thisTeam.color ?? 'lightgray'}
+							/>
+						)} 
 					</Grid>
 				</AccordionDetails>
 			</Accordion>

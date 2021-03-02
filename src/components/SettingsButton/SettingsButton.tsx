@@ -2,10 +2,14 @@ import React, { useContext } from 'react';
 import { ClickAwayListener, IconButton, Tooltip } from '@material-ui/core'
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { SettingsPanel } from './SettingsPanel';
-import { useSettingsPanelStyles } from './SettingsPane.styles';
+import { MultiplierPanel } from './MultiplierPanel';
+import { useSettingsPanelStyles } from './SettingsPanel.styles';
+import { settingsContext } from '../../Contexts/SettingsContext';
 
 export const SettingsButton = () => {
   const settingsClasses = useSettingsPanelStyles();
+
+  const { selectedFormat } = useContext(settingsContext);
   
   const [open, setIsOpen] = React.useState(false);
 
@@ -20,7 +24,7 @@ export const SettingsButton = () => {
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
       <Tooltip
-        title={<SettingsPanel />}
+        title={selectedFormat === 'roto' ? <SettingsPanel /> : <MultiplierPanel />}
         disableFocusListener
         disableHoverListener
         disableTouchListener

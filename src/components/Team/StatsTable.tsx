@@ -14,6 +14,7 @@ import { isBestInCategory } from '../../Util/Util';
 import { fullStatNameDictionary } from '../../Util/StatCategories';
 import { IStatDictionary } from '../../Types/types';
 import { useTableContainerStyles } from './Team.styles';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 export interface ITeamStatsTableProps {
 	teamId: number;
@@ -50,9 +51,20 @@ export const StatsTable = (props: ITeamStatsTableProps): JSX.Element => {
 								<TableCell className='stat-label'>{category}</TableCell>
 							)}
 							<TableCell
-								className={`stat-value ${isBestInCategory(value, category, leagueStats) ? 'best' : ''}`}
+								className={`stat-value`}
 							>
-								{value?.toFixed(1)}
+								<span style={{verticalAlign: 'middle'}}>
+									{value?.toFixed(1)}
+								</span>
+								
+								<CheckCircleIcon
+									style={{
+										fontSize: 12,
+										verticalAlign: 'middle',
+										visibility: isBestInCategory(value, category, leagueStats) ? 'visible' : 'hidden'
+									}}
+								/>
+						
 							</TableCell>
 						</TableRow>
 					))}
