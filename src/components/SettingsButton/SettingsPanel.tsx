@@ -1,36 +1,35 @@
-import React, { useContext, useEffect } from 'react';
-import { List, ListItem, Checkbox } from '@material-ui/core'
+import React, { useContext } from 'react';
+import { List, ListItem, Checkbox, ListItemText } from '@material-ui/core'
 import { settingsContext } from '../../Contexts/SettingsContext';
 
 export const SettingsPanel = () => {
   const { selectedStats, setSelectedStats } = useContext(settingsContext);
-  const settingsArray: Array<{label: string, show: boolean}> = [];
+  const settingsArray: Array<{category: string, show: boolean}> = [];
   
   for (const key in selectedStats) {
-    settingsArray.push({label: key, show: selectedStats[key]})
+    settingsArray.push({category: key, show: selectedStats[key]})
   }
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation();
     const { value } = event.currentTarget.dataset
     selectedStats[value!] = !selectedStats[value!]
     setSelectedStats({...selectedStats})
   };
 
-
   return (
     <List
       dense
     >
-      {settingsArray.map(({ label, show }) => (
+      {settingsArray.map(({ category, show }) => (
         <ListItem
           button
-          data-value={label}
+          data-value={category}
           onClick={handleClick}
-          key={`setting-${label}`}
+          key={`setting-${category}`}
+          disableGutters
         >
+          <ListItemText primary={category} style={{textTransform: 'uppercase'}} />
           <Checkbox checked={show} />
-          <span style={{textTransform: 'uppercase'}}>{label}</span>
         </ListItem>
       ))}
     </List>

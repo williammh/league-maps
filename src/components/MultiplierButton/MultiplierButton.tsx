@@ -1,10 +1,11 @@
 import React from 'react';
 import { ClickAwayListener, IconButton, Tooltip } from '@material-ui/core'
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import { SettingsPanel } from './SettingsPanel';
-import { useSettingsPanelStyles } from './SettingsPanel.styles';
+import PermDataSettingIcon from '@material-ui/icons/PermDataSetting'
 
-export const SettingsButton = () => {
+import { MultiplierPanel } from './MultiplierPanel';
+import { useSettingsPanelStyles } from '../SettingsButton/SettingsPanel.styles';
+
+export const MultiplierButton = () => {
   const settingsClasses = useSettingsPanelStyles();
   
   const [open, setIsOpen] = React.useState(false);
@@ -19,9 +20,10 @@ export const SettingsButton = () => {
 
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
+      {/* this div is necessary for click away listener to work */}
       <div>
         <Tooltip
-          title={<SettingsPanel />}
+          title={<MultiplierPanel />}
           disableFocusListener
           disableHoverListener
           disableTouchListener
@@ -31,7 +33,7 @@ export const SettingsButton = () => {
           arrow
         >
           <IconButton onClick={handleClick}>
-            <VisibilityIcon style={{color: '#666666'}} />
+            <PermDataSettingIcon style={{color: '#666666'}} />
           </IconButton>
         </Tooltip>
       </div>

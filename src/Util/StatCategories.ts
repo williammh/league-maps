@@ -1,3 +1,5 @@
+import { IStatDictionary } from '../Types/types';
+
 // stat categories provided by data.nba.net
 export const providedCategories: Array<string> = [
 	'ppg',
@@ -45,6 +47,7 @@ export const calculatedCategories = [
 	'ftapg',
 	'pfpg',
 	// 'scl' /** team stat only */
+	'fppg'
 ];
 
 export const percentageCategories = [
@@ -72,6 +75,7 @@ export const excludedCategories = [
 ];
 
 export const defaultCategories = [
+	'fppg',
 	// 'scl',
 	'ppg',
 	'rpg',
@@ -89,20 +93,7 @@ export const allStatCategories = [...defaultCategories, ...providedCategories,..
 /** remove duplicates and excluded categories */
 .filter((category, index, array) => array.indexOf(category) === index && !excludedCategories.includes(category));
 
-
-export const defaultRotoMultipliers: {[key: string]: number} = {
-	ppg: 1,
-	rpg: 1,
-	apg: 1,
-	topg: 1,
-	bpg: 1,
-	spg: 1,
-	fgmpg: 1,
-	tpmpg: 1,
-	ftmpg: 1,
-};
-
-export const defaultEspnMultipliers: {[key: string]: number} = {
+export const defaultStatMultipliers: IStatDictionary = {
 	ppg: 1,
 	rpg: 1,
 	apg: 2,
@@ -114,6 +105,33 @@ export const defaultEspnMultipliers: {[key: string]: number} = {
 	fgapg: -1,
 	ftapg: -1,
 	ftmpg: 1,
+	mpg: 0, 
+	tpp: 0,
+	ftp: 0,
+	fgp: 0,
+	assists: 0,
+	blocks: 0,
+	steals: 0,
+	turnovers: 0,
+	offReb: 0,
+	defReb: 0,
+	totReb: 0,
+	fgm: 0,
+	fga: 0,
+	tpm: 0,
+	tpa: 0,
+	ftm: 0,
+	fta: 0,
+	pFouls: 0,
+	points: 0,
+	gamesPlayed: 0,
+	gamesStarted: 0,
+	plusMinus: 0,
+	min: 0,
+	dd2: 0,
+	td3: 0,
+	tpapg: 0,
+	pfpg: 0
 }
 
 export const fullStatNameDictionary: { [key: string]: string } = {
@@ -147,5 +165,6 @@ export const fullStatNameDictionary: { [key: string]: string } = {
 	ftmpg: 'free throws made per game',
 	ftapg: 'free throws attempted per game',
 	pfpg: 'personal fouls per game',
-	scl: 'stat category leads'
+	scl: 'stat category leads',
+	fppg: 'fantasy points per game'
 }

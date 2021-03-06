@@ -6,8 +6,10 @@ import React, {
 } from 'react';
 import {
 	defaultCategories,
-	allStatCategories
+	allStatCategories,
+	defaultStatMultipliers
  } from '../Util/StatCategories'
+ import { IStatDictionary } from '../Types/types';
 
 const settingsContext = React.createContext({} as ISettingsContext);
 
@@ -19,14 +21,11 @@ interface ISettingsContext {
 	selectedStats: { [key: string]: boolean };
 	setSelectedStats:  Dispatch<SetStateAction<{ [key: string]: boolean }>>;
 
-	statMultipliers: { [key: string]: number};
-	setStatMultipliers: Dispatch<SetStateAction<{ [key: string]: number }>>;
+	statMultipliers: IStatDictionary;
+	setStatMultipliers: Dispatch<SetStateAction<IStatDictionary>>;
 
 	selectedYear: number | Promise<number>;
 	setSelectedYear: Dispatch<SetStateAction<number>>;
-
-	selectedFormat: string;
-	setSelectedFormat: Dispatch<SetStateAction<string>>;
 }
 
 const SettingsContextProvider = (props: ContextProviderProps) => {
@@ -39,14 +38,7 @@ const SettingsContextProvider = (props: ContextProviderProps) => {
 
 	const [ selectedYear, setSelectedYear ] = useState((new Date()).getFullYear());
 
-	const defaultStatMultipliers: any = {};
-	allStatCategories.forEach(category => {
-		defaultStatMultipliers[category] = defaultCategories.includes(category) ? 1 : 0
-	})
-
 	const [ statMultipliers, setStatMultipliers ] = useState(defaultStatMultipliers);
-
-	const [ selectedFormat, setSelectedFormat ] = useState('roto');
 
 	useEffect(() => {
 		(async (): Promise<void> => {
@@ -69,9 +61,7 @@ const SettingsContextProvider = (props: ContextProviderProps) => {
 			setSelectedYear,
 			setSelectedStats,
 			statMultipliers,
-			setStatMultipliers,
-			selectedFormat,
-			setSelectedFormat
+			setStatMultipliers
 		}}>
 			{props.children}
 		</settingsContext.Provider>

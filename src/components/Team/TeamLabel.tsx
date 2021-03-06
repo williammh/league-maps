@@ -6,11 +6,10 @@ import React, {
   KeyboardEvent,
   useEffect
 } from 'react';
-import { maxTeamSize, isBestInCategory } from '../../Util/Util'
+import { maxTeamSize } from '../../Util/Util'
 import { TextField, Tooltip, ClickAwayListener } from '@material-ui/core';
 import { RadioButtonUncheckedRounded } from '@material-ui/icons';
 import { leagueContext } from '../../Contexts/LeagueContext';
-import { settingsContext } from '../../Contexts/SettingsContext';
 import { CirclePicker } from 'react-color';
 
 interface ITeamLabelProps {
@@ -18,12 +17,10 @@ interface ITeamLabelProps {
 }
 
 export const TeamLabel = ({ id }: ITeamLabelProps): JSX.Element => {
-  const { teamList, setTeamList, leagueStats, updateTeam } = useContext(leagueContext);
+  const { teamList, updateTeam } = useContext(leagueContext);
   const thisTeam = teamList.find(team => team.id === id)!;
-  const { stats, color } = thisTeam;
+  const { color } = thisTeam;
 
-  const { selectedStats } = useContext(settingsContext);
-  
   const defaultDisplayName = `Team ${id}`;
 
   const { name = defaultDisplayName, roster } = thisTeam;
@@ -31,9 +28,8 @@ export const TeamLabel = ({ id }: ITeamLabelProps): JSX.Element => {
   const [ isEditingName, setIsEditingName ] = useState(false);
   const [ displayName, setDisplayName ] = useState(name);
   const [ isEditingColor, setIsEditingColor ] = useState(false);
-
-
   const nameEditorRef = useRef<HTMLInputElement>(null);
+
 
   const handleClick = () => {
     setIsEditingName(true);
@@ -61,23 +57,11 @@ export const TeamLabel = ({ id }: ITeamLabelProps): JSX.Element => {
     }
   }, [isEditingName]);
 
-  const label = (): JSX.Element => {
-    return (
-      <span
-        className='label'
-        onClick={handleClick}
-      >
-        {name}
-      </span>
-    )
-  }
-
   const editColor = () => {
     setIsEditingColor(true);
   }
 
   const handleChangeComplete = (color: any) => {
-    // console.log(color.constructor.name);
     thisTeam.color = color.hex;
     updateTeam(thisTeam);
   }
@@ -89,7 +73,7 @@ export const TeamLabel = ({ id }: ITeamLabelProps): JSX.Element => {
   const nameEditor = (): JSX.Element => {
     return (
       <TextField
-        variant='outlined'
+        size='small'
         value={displayName}
         autoFocus
         onBlur={handleBlur}
@@ -133,13 +117,7 @@ export const TeamLabel = ({ id }: ITeamLabelProps): JSX.Element => {
           />
         </Tooltip>
       </ClickAwayListener>
-      {/* {isEditingColor && (
-        <CirclePicker 
-          color={color}
-          onChangeComplete={handleChangeComplete}
-        />
-      )} */}
-      {isEditingName ? nameEditor() : label()}
+      {isEditingName ? nameEditor() : <span className='label' onClick={handleClick}>{name}</span>}
     </div>
   )
 }

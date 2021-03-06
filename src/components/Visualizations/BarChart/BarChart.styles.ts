@@ -1,5 +1,4 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { nbaBlue } from '../../../Util/Util';
 
 export const chartCardPadding = 6
 export const chartCardMargin = 6;
@@ -38,18 +37,7 @@ export const useBarChartStyles = makeStyles({
       opacity: 1 
     },
     '& .player-name-label': {
-      opacity: .25,
       fill: '#fff'
-    },
-    '& .player-name-label:hover': {
-      opacity: 1,
-      cursor: 'default'
-    },
-    '& .best rect:nth-child(odd)': {
-      // fill: nbaBlue
-    },
-    '& .best rect:nth-child(even)' : {
-      // fill: '#3560b3'
     },
     '& svg div': {
       overflow: 'hidden',

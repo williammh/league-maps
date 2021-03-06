@@ -10,11 +10,13 @@ import {
 	Tooltip
 } from '@material-ui/core'
 import { useStatsTableStyles } from './StatsTable.styles';
-import { isBestInCategory } from '../../Util/Util';
+import { isBestInCategory, calcFantasyPoints } from '../../Util/Util';
 import { fullStatNameDictionary } from '../../Util/StatCategories';
 import { IStatDictionary } from '../../Types/types';
 import { useTableContainerStyles } from './Team.styles';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import StarIcon from '@material-ui/icons/Star';
+
 
 export interface ITeamStatsTableProps {
 	teamId: number;
@@ -26,7 +28,9 @@ export const StatsTable = (props: ITeamStatsTableProps): JSX.Element => {
 	const { teamId, stats, color } = props;
 
 	const { leagueStats } = useContext(leagueContext);
-	const { selectedStats } = useContext(settingsContext);
+	const { selectedStats, statMultipliers } = useContext(settingsContext);
+
+	calcFantasyPoints(stats, statMultipliers);
 
 	const selectedTeamStats = Object.entries(stats)
 		.filter(([category]) => selectedStats[category]);
@@ -53,18 +57,13 @@ export const StatsTable = (props: ITeamStatsTableProps): JSX.Element => {
 							<TableCell
 								className={`stat-value`}
 							>
+								{isBestInCategory(value, category, leagueStats) && (
+									<span>&#x2605;</span>
+								)}
 								<span style={{verticalAlign: 'middle'}}>
 									{value?.toFixed(1)}
 								</span>
 								
-								<CheckCircleIcon
-									style={{
-										fontSize: 12,
-										verticalAlign: 'middle',
-										visibility: isBestInCategory(value, category, leagueStats) ? 'visible' : 'hidden'
-									}}
-								/>
-						
 							</TableCell>
 						</TableRow>
 					))}

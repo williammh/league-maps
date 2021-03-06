@@ -33,8 +33,8 @@ export interface IStatSearchResult {
 	}
 }
 
-export interface IFantasyPoints {
-	fantasyPoints: number;
-}
+// export interface IFantasyPoints {
+// 	fantasyPoints: number;
+// }
 
 export type Player = IPlayerSearchResult & IStatSearchResult;

@@ -1,9 +1,7 @@
 import React, {
 	useState,
 	useEffect,
-	useContext,
-	MouseEvent,
-	ChangeEvent
+	useContext
 } from 'react';
 import {
 	Accordion,
@@ -20,6 +18,7 @@ import {
 	getPlayerStats,
 	convertStatStringsToNumbers,
 	addCalculatedStats,
+	calcFantasyPoints,
 	isBestInCategory
 } from '../../Util/Util';
 import { TeamLabel } from './TeamLabel';
@@ -36,20 +35,18 @@ import MinimizeIcon from '@material-ui/icons/Minimize';
 import CropDinIcon from '@material-ui/icons/CropDin';
 import LaunchIcon from '@material-ui/icons/Launch';
 import CloseIcon from '@material-ui/icons/Close';
-import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import { IPlayerSearchResult, Player } from '../../Types/types';
 
 export const Team = (props: ITeam) => {
 	const { id } = props;
 	const [ isExpanded, setIsExpanded ] = useState(true);
 
-	const { selectedYear, selectedStats, selectedFormat, statMultipliers } = useContext(settingsContext);
+	const { selectedYear, selectedStats, statMultipliers } = useContext(settingsContext);
 	const { teamList, removeTeam, updateTeam, leagueStats, updateLeagueStats } = useContext(leagueContext);
 
 	const thisTeam = teamList.find(team => team.id === id)!;
 
 	// to do: https://casesandberg.github.io/react-color/
-
 
 	const accordionClasses = useAccordionStyles();
 	const accordionSummaryClasses = useAccordionSummaryStyles();
@@ -62,20 +59,10 @@ export const Team = (props: ITeam) => {
 
 	useEffect(() => {
 		thisTeam.stats = calcTeamStats(thisTeam.roster, selectedYear);
+		calcFantasyPoints(thisTeam.stats, statMultipliers);
 		// thisTeam.stats.scl = calcCategoryLeads(thisTeam.stats);
 		updateTeam(thisTeam);
-	}, [...Object.values(leagueStats.max), ...Object.values(selectedStats), selectedYear])
-
-	
-	const [fPoints, setFPoints] = useState(0);
-
-	useEffect(() => {
-		let sum = 0;
-		for (const category in thisTeam.stats) {
-			sum += thisTeam.stats[category] * statMultipliers[category];
-		}
-		setFPoints(sum);
-	}, [...Object.values(statMultipliers), ...Object.values(thisTeam.stats)])
+	}, [...Object.values(selectedStats), ...Object.values(statMultipliers), selectedYear])
 
 	const minimize = () => {
 		setIsExpanded(!isExpanded);
@@ -89,28 +76,29 @@ export const Team = (props: ITeam) => {
 		removeTeam(id)
 	}
 
-	const calcCategoryLeads = (teamStats: IStatDictionary) => {
-		let result = 0;
-		for (const category in teamStats) {
-			if (!selectedStats[category] || category === 'scl') {
-				continue;
-			}
-		  if (isBestInCategory(teamStats[category], category, leagueStats)) {
-				result++;
-			};
-		}
-		return result;
-	}
+	// const calcCategoryLeads = (teamStats: IStatDictionary) => {
+	// 	let result = 0;
+	// 	for (const category in teamStats) {
+	// 		if (!selectedStats[category] || category === 'scl') {
+	// 			continue;
+	// 		}
+	// 	  if (isBestInCategory(teamStats[category], category, leagueStats)) {
+	// 			result++;
+	// 		};
+	// 	}
+	// 	return result;
+	// }
 
 	const addPlayer = async (personId: string, allPlayers: Array<IPlayerSearchResult>): Promise<void> => {
 		const { firstName, lastName } = allPlayers.find(player => player.personId === personId)!;
 		const statStringObj = (await getPlayerStats(personId)).stats;
 		const stats = convertStatStringsToNumbers(statStringObj);
 		stats.latest = addCalculatedStats(stats.latest);
-		stats.regularSeason.season = stats.regularSeason.season.map((season: {total: IStatDictionary}) => {
+		stats.regularSeason.season = stats.regularSeason.season.map((season: { total: IStatDictionary }) => {
 			season.total = addCalculatedStats(season.total);
 			return season;
 		});
+
 
 		const player: Player = {
 			personId,
@@ -175,13 +163,11 @@ export const Team = (props: ITeam) => {
 							addPlayer={addPlayer}
 							removePlayer={removePlayer}
 						/>
-						{selectedFormat === 'roto' && (
-							<StatsTable
-								teamId={id}
-								stats={thisTeam.stats}
-								color={thisTeam.color ?? 'lightgray'}
-							/>
-						)} 
+						<StatsTable
+							teamId={id}
+							stats={thisTeam.stats}
+							color={thisTeam.color ?? 'lightgray'}
+						/>
 					</Grid>
 				</AccordionDetails>
 			</Accordion>

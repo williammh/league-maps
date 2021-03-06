@@ -4,6 +4,9 @@ import { getScrollBarStyles } from '../../SharedStyles/SharedStyles';
 
 export const useStatsTableStyles = makeStyles({
     root: {
+        '& td' : {
+            lineHeight: '32px'
+        },
         '& .stat-label' : {
             textTransform: 'uppercase',
             overflow: 'hidden',

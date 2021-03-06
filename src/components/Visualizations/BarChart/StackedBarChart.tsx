@@ -4,7 +4,7 @@ import * as d3 from 'd3';
 import { leagueContext } from '../../../Contexts/LeagueContext';
 import { settingsContext } from '../../../Contexts/SettingsContext';
 import { useBarChartStyles } from './BarChart.styles';
-import { isBestInCategory, getSeasonStats } from '../../../Util/Util';
+import { isBestInCategory, getSeasonStats, calcFantasyPoints } from '../../../Util/Util';
 import { fullStatNameDictionary } from '../../../Util/StatCategories';
 
 export interface IStackedBarChartProps {
@@ -32,11 +32,11 @@ interface IIndividualBar {
 export const StackedBarChart = (props: IStackedBarChartProps) => {
   const { statCategory } = props;
   const { teamList, leagueStats } = useContext(leagueContext);
-  const { selectedYear } = useContext(settingsContext);
+  const { selectedYear, statMultipliers } = useContext(settingsContext);
   const barChartClasses = useBarChartStyles();
 
-  const { [statCategory]: min } = leagueStats.min;
-  const { [statCategory]: median } = leagueStats.median;
+  // const { [statCategory]: min } = leagueStats.min;
+  // const { [statCategory]: median } = leagueStats.median;
   const { [statCategory]: max } = leagueStats.max;
 
   useEffect(() => {
@@ -50,7 +50,15 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
     const xScale = d3.scaleLinear()
       .domain([0, max || 100])
       .range([0, svgWidth]);
-    const xAxis = d3.axisBottom(xScale);
+    const xAxis = d3.axisBottom(xScale)
+      .tickSizeOuter(0);
+    const yScale = d3.scalePoint()
+      .domain(teamList.map(team => team.name ?? `Team ${team.id}`))
+      .range([0, svgHeight])
+      .padding(.5);
+    const yAxis = d3.axisLeft(yScale)
+      .tickSizeInner(3)
+      .tickSizeOuter(0);
         
     const dataset: Array<ITeamBar> = teamList.map((team) => {
       const barWidths: Array<number> = team.roster.map((player) => {
@@ -62,6 +70,7 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
         .map((player, i) => {
           const { personId, firstName, lastName } = player
           const selectedSeasonStats = getSeasonStats(player, selectedYear as number);
+          calcFantasyPoints(selectedSeasonStats, statMultipliers);
           const statValue = selectedSeasonStats[statCategory] ?? 0;
           const xPos = i === 0 ? 0 : barWidths.reduce((acc, cur, idx) => idx < i ? acc + cur : acc); 
           const barWidth = barWidths[i];
@@ -96,7 +105,6 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
       .append('g')
         .attr('transform', (d, i) => `translate(0, ${barHeight * i})`)
         .attr('data-team-id', (d) => d.id)
-        .classed('best', (d) => isBestInCategory(d.teamTotal, statCategory, leagueStats))
       .append('g')
       .selectAll('g')
       .data((d) => d.individualBars)
@@ -107,17 +115,6 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
         .attr('height', barHeight - barMargin)
         .attr('fill', (d) => d.color ?? 'gray' )
         
-    // team label
-    svg.selectAll('[data-team-id]')
-      .append('foreignObject')
-        .attr('width', svgHorizontalMargin)
-        .attr('height', barHeight - barMargin)
-        .attr('x', -svgHorizontalMargin)
-        .attr('y', 0)
-      .append('xhtml:div')
-        .html((d: any) => d.name || `Team ${d.id}`)
-        .style('line-height', `${barHeight - barMargin}px`);
-
     // total stat label
     svg.selectAll('[data-team-id]')
       .append('text')
@@ -145,14 +142,10 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
       .attr('transform', `translate(0, ${svgHeight})`)
       .call(xAxis);
 
-    // y axis line
-    svg.append('line')
-      .attr('x1', 0)
-      .attr('y1', 0)
-      .attr('x2', 0)
-      .attr('y2', svgHeight)
-      .attr('stroke', '#000')
-  
+    // y axis label
+    svg.append('g')
+      .call(yAxis);
+
     return () => { svg.html(null) };
   });
 

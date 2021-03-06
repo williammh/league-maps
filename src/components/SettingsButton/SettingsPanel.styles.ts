@@ -7,7 +7,6 @@ export const useSettingsPanelStyles = makeStyles({
     ...getScrollBarStyles('.MuiTooltip-tooltip'),
   },
   tooltip: {
-    paddingTop: 0,
     overflowY: 'scroll',
     color: '#000',
     maxHeight: '50vh',

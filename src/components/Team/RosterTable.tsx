@@ -11,12 +11,11 @@ import {
 	TableContainer,
 	Avatar,
 	Tooltip,
-	ClickAwayListener,
-	Card
+	ClickAwayListener
 } from '@material-ui/core'
 import { IPlayerSearchResult, Player } from '../../Types/types';
 import { useRosterTableStyles } from './RosterTable.styles';
-import { maxTeamSize, getSeasonStats, calcFantasyPoints } from '../../Util/Util';
+import { maxTeamSize, getSeasonStats } from '../../Util/Util';
 import { UndraftedRow } from './UndraftedRow'
 import RemoveIcon from '@material-ui/icons/Remove';
 import { useTooltipStyles } from './StatsTable.styles';
@@ -35,7 +34,7 @@ export interface IRosterTableProps {
 export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 	const { id, roster, removePlayer, addPlayer } = props;
 
-	const { selectedYear, selectedFormat, statMultipliers } = useContext(settingsContext);
+	const { selectedYear } = useContext(settingsContext);
 	const { teamList } = useContext(leagueContext);
 	const thisTeam = teamList.find(team => team.id === id);
 
@@ -53,12 +52,9 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
   };
 
 	// const tableContainerClasses = useTableContainerStyles(thisTeam);
-	const tableContainerClasses = useTableContainerStyles({
-		width: selectedFormat === 'roto' ? '60%' : '100%'
-	});
+	const tableContainerClasses = useTableContainerStyles();
 	const rosterTableClasses = useRosterTableStyles({
-		teamColor: thisTeam!.color,
-		selectedFormat
+		teamColor: thisTeam!.color
 	});
 	const tooltipClasses = useTooltipStyles();
 
@@ -167,11 +163,6 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 										</Tooltip>
 									</ClickAwayListener>
 								</TableCell>
-								{selectedFormat === 'points' && (
-									<TableCell className='fantasy-points-cell'>
-										{calcFantasyPoints(playerSeasonStats, statMultipliers).toFixed(1)}
-									</TableCell>
-								)}
 							</TableRow>
 						)
 					})}

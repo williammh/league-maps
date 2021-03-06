@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import { AllPlayersContextProvider } from './Contexts/AllPlayersContext'
 import { LeagueContextProvider } from './Contexts/LeagueContext'
 import { SettingsContextProvider } from './Contexts/SettingsContext'
@@ -7,14 +7,15 @@ import { AddTeamButton } from './components/AddTeamButton/AddTeamButton';
 import { AllTeamsContainer } from './components/AllTeamsContainer/AllTeamsContainer';
 import { useAppGridStyles } from './App.styles';
 import { SettingsButton } from './components/SettingsButton/SettingsButton';
+import { MultiplierButton } from './components/MultiplierButton/MultiplierButton';
 import { Visualizations } from './components/Visualizations/Visualizations';
 import { SeasonSelect } from './components/SeasonSelect/SeasonSelect';
-import { FormatSelect } from './components/FormatSelect/FormatSelect';
-import { nbaBlue } from './Util/Util'
 
 function App() {
 
   const appGridClasses = useAppGridStyles();
+
+  const spacer = { width: 6 };
 
   return (
     <AllPlayersContextProvider>
@@ -38,10 +39,13 @@ function App() {
                 alignItems='center'
                 justify='space-between'
               >
-                  <div style={{display: 'flex', alignItems: 'center'}}>
+                  <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-around'}}>
                     <AddTeamButton />
+                    <span  style={spacer} />
                     <SettingsButton />
-                    <FormatSelect />
+                    <span  style={spacer} />
+                    <MultiplierButton />
+                    <span  style={spacer} />
                     <SeasonSelect />
                   </div>
                   <h1>LeagueMaps.com</h1>

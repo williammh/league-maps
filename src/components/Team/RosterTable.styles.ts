@@ -17,6 +17,10 @@ export const useRosterTableStyles = makeStyles({
 		'& .no-stats ': {
 			opacity: .25
 		},
+		'& .button-cell button': {
+			height: '100%',
+			width: '100%'
+		},
 		'& .headshot-cell' : {
 			width: headshotCellWidth
 		},
@@ -33,11 +37,7 @@ export const useRosterTableStyles = makeStyles({
 			borderRadius: '15px',
 		},
 		'& .name-cell' : {
-			width: ({selectedFormat}: any) => {
-				return selectedFormat === 'roto' ?
-					`calc(100% - ${buttonCellWidth}px - ${headshotCellWidth}px - ${nameCellPaddingLeft}px)` :
-					`calc(100% - ${buttonCellWidth}px - ${headshotCellWidth}px - ${nameCellPaddingLeft}px - 30px)`
-			},
+			width: `calc(100% - ${buttonCellWidth}px - ${headshotCellWidth}px - ${nameCellPaddingLeft}px)`,
 			lineHeight: '32px',
 			cursor: 'default',
 			overflow: 'hidden',

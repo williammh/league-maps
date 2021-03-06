@@ -73,12 +73,17 @@ export const calcTeamStats = (roster: Array<Player>, selectedYear: number | Prom
 	return result;
 }
 
-export const calcFantasyPoints = (stats: IStatDictionary, statMultipliers: IStatDictionary): number => {
+export const calcFantasyPoints = (stats: IStatDictionary, statMultipliers: IStatDictionary) => {
 	let result = 0;
 	for (const category in stats) {
-		result += stats[category] * statMultipliers[category];
+		if (category === 'fppg') {
+			continue;
+		}
+		else {
+			result += stats[category] * statMultipliers[category];
+		}
 	}
-	return result;
+	stats.fppg = result;
 }
 
 export const calcLeagueStats = (teamList: Array<ITeam>): ILeagueStats => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useState } from 'react';
 import {
 	IconButton,
 	TableRow,
@@ -12,7 +12,6 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { IPlayerSearchResult, Player } from '../../Types/types';
 import { PlayerSelect } from './PlayerSelect';
 import { usePopoverStyles } from './RosterTable.styles';
-import { mockComponent } from 'react-dom/test-utils';
 
 export interface IUndraftedRowProps {
 	teamId: number;
