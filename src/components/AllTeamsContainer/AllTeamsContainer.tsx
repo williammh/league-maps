@@ -7,7 +7,8 @@ import { allPlayersContext } from '../../Contexts/AllPlayersContext';
 import { settingsContext } from '../../Contexts/SettingsContext';
 
 export const AllTeamsContainer: FunctionComponent = () => {
-	const { teamList } = useContext(leagueContext)
+	const { league } = useContext(leagueContext)
+	const { teamList } = league;
 	const { setAllPlayers } = useContext(allPlayersContext);
 	const { selectedYear } = useContext(settingsContext)
 

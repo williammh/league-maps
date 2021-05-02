@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ILeagueStats, ITeam } from '../Types/types';
+import { ILeagueStats, ILeague, ITeam } from '../Types/types';
 import { calcLeagueStats, generateEmptyStats } from '../Util/Util';
 import { allStatCategories } from '../Util/StatCategories';
 
@@ -10,13 +10,11 @@ interface ContextProviderProps {
 }
 
 interface ILeagueContext {
-	teamList: Array<ITeam>;
-	setTeamList: React.Dispatch<React.SetStateAction<ITeam[]>>;
 	addTeam: () => void;
 	updateTeam: (team: ITeam) => void;
 	removeTeam: (id: number) => void;
-	leagueStats: ILeagueStats;
-	updateLeagueStats: () => void;
+	league: ILeague;
+	setLeague: React.Dispatch<React.SetStateAction<ILeague>>;
 }
 
 const LeagueContextProvider = (props: ContextProviderProps) => {
@@ -55,46 +53,65 @@ const LeagueContextProvider = (props: ContextProviderProps) => {
 		initialLeagueStats.max[category] = 0;
 	})
 
-	const [ teamList, setTeamList ] = useState(initialTeamList);
-	const [ leagueStats, setLeagueStats ] = useState(initialLeagueStats);
+	const initialLeague = {
+		teamList: initialTeamList,
+		stats: initialLeagueStats
+	}
+
+	const [ league, setLeague ] = useState(initialLeague);
 	
 	const addTeam = () => {
-		setTeamList([
+		const { teamList } = league;
+
+		const nextTeamList = [
 			...teamList,
 			{
-				id: (teamList[teamList.length - 1]?.id ?? 0) + 1,
+				id: (teamList[league.teamList.length - 1]?.id ?? 0) + 1,
 				roster: [],
 				stats: generateEmptyStats(),
 				color: 'gray'
 			}
-		])
+		];
+		const nextStats = calcLeagueStats(nextTeamList);
+
+		setLeague({
+			teamList: nextTeamList,
+			stats: nextStats
+		})
 	}
 
 	const removeTeam = (id: number) => {
-		setTeamList(teamList.filter(team => team.id !== id))
+		const nextTeamList = league.teamList.filter(team => team.id !== id);
+		const nextStats = calcLeagueStats(nextTeamList);
+
+		setLeague({
+			teamList: nextTeamList,
+			stats: nextStats
+		})
 	}
 
 	const updateTeam = (team: ITeam) => {
+		const { teamList } = league;
 		const { id } = team;
+		
 		const index = teamList.findIndex(team => team.id === id);
-		teamList[index] = team;
-		setTeamList([...teamList]);
-	}
 
-	const updateLeagueStats = () => {
-		const leagueStats = calcLeagueStats(teamList);
-		setLeagueStats(leagueStats);
+		teamList[index] = team;
+
+		setLeague({
+			teamList: teamList,
+			stats: calcLeagueStats(teamList)
+		})
+
 	}
 
 	return (
 		<leagueContext.Provider
 			value={{
-				teamList,
+				league,
+				setLeague,
 				addTeam,
 				removeTeam,
-				setTeamList,
-				leagueStats,
-				updateLeagueStats,
 				updateTeam
 			}}
 		>

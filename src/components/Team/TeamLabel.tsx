@@ -17,7 +17,8 @@ interface ITeamLabelProps {
 }
 
 export const TeamLabel = ({ id }: ITeamLabelProps): JSX.Element => {
-  const { teamList, updateTeam } = useContext(leagueContext);
+  const { league, updateTeam } = useContext(leagueContext);
+  const { teamList } = league;
   const thisTeam = teamList.find(team => team.id === id)!;
   const { color } = thisTeam;
 

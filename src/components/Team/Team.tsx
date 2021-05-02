@@ -42,7 +42,9 @@ export const Team = (props: ITeam) => {
 	const [ isExpanded, setIsExpanded ] = useState(true);
 
 	const { selectedYear, selectedStats, statMultipliers } = useContext(settingsContext);
-	const { teamList, removeTeam, updateTeam, leagueStats, updateLeagueStats } = useContext(leagueContext);
+	const { removeTeam, updateTeam, league } = useContext(leagueContext);
+
+	const { teamList, stats: leagueStats } = league;
 
 	const thisTeam = teamList.find(team => team.id === id)!;
 
@@ -53,11 +55,15 @@ export const Team = (props: ITeam) => {
 	const accordionDetailClasses = useAccordionDetailStyles();
 	const gridClasses = useGridStyles();
 
-	useEffect(() => {
-		updateLeagueStats();
-	}, [...Object.values(thisTeam.stats)])
+	console.log(`rendering team: ${id}`);
 
 	useEffect(() => {
+		thisTeam.roster.forEach(player => {
+			player.stats.regularSeason.season.map(season => {
+				calcFantasyPoints(season.total, statMultipliers);
+			})
+		})
+
 		thisTeam.stats = calcTeamStats(thisTeam.roster, selectedYear);
 		calcFantasyPoints(thisTeam.stats, statMultipliers);
 		// thisTeam.stats.scl = calcCategoryLeads(thisTeam.stats);
@@ -96,9 +102,9 @@ export const Team = (props: ITeam) => {
 		stats.latest = addCalculatedStats(stats.latest);
 		stats.regularSeason.season = stats.regularSeason.season.map((season: { total: IStatDictionary }) => {
 			season.total = addCalculatedStats(season.total);
+			calcFantasyPoints(season.total, statMultipliers);
 			return season;
 		});
-
 
 		const player: Player = {
 			personId,

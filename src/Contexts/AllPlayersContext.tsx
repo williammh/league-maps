@@ -4,6 +4,7 @@ import React, {
 	Dispatch,
 	SetStateAction
 } from 'react';
+import { getAllPlayers } from '../Util/Util';
 import { IPlayerSearchResult } from '../Types/types';
 
 const allPlayersContext = React.createContext({} as IAllPlayersContext);
@@ -18,7 +19,9 @@ interface IAllPlayersContext {
 }
 
 const AllPlayersContextProvider = (props: ContextProviderProps): JSX.Element => {
+
 	const [allPlayers, setAllPlayers] = useState([] as Array<IPlayerSearchResult>);
+
 
 	return (
 		<allPlayersContext.Provider value={{allPlayers,  setAllPlayers}}>

@@ -4,7 +4,7 @@ import * as d3 from 'd3';
 import { leagueContext } from '../../../Contexts/LeagueContext';
 import { settingsContext } from '../../../Contexts/SettingsContext';
 import { useBarChartStyles } from './BarChart.styles';
-import { isBestInCategory, getSeasonStats, calcFantasyPoints } from '../../../Util/Util';
+import { getSeasonStats} from '../../../Util/Util';
 import { fullStatNameDictionary } from '../../../Util/StatCategories';
 
 export interface IStackedBarChartProps {
@@ -31,8 +31,11 @@ interface IIndividualBar {
 
 export const StackedBarChart = (props: IStackedBarChartProps) => {
   const { statCategory } = props;
-  const { teamList, leagueStats } = useContext(leagueContext);
-  const { selectedYear, statMultipliers } = useContext(settingsContext);
+  const { league } = useContext(leagueContext);
+
+  const { teamList, stats: leagueStats } = league;
+
+  const { selectedYear } = useContext(settingsContext);
   const barChartClasses = useBarChartStyles();
 
   // const { [statCategory]: min } = leagueStats.min;
@@ -70,7 +73,6 @@ export const StackedBarChart = (props: IStackedBarChartProps) => {
         .map((player, i) => {
           const { personId, firstName, lastName } = player
           const selectedSeasonStats = getSeasonStats(player, selectedYear as number);
-          calcFantasyPoints(selectedSeasonStats, statMultipliers);
           const statValue = selectedSeasonStats[statCategory] ?? 0;
           const xPos = i === 0 ? 0 : barWidths.reduce((acc, cur, idx) => idx < i ? acc + cur : acc); 
           const barWidth = barWidths[i];

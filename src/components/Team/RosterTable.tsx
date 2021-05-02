@@ -35,7 +35,8 @@ export const RosterTable = (props: IRosterTableProps): JSX.Element => {
 	const { id, roster, removePlayer, addPlayer } = props;
 
 	const { selectedYear } = useContext(settingsContext);
-	const { teamList } = useContext(leagueContext);
+	const { league } = useContext(leagueContext);
+	const { teamList } = league;
 	const thisTeam = teamList.find(team => team.id === id);
 
 	const [openTooltip, setOpenTooltip] = React.useState<number | null>(null);

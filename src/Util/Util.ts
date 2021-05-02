@@ -154,6 +154,7 @@ export const convertStatStringsToNumbers = (input: any): any => {
 }
 
 export const addCalculatedStats = (input: IStatDictionary): IStatDictionary => {
+	
 	return { 
 		...input,
 		fgmpg: input.fgm / input.gamesPlayed,

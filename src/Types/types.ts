@@ -33,6 +33,11 @@ export interface IStatSearchResult {
 	}
 }
 
+export interface ILeague {
+	teamList: Array<ITeam>;
+	stats: ILeagueStats;
+} 
+
 // export interface IFantasyPoints {
 // 	fantasyPoints: number;
 // }

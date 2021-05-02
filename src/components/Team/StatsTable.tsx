@@ -10,12 +10,10 @@ import {
 	Tooltip
 } from '@material-ui/core'
 import { useStatsTableStyles } from './StatsTable.styles';
-import { isBestInCategory, calcFantasyPoints } from '../../Util/Util';
+import { isBestInCategory } from '../../Util/Util';
 import { fullStatNameDictionary } from '../../Util/StatCategories';
 import { IStatDictionary } from '../../Types/types';
 import { useTableContainerStyles } from './Team.styles';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import StarIcon from '@material-ui/icons/Star';
 
 
 export interface ITeamStatsTableProps {
@@ -27,10 +25,11 @@ export interface ITeamStatsTableProps {
 export const StatsTable = (props: ITeamStatsTableProps): JSX.Element => {
 	const { teamId, stats, color } = props;
 
-	const { leagueStats } = useContext(leagueContext);
-	const { selectedStats, statMultipliers } = useContext(settingsContext);
+	const { league } = useContext(leagueContext);
 
-	calcFantasyPoints(stats, statMultipliers);
+	const { stats: leagueStats } = league;
+
+	const { selectedStats } = useContext(settingsContext);
 
 	const selectedTeamStats = Object.entries(stats)
 		.filter(([category]) => selectedStats[category]);
