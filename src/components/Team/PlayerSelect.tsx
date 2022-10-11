@@ -37,7 +37,7 @@ export const PlayerSelect = (props: IPlayerSelectProps): JSX.Element => {
 	const lazyLoadHeight = 40;
 
 	useEffect(() => {
-		setSearchResults(allPlayers.filter(({ firstName, lastName, isActive }) => isMatching(firstName, lastName) && isActive));
+		setSearchResults(allPlayers.filter(({ firstName, lastName }) => isMatching(firstName, lastName)));
 		setSelectedIndex(0);
 	}, [searchString])
 
