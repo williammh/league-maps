@@ -36,7 +36,7 @@ const SettingsContextProvider = (props: ContextProviderProps) => {
 
 	const [ selectedStats, setSelectedStats ] = useState(defaultSelectedStats);
 
-	const [ selectedYear, setSelectedYear ] = useState(new Date().getFullYear() + 1);
+	const [ selectedYear, setSelectedYear ] = useState(new Date().getFullYear());
 
 	const [ statMultipliers, setStatMultipliers ] = useState(defaultStatMultipliers);
 
