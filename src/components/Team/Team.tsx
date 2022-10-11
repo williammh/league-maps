@@ -55,8 +55,6 @@ export const Team = (props: ITeam) => {
 	const accordionDetailClasses = useAccordionDetailStyles();
 	const gridClasses = useGridStyles();
 
-	console.log(`rendering team: ${id}`);
-
 	useEffect(() => {
 		thisTeam.roster.forEach(player => {
 			player.stats.regularSeason.season.map(season => {

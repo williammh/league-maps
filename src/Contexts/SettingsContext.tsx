@@ -36,21 +36,21 @@ const SettingsContextProvider = (props: ContextProviderProps) => {
 
 	const [ selectedStats, setSelectedStats ] = useState(defaultSelectedStats);
 
-	const [ selectedYear, setSelectedYear ] = useState((new Date()).getFullYear());
+	const [ selectedYear, setSelectedYear ] = useState(new Date().getFullYear() + 1);
 
 	const [ statMultipliers, setStatMultipliers ] = useState(defaultStatMultipliers);
 
 	useEffect(() => {
 		(async (): Promise<void> => {
-			let currentYear = (new Date()).getFullYear();
+			let year = selectedYear;
 			let response;
 			while (!response || !response.ok) {
-				response = await fetch(`https://data.nba.net/prod/v1/${currentYear}/players.json`);
+				response = await fetch(`https://data.nba.net/prod/v1/${year}/players.json`);
 				if (!response.ok) {
-					currentYear--;
+					year--;
 				}
 			}
-			setSelectedYear(currentYear);
+			setSelectedYear(year);
 		})();
 	}, []);
 

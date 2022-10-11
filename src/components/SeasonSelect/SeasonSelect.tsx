@@ -1,8 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Select, FormControl, InputLabel, MenuItem } from '@material-ui/core'
 import { settingsContext } from '../../Contexts/SettingsContext';
 import { useSeasonSelectStyles } from './SeasonSelect.style'
-
 
 export const SeasonSelect = () => {
   const { selectedYear, setSelectedYear } = useContext(settingsContext);
@@ -14,6 +13,36 @@ export const SeasonSelect = () => {
     setSelectedYear(value as number);
   };
 
+  const getAllAvailableSeasons = async (year: number) => {
+    const result = [];
+    let currentYear = year;
+    let response;
+    while(!response || response.ok) {
+      response = await fetch(`https://data.nba.net/prod/v1/${currentYear}/players.json`);
+      if (response.ok) {
+        result.push(currentYear);
+      }
+      currentYear--;
+    }
+    return result;
+  }
+
+  const [options, setOptions] = useState([] as JSX.Element[]);
+
+  useEffect(() => {
+    if (options.length === 0) {
+      (async () => {
+        const yearOptions = await getAllAvailableSeasons(selectedYear as number);
+        const menuItems = yearOptions.map((year: number) => {
+          return (
+            <MenuItem value={year}>{year} - {year + 1}</MenuItem>
+          )
+        })
+        setOptions(menuItems);
+      })();
+    };
+  }, [selectedYear]);
+
   return (
     <FormControl
       variant='outlined'
@@ -21,19 +50,11 @@ export const SeasonSelect = () => {
     >
       <InputLabel>Season</InputLabel>
       <Select
-        value={selectedYear}
+        value={options.length ? selectedYear : "loading"}
         onChange={handleChange}
         autoWidth
       >
-        <MenuItem value={2020}>2020 - 2021</MenuItem>
-        <MenuItem value={2019}>2019 - 2020</MenuItem>
-        <MenuItem value={2018}>2018 - 2019</MenuItem>
-        <MenuItem value={2017}>2017 - 2018</MenuItem>
-        <MenuItem value={2016}>2016 - 2017</MenuItem>
-        <MenuItem value={2015}>2015 - 2016</MenuItem>
-        <MenuItem value={2014}>2014 - 2015</MenuItem>
-        <MenuItem value={2013}>2013 - 2014</MenuItem>
-        <MenuItem value={2012}>2012 - 2013</MenuItem>
+        {options.length ? options : <MenuItem value="loading">Loading...</MenuItem>}
       </Select>
     </FormControl>
   );
